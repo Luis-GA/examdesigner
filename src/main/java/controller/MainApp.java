@@ -2,16 +2,18 @@ package controller;
 
 import java.io.IOException;
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import model.Exam;
+import model.ExamParser;
+
+import java.time.LocalDate;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
@@ -32,9 +34,11 @@ public class MainApp extends Application {
 
         initEmptyRootLayout();
         showWelcomeOverview();
+
+        testExamJson();
     }
 
-    public void initEmptyRootLayout() {
+    private void initEmptyRootLayout() {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
@@ -52,7 +56,7 @@ public class MainApp extends Application {
     }
 
     /** * Shows the welcome overview inside the root layout. */
-    public void showWelcomeOverview() {
+    private void showWelcomeOverview() {
         try {
             // Load exam overview.
             FXMLLoader loader = new FXMLLoader();
@@ -72,7 +76,7 @@ public class MainApp extends Application {
         }
     }
 
-    public void setPreferences(){
+    private void setPreferences(){
 
         // Retrieve the user preference node
         Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
@@ -81,13 +85,37 @@ public class MainApp extends Application {
         String defaultValue = "unselected";
         String languageValue = prefs.get("language", defaultValue);
 
-        if(languageValue == "unselected"){
+        if(languageValue.equals("unselected")){
             languageValue = Locale.getDefault().toString().substring(0, 2);
             prefs.put("language", defaultValue);
             Locale.setDefault(new Locale(languageValue));
         } else {
             Locale.setDefault(new Locale(languageValue));
         }
+    }
+
+    //TODO delete this test method
+    private void testExamJson(){
+
+        Exam aux = new Exam();
+
+        aux.examDate.set(LocalDate.of(2017, 10, 25));
+        aux.numQuestions.set(5);
+        aux.title.set("Algoritmos Voraces - Octubre 2017");
+        aux.duration.set(60);
+        aux.groupField.set(true);
+        aux.idNumberField.set(true);
+        aux.instructionDetails.set("Se permite usar calculadora.");
+        aux.logo = null;
+        aux.modality.set("Convocatoria Ordinaria");
+        aux.nameField.set(true);
+        aux.publicationDate.set(LocalDate.of(2017, 10, 30));
+        aux.reviewDate.set(LocalDate.of(2017, 11, 4));
+        aux.subject.set("Algorítmica y Complejidad");
+        aux.surnameField.set(true);
+        aux.weigh.set(40);
+
+        System.out.print(new ExamParser(aux).toJson());
     }
 
     /** * Returns the main stage. * @return */

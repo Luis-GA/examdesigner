@@ -1,42 +1,70 @@
 package model;
 
 import java.time.LocalDate;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 
+import javafx.beans.property.*;
+
+import javafx.scene.image.Image;
 import util.DateUtil;
 
 /** Model class for an Exam **/
 
 public class Exam {
 
-    StringProperty name;
-    ObjectProperty<LocalDate> date;
-    String subject;
+    public StringProperty title;
+    public StringProperty subject;
+    public StringProperty modality;
 
-    public Exam(String name, ObjectProperty<LocalDate> date, String subject){
+    public IntegerProperty duration;
+    public IntegerProperty weigh;
+    public IntegerProperty numQuestions;
 
-        this.name = new SimpleStringProperty(name);
-        this.date = date;
-        this.subject = subject;
+    public Image logo;
+
+    public ObjectProperty<LocalDate> examDate;
+    public ObjectProperty<LocalDate> publicationDate;
+    public ObjectProperty<LocalDate> reviewDate;
+
+    public BooleanProperty nameField;
+    public BooleanProperty surnameField;
+    public BooleanProperty idNumberField;
+    public BooleanProperty groupField;
+
+    public StringProperty instructionDetails;
+
+    public Exam(){
+        this.title = new SimpleStringProperty();
+        this.subject = new SimpleStringProperty();
+        this.modality = new SimpleStringProperty();
+
+        this.duration = new SimpleIntegerProperty();
+        this.weigh = new SimpleIntegerProperty();
+        this.numQuestions = new SimpleIntegerProperty();
+
+        this.logo = null;
+
+        this.examDate = new SimpleObjectProperty<LocalDate>();
+        this.publicationDate = new SimpleObjectProperty<LocalDate>();
+        this.reviewDate = new SimpleObjectProperty<LocalDate>();
+
+        this.nameField = new SimpleBooleanProperty();
+        this.surnameField = new SimpleBooleanProperty();
+        this.idNumberField = new SimpleBooleanProperty();
+        this.groupField = new SimpleBooleanProperty();
+
+        this.instructionDetails = new SimpleStringProperty();
     }
 
-    public StringProperty nameProperty(){
-
-        return this.name;
+    public String getTitle(){
+        return this.title.getValue();
     }
 
-    public StringProperty dateProperty(){
-
-        return new SimpleStringProperty(DateUtil.format(this.date.getValue()));
+    public StringProperty examDateProperty(){
+        return new SimpleStringProperty(DateUtil.format(this.examDate.getValue()));
     }
 
-    public String getSubject(){
-
-        return this.subject;
+    public Integer getNumQuestions(){
+        return this.numQuestions.getValue();
     }
+
 }
