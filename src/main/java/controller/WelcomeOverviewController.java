@@ -9,14 +9,13 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.Exam;
-
 import javafx.fxml.FXML;
-
 import java.io.IOException;
 import java.util.ResourceBundle;
 
-public class WelcomeOverviewController {
+public class WelcomeOverviewController extends DialogController {
+
+    private static System.Logger logger = System.getLogger(WelcomeOverviewController.class.getName());
 
     @FXML
     private ListView<String> examList;
@@ -33,8 +32,6 @@ public class WelcomeOverviewController {
 
         setMainApp(mainApp);
 
-        // Calls doSomething when one exam is selected
-        //examList.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue) -> doSomething(newValue));
         ObservableList<String> examListList = FXCollections.observableArrayList();
 
         /** Just for testing **/
@@ -47,19 +44,17 @@ public class WelcomeOverviewController {
         examList.setItems(examListList);
     }
 
-
-    @FXML
-    public void showSettingsDialog() {
+    private void showDialog(String view, String title){
         try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("../view/SettingsDialog.fxml"));
+            loader.setLocation(MainApp.class.getResource(view));
             loader.setResources(ResourceBundle.getBundle("languages/labels"));
             AnchorPane page = (AnchorPane) loader.load();
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
-            dialogStage.setTitle(ResourceBundle.getBundle("languages/labels").getString("title.settings"));
+            dialogStage.setTitle(ResourceBundle.getBundle("languages/labels").getString(title));
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.setResizable(false);
             dialogStage.initOwner(mainApp.getPrimaryStage());
@@ -68,47 +63,25 @@ public class WelcomeOverviewController {
             dialogStage.setScene(scene);
 
             // Set the person into the controller.
-            SettingsDialogController controller = loader.getController();
+            DialogController controller = loader.getController();
             controller.setDialogStage(dialogStage);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(System.Logger.Level.ERROR, "Error trying to load resources while showing dialog");
         }
     }
 
     @FXML
+    public void showSettingsDialog() {
+        showDialog("../view/SettingsDialog.fxml", "title.settings");
+    }
+
+    @FXML
     public void showAboutDialog(){
-
-        try {
-            // Load the fxml file and create a new stage for the popup dialog.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("../view/AboutDialog.fxml"));
-            loader.setResources(ResourceBundle.getBundle("languages/labels"));
-            AnchorPane page = (AnchorPane) loader.load();
-
-            // Create the dialog Stage.
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle(ResourceBundle.getBundle("languages/labels").getString("title.about"));
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.setResizable(false);
-            dialogStage.initOwner(mainApp.getPrimaryStage());
-            dialogStage.getIcons().add(new Image("images/exam_designer_256.png"));
-            Scene scene = new Scene(page);
-            dialogStage.setScene(scene);
-
-            // Set the person into the controller.
-            AboutDialogController controller = loader.getController();
-            controller.setDialogStage(dialogStage);
-
-            // Show the dialog and wait until the user closes it
-            dialogStage.showAndWait();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        showDialog("../view/AboutDialog.fxml", "title.about");
     }
 
 

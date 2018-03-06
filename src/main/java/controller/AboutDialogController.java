@@ -2,36 +2,26 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
-import javafx.stage.Stage;
-
 import java.awt.*;
 import java.net.URI;
 import java.util.ResourceBundle;
 
-public class AboutDialogController {
+public class AboutDialogController extends DialogController {
 
-    private Stage dialogStage;
+    private static System.Logger logger = System.getLogger(AboutDialogController.class.getName());
 
     @FXML
     Hyperlink hyperlink;
 
     @FXML
     public void handleClickLink() {
-        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+        Desktop desktop =Desktop.getDesktop();
         try {
             desktop.browse(new URI(ResourceBundle.getBundle("languages/labels").getString("link.gitHub")));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(System.Logger.Level.ERROR, "Error trying to open a link in the browser");
         }
 
-    }
-
-    public void setDialogStage(Stage dialogStage) {
-        this.dialogStage = dialogStage;
-    }
-
-    @FXML
-    private void initialize() {
     }
 
     @FXML

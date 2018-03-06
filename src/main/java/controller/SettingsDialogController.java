@@ -6,11 +6,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
 import java.util.*;
 import java.util.prefs.Preferences;
 
-public class SettingsDialogController {
+public class SettingsDialogController extends DialogController {
 
     @FXML
     private ComboBox languageComboBox;
@@ -18,15 +17,14 @@ public class SettingsDialogController {
     @FXML
     private Button okButton;
 
-    private Stage dialogStage;
-
     private ObservableList<String> languagesList;
     private HashMap<String, String> languagesMap;
     private boolean languageChanged;
 
-    public void setDialogStage(Stage dialogStage) {
-        this.dialogStage = dialogStage;
-    }
+    private static final String ENGLISH = "English";
+    private static final String SPANISH = "Espaol";
+    private static final String EN = "en";
+    private static final String ES = "es";
 
     @FXML
     private void initialize() {
@@ -34,17 +32,17 @@ public class SettingsDialogController {
         languageChanged = false;
         okButton.setDisable(true);
 
-        languagesMap = new HashMap<String, String>();
+        languagesMap = new HashMap<>();
         languagesList = FXCollections.observableArrayList();
 
-        languagesMap.put("English", "en");
-        languagesMap.put("Español", "es");
+        languagesMap.put(ENGLISH, EN);
+        languagesMap.put(SPANISH, ES);
 
-        languagesMap.put("en", "English");
-        languagesMap.put("es", "Español");
+        languagesMap.put(EN, ENGLISH);
+        languagesMap.put(ES, SPANISH);
 
-        languagesList.add("English");
-        languagesList.add("Español");
+        languagesList.add(ENGLISH);
+        languagesList.add(SPANISH);
 
         languageComboBox.setItems(languagesList);
         languageComboBox.getSelectionModel().select(languagesMap.get(Locale.getDefault().toString()));

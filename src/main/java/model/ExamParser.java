@@ -1,12 +1,8 @@
 package model;
 
 import java.time.LocalDate;
-
 import javafx.beans.property.*;
-
-import javafx.scene.image.Image;
 import util.DateUtil;
-
 import com.google.gson.Gson;
 
 /** Class to parse an format Exam objects into Primitive attributes to generate and recover from json file**/

@@ -3,6 +3,7 @@ package util;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
 /** * Helper functions for handling dates. * * @author Marco Jakob */
 
 public class DateUtil {
@@ -10,6 +11,10 @@ public class DateUtil {
     private static final String DATE_PATTERN = "dd.MM.yyyy";
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
+
+    private DateUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static String format(LocalDate date) {
         if (date == null) {

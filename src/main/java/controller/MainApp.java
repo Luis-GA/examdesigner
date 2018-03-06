@@ -9,16 +9,14 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-
-import model.Exam;
-import model.ExamParser;
-
-import java.time.LocalDate;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
 public class MainApp extends Application {
+
+    private static System.Logger logger = System.getLogger(MainApp.class.getName());
+
     private static Stage primaryStage;
     private BorderPane rootLayout;
 
@@ -34,8 +32,6 @@ public class MainApp extends Application {
 
         initEmptyRootLayout();
         showWelcomeOverview();
-
-        testExamJson();
     }
 
     private void initEmptyRootLayout() {
@@ -51,7 +47,7 @@ public class MainApp extends Application {
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Root Layout");
         }
     }
 
@@ -72,7 +68,7 @@ public class MainApp extends Application {
             WelcomeOverviewController controller = loader.getController();
             controller.setMainApp(this);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Welcome Overview");
         }
     }
 
@@ -92,30 +88,6 @@ public class MainApp extends Application {
         } else {
             Locale.setDefault(new Locale(languageValue));
         }
-    }
-
-    //TODO delete this test method
-    private void testExamJson(){
-
-        Exam aux = new Exam();
-
-        aux.examDate.set(LocalDate.of(2017, 10, 25));
-        aux.numQuestions.set(5);
-        aux.title.set("Algoritmos Voraces - Octubre 2017");
-        aux.duration.set(60);
-        aux.groupField.set(true);
-        aux.idNumberField.set(true);
-        aux.instructionDetails.set("Se permite usar calculadora.");
-        aux.logo = null;
-        aux.modality.set("Convocatoria Ordinaria");
-        aux.nameField.set(true);
-        aux.publicationDate.set(LocalDate.of(2017, 10, 30));
-        aux.reviewDate.set(LocalDate.of(2017, 11, 4));
-        aux.subject.set("Algorítmica y Complejidad");
-        aux.surnameField.set(true);
-        aux.weigh.set(40);
-
-        System.out.print(new ExamParser(aux).toJson());
     }
 
     /** * Returns the main stage. * @return */

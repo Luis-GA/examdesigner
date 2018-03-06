@@ -1,9 +1,8 @@
 package model;
 
 import java.time.LocalDate;
-
+import java.util.ArrayList;
 import javafx.beans.property.*;
-
 import javafx.scene.image.Image;
 import util.DateUtil;
 
@@ -11,26 +10,28 @@ import util.DateUtil;
 
 public class Exam {
 
-    public StringProperty title;
-    public StringProperty subject;
-    public StringProperty modality;
+    protected StringProperty title;
+    protected StringProperty subject;
+    protected StringProperty modality;
 
-    public IntegerProperty duration;
-    public IntegerProperty weigh;
-    public IntegerProperty numQuestions;
+    protected IntegerProperty duration;
+    protected IntegerProperty weigh;
+    protected IntegerProperty numQuestions;
 
-    public Image logo;
+    protected Image logo;
 
-    public ObjectProperty<LocalDate> examDate;
-    public ObjectProperty<LocalDate> publicationDate;
-    public ObjectProperty<LocalDate> reviewDate;
+    protected ObjectProperty<LocalDate> examDate;
+    protected ObjectProperty<LocalDate> publicationDate;
+    protected ObjectProperty<LocalDate> reviewDate;
 
-    public BooleanProperty nameField;
-    public BooleanProperty surnameField;
-    public BooleanProperty idNumberField;
-    public BooleanProperty groupField;
+    protected BooleanProperty nameField;
+    protected BooleanProperty surnameField;
+    protected BooleanProperty idNumberField;
+    protected BooleanProperty groupField;
 
-    public StringProperty instructionDetails;
+    protected StringProperty instructionDetails;
+
+    protected ArrayList parts;
 
     public Exam(){
         this.title = new SimpleStringProperty();
@@ -43,9 +44,9 @@ public class Exam {
 
         this.logo = null;
 
-        this.examDate = new SimpleObjectProperty<LocalDate>();
-        this.publicationDate = new SimpleObjectProperty<LocalDate>();
-        this.reviewDate = new SimpleObjectProperty<LocalDate>();
+        this.examDate = new SimpleObjectProperty<>();
+        this.publicationDate = new SimpleObjectProperty<>();
+        this.reviewDate = new SimpleObjectProperty<>();
 
         this.nameField = new SimpleBooleanProperty();
         this.surnameField = new SimpleBooleanProperty();
