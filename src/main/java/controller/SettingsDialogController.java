@@ -22,7 +22,7 @@ public class SettingsDialogController extends DialogController {
     private boolean languageChanged;
 
     private static final String ENGLISH = "English";
-    private static final String SPANISH = "Espaol";
+    private static final String SPANISH = "Español";
     private static final String EN = "en";
     private static final String ES = "es";
 
