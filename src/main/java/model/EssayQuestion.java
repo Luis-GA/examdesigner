@@ -35,6 +35,7 @@ public class EssayQuestion extends Question {
 
     public EssayQuestion() {
         super();
+        this.type = Type.ESSAY;
         this.sections = FXCollections.observableArrayList();
         this.answeringSpace = new SimpleIntegerProperty(1);
     }

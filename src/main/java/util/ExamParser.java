@@ -1,10 +1,10 @@
 package util;
 
-import javafx.scene.image.Image;
+import com.google.gson.GsonBuilder;
 import model.Exam;
 import com.google.gson.Gson;
 import model.ExamPart;
-
+import model.Question;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,8 +44,7 @@ public class ExamParser {
         this.weigh = exam.getWeigh();
         this.numQuestions = exam.getNumQuestions();
 
-        //TODO make logo correct
-        this.logo = exam.getLogo().toString();
+        this.logo = ImageUtil.getBase64(exam.getLogo());
 
         this.examDate = exam.getExamDate();
         this.publicationDate = exam.getPublicationDate();
@@ -76,8 +75,7 @@ public class ExamParser {
         aux.setWeigh(this.weigh);
         aux.setNumQuestions(this.numQuestions);
 
-        //TODO make logo correct
-        aux.setLogo(new Image(this.logo));
+        aux.setLogo(ImageUtil.getImage(this.logo));
 
         aux.setExamDate(DateUtil.parse(this.examDate));
         aux.setPublicationDate(DateUtil.parse(this.publicationDate));
@@ -100,7 +98,11 @@ public class ExamParser {
     }
 
     public ExamParser (String examJson){
-        Gson gson = new Gson();
+        RuntimeTypeAdapterFactory<QuestionParser> adapter = RuntimeTypeAdapterFactory
+                .of(QuestionParser.class, "type")
+                .registerSubtype(TestQuestionParser.class, Question.Type.TEST.name())
+                .registerSubtype(EssayQuestionParser.class, Question.Type.ESSAY.name());
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(adapter).create();
         ExamParser aux = gson.fromJson(examJson, ExamParser.class);
 
         this.numQuestions = aux.numQuestions;
@@ -115,10 +117,17 @@ public class ExamParser {
         this.surnameField = aux.surnameField;
         this.weigh = aux.weigh;
         this.parts = aux.parts;
+
+        this.logo = aux.logo;
+
+        this.examDate = aux.examDate;
+        this.publicationDate = aux.publicationDate;
+        this.reviewDate = aux.reviewDate;
     }
 
     public String toJson(){
-        return new Gson().toJson(this);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(this);
     }
 
 }

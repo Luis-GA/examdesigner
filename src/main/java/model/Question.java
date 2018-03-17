@@ -12,8 +12,13 @@ import java.util.List;
 
 public abstract class Question {
 
+    public enum Type {
+        TEST,
+        ESSAY
+    }
+
     protected StringProperty title;
-    protected StringProperty type;
+    protected Type type;
     protected ObservableList<ContentObject> bodyObjects;
     protected IntegerProperty weight;
     protected IntegerProperty duration;
@@ -24,7 +29,7 @@ public abstract class Question {
     }
 
     public String getType() {
-        return type.getValue();
+        return type.name();
     }
 
     public List<ContentObject> getBodyObjects() {
@@ -45,10 +50,6 @@ public abstract class Question {
         this.title.setValue(title);
     }
 
-    public void setType(String type) {
-        this.type.setValue(type);
-    }
-
     public void setBodyObjects(List<ContentObject> bodyObjects) {
         this.bodyObjects = FXCollections.observableList(bodyObjects);
     }
@@ -64,7 +65,6 @@ public abstract class Question {
 
     public Question() {
         this.title = new SimpleStringProperty("");
-        this.type = new SimpleStringProperty("");
         this.bodyObjects = FXCollections.observableArrayList();
         this.weight = new SimpleIntegerProperty();
         this.duration = new SimpleIntegerProperty(0);

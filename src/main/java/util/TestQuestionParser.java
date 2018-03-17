@@ -1,5 +1,7 @@
 package util;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import model.Question;
 import model.Section;
 import model.TestQuestion;
@@ -22,6 +24,20 @@ public class TestQuestionParser extends QuestionParser{
         }
     }
 
+    public TestQuestionParser (String questionJson){
+        Gson gson = new GsonBuilder().create();
+        TestQuestionParser aux = gson.fromJson(questionJson, TestQuestionParser.class);
+
+        this.setTitle(aux.getTitle());
+        this.setType(aux.getType());
+        this.setBodyObjects(aux.getBodyObjects());
+        this.setWeight(aux.getWeight());
+        this.setDuration(aux.getDuration());
+
+        this.choices = aux.choices;
+        this.correctChoice = aux.correctChoice;
+    }
+
     public Question parseQuestion(){
         TestQuestion aux = new TestQuestion();
 
@@ -35,5 +51,10 @@ public class TestQuestionParser extends QuestionParser{
         aux.setChoices(auxList);
 
         return aux;
+    }
+
+    public String toJson() {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(this);
     }
 }

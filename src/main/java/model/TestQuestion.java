@@ -35,6 +35,7 @@ public class TestQuestion extends Question {
 
     public TestQuestion() {
         super();
+        this.type = Type.TEST;
         this.choices = FXCollections.observableArrayList();
         this.correctChoice = new SimpleStringProperty();
     }

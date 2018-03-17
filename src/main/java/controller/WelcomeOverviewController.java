@@ -34,7 +34,7 @@ public class WelcomeOverviewController extends DialogController {
 
         ObservableList<String> examListList = FXCollections.observableArrayList();
 
-        /** Just for testing **/
+        //TODO Just for testing, delete in the future
         examListList.add("Multiplexores");
         examListList.add("Algoritmos Voraces");
         examListList.add("Patrones Software");

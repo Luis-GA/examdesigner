@@ -129,6 +129,10 @@ public class Exam {
         this.logo = logo;
     }
 
+    public void setLogo(String url) {
+        this.logo = new Image(url);
+    }
+
     public void setExamDate(LocalDate examDate) {
         this.examDate.setValue(examDate);
     }
@@ -175,7 +179,7 @@ public class Exam {
         this.weigh = new SimpleIntegerProperty();
         this.numQuestions = new SimpleIntegerProperty(0);
 
-        this.logo = null;
+        this.logo = new Image("images/logo_default.png");
 
         this.examDate = new SimpleObjectProperty<>(LocalDate.now());
         this.publicationDate = new SimpleObjectProperty<>(LocalDate.now());

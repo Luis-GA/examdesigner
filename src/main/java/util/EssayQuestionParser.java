@@ -1,5 +1,7 @@
 package util;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import model.EssayQuestion;
 import model.Question;
 import model.Section;
@@ -22,6 +24,20 @@ public class EssayQuestionParser extends QuestionParser{
         }
     }
 
+    public EssayQuestionParser (String questionJson){
+        Gson gson = new GsonBuilder().create();
+        EssayQuestionParser aux = gson.fromJson(questionJson, EssayQuestionParser.class);
+
+        this.setTitle(aux.getTitle());
+        this.setType(aux.getType());
+        this.setBodyObjects(aux.getBodyObjects());
+        this.setWeight(aux.getWeight());
+        this.setDuration(aux.getDuration());
+
+        this.sections = aux.sections;
+        this.answeringSpace = aux.answeringSpace;
+    }
+
     public Question parseQuestion(){
         EssayQuestion aux = new EssayQuestion();
 
@@ -35,5 +51,10 @@ public class EssayQuestionParser extends QuestionParser{
         aux.setSections(auxList);
 
         return aux;
+    }
+
+    public String toJson() {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(this);
     }
 }

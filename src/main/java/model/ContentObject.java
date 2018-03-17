@@ -1,6 +1,7 @@
 package model;
 
 import javafx.scene.image.Image;
+import util.ImageUtil;
 
 public class ContentObject {
 
@@ -22,8 +23,27 @@ public class ContentObject {
         this.type = Type.IMAGE;
     }
 
-    public Object getContent(){
-        return this.content;
+    public Image getImage(){
+        if(this.type == Type.IMAGE)
+            return (Image) this.content;
+        else
+            return null;
+    }
+
+    public String getText(){
+        if(this.type == Type.TEXT)
+            return (String) this.content;
+        else
+            return null;
+    }
+
+    public String getContent() {
+        if(this.type == Type.IMAGE)
+            return ImageUtil.getBase64((Image) this.content);
+        else if(this.type == Type.TEXT)
+            return (String) this.content;
+        else
+            return null;
     }
 
     public Type getType(){
