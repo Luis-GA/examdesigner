@@ -1,42 +1,42 @@
 package model;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import java.util.List;
+import java.util.Map;
 
 /** Model class for a Test Question **/
 
 public class TestQuestion extends Question {
 
-    protected ObservableList<Section> choices;
-    protected StringProperty correctChoice;
+    protected ObservableMap<String, Section> choices;
+    protected ObservableList<String> correctChoices;
 
     /** ----- GETTERS ----- **/
-    public List<Section> getChoices() {
+    public Map<String, Section> getChoices() {
         return choices;
     }
 
-    public String getCorrectChoice() {
-        return correctChoice.getValue();
+    public List<String> getCorrectChoices() {
+        return correctChoices;
     }
     /** ------------------- **/
 
     /** ----- SETTERS ----- **/
-    public void setChoices(List<Section> choices) {
-        this.choices = FXCollections.observableList(choices);
+    public void setChoices(Map<String, Section> choices) {
+        this.choices = FXCollections.observableMap(choices);
     }
 
-    public void setCorrectChoice(String correctChoice) {
-        this.correctChoice.setValue(correctChoice);
+    public void setCorrectChoices(List<String> correctChoices) {
+        this.correctChoices = FXCollections.observableList(correctChoices);
     }
     /** ------------------- **/
 
     public TestQuestion() {
         super();
         this.type = Type.TEST;
-        this.choices = FXCollections.observableArrayList();
-        this.correctChoice = new SimpleStringProperty();
+        this.choices = FXCollections.observableHashMap();
+        this.correctChoices = FXCollections.observableArrayList();
     }
 }

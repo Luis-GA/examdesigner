@@ -6,22 +6,27 @@ import model.Question;
 import model.Section;
 import model.TestQuestion;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TestQuestionParser extends QuestionParser{
 
-    private List<SectionParser> choices;
-    private String correctChoice;
+    private Map<String, SectionParser> choices;
+    private List<String> correctChoices;
 
     public TestQuestionParser(TestQuestion testQuestion){
         super(testQuestion);
-        this.correctChoice = testQuestion.getCorrectChoice();
+        this.correctChoices = new ArrayList<>();
 
-        this.choices = new ArrayList<>();
-        List<Section> aux = testQuestion.getChoices();
-        for(Section section : aux){
-            this.choices.add(new SectionParser(section));
+        for(String correctChoice : testQuestion.getCorrectChoices()){
+            correctChoices.add(correctChoice);
         }
+
+        this.choices = new HashMap<>();
+        Map<String, Section> aux = testQuestion.getChoices();
+
+        aux.forEach((k, v) -> this.choices.put(k, new SectionParser(v)));
     }
 
     public TestQuestionParser (String questionJson){
@@ -35,20 +40,18 @@ public class TestQuestionParser extends QuestionParser{
         this.setDuration(aux.getDuration());
 
         this.choices = aux.choices;
-        this.correctChoice = aux.correctChoice;
+        this.correctChoices = aux.correctChoices;
     }
 
     public Question parseQuestion(){
         TestQuestion aux = new TestQuestion();
 
         aux = (TestQuestion) super.parseQuestion(aux);
-        aux.setCorrectChoice(this.correctChoice);
+        aux.setCorrectChoices(this.correctChoices);
 
-        List<Section> auxList = new ArrayList<>();
-        for(SectionParser section : this.choices){
-            auxList.add(section.parseSection());
-        }
-        aux.setChoices(auxList);
+        Map<String, Section> auxMap = new HashMap<>();
+
+        this.choices.forEach((k, v) -> auxMap.put(k, v.parseSection()));
 
         return aux;
     }

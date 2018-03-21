@@ -62,6 +62,10 @@ public class ExamPart {
     }
     /** ------------------- **/
 
+    public void addQuestion(Question question) {
+        this.questions.add(question);
+    }
+
     public ExamPart() {
         this.title = new SimpleStringProperty("");
         this.weigh = new SimpleIntegerProperty();

@@ -1,5 +1,6 @@
 {
-  "choices": [],
+  "choices": {},
+  "correctChoices": [],
   "title": "Pregunta de test",
   "type": "TEST",
   "bodyObjects": [
