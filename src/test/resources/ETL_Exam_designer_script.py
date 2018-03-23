@@ -1,4 +1,4 @@
-import re
+﻿import re
 import json
 
 # Parametros de preguntas
@@ -65,7 +65,7 @@ if not (CantidadPreguntas == Contador_Preguntas and Contador_respuestas / Cantid
     print("ERROR")
     raise Exception
 # Preparado de datos y guardado en fichero
-TESTS = {'topic': NombreTema, 'idTema': idTema, 'questions': TESTS}
+TESTS = {'topic': NombreTema, 'idTopic': idTema, 'questions': TESTS}
 
 data = json.dumps(TESTS, indent=4, sort_keys=True)
 
