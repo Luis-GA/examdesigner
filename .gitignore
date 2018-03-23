@@ -1,17 +1,29 @@
 
-*.xml
-*.xml
+# Created by https://www.gitignore.io/
+
+# User-specific stuff:
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/dictionaries
+
+# Gradle:
+.idea/**/gradle.xml
+.idea/**/libraries
+
+# IntelliJ
+/out/
+
+### Java ###
+# Compiled class file
 *.class
-.idea/misc.xml
-*.png
-target/classes/languages/labels.properties
-*.fxml
-*.properties
-*.json
-*.iml
-.idea/misc.xml
-examdesigner.iml
-examdesigner.iml
-examdesigner.iml
-examdesigner.iml
-.idea/misc.xml
+
+# Log file
+*.log
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar

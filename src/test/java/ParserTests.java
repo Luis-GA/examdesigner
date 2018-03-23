@@ -224,7 +224,7 @@ public class ParserTests {
     void generateExamJsonTest() {
         Exam testExam = getExam();
         String examJson = new ExamParser(testExam).toJson();
-        System.out.println(examJson);
+        //System.out.println(examJson);
         //assertEquals(examJsonString, examJson, "json files are not equal");
     }
 
@@ -256,7 +256,7 @@ public class ParserTests {
         contenido.add(tres);
         test.setBodyObjects(contenido);
 
-        System.out.println(new TestQuestionParser(test).toJson());
+        //System.out.println(new TestQuestionParser(test).toJson());
     }
 
     @Test
