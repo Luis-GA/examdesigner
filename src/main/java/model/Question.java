@@ -22,6 +22,7 @@ public abstract class Question {
     protected ObservableList<ContentObject> bodyObjects;
     protected IntegerProperty weight;
     protected IntegerProperty duration;
+    protected IntegerProperty difficulty;
     protected Integer idQuestion;
 
     protected StringProperty category;
@@ -52,6 +53,10 @@ public abstract class Question {
 
     public Integer getDuration() {
         return duration.getValue();
+    }
+
+    public Integer getDifficulty() {
+        return difficulty.getValue();
     }
 
     public String getCategory() {
@@ -92,6 +97,10 @@ public abstract class Question {
         this.duration.setValue(duration);
     }
 
+    public void setDifficulty(Integer difficulty) {
+        this.difficulty.setValue(difficulty);
+    }
+
     public void setCategory(String category) {
         this.category.setValue(category);
     }
@@ -114,6 +123,7 @@ public abstract class Question {
         this.bodyObjects = FXCollections.observableArrayList();
         this.weight = new SimpleIntegerProperty();
         this.duration = new SimpleIntegerProperty(0);
+        this.difficulty = new SimpleIntegerProperty(0);
 
         this.category = new SimpleStringProperty("");
         this.subject = new SimpleStringProperty("");

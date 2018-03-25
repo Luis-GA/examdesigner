@@ -12,6 +12,7 @@ public abstract class QuestionParser {
     private List<ContentObjectParser> bodyObjects;
     private Integer weight;
     private Integer duration;
+    private Integer difficulty;
     private Integer idQuestion;
 
     private String category;
@@ -28,6 +29,7 @@ public abstract class QuestionParser {
         this.type = question.getType();
         this.weight = question.getWeight();
         this.duration = question.getDuration();
+        this.difficulty = question.getDifficulty();
         this.idQuestion = question.getIdQuestion();
 
         this.category = question.getCategory();
@@ -46,6 +48,7 @@ public abstract class QuestionParser {
         aux.setTitle(this.title);
         aux.setWeight(this.weight);
         aux.setDuration(this.duration);
+        aux.setDifficulty(this.difficulty);
         aux.setIdQuestion(this.idQuestion);
 
         aux.setCategory(this.category);
@@ -86,6 +89,10 @@ public abstract class QuestionParser {
         this.duration = duration;
     }
 
+    public void setDifficulty(Integer difficulty) {
+        this.difficulty = difficulty;
+    }
+
     public void setCategory(String category) {
         this.category = category;
     }
@@ -124,6 +131,10 @@ public abstract class QuestionParser {
 
     public Integer getDuration() {
         return duration;
+    }
+
+    public Integer getDifficulty() {
+        return difficulty;
     }
 
     public String getCategory() {
