@@ -24,6 +24,11 @@ public abstract class Question {
     protected IntegerProperty duration;
     protected Integer idQuestion;
 
+    protected StringProperty category;
+    protected StringProperty subject;
+    protected StringProperty topic;
+    protected StringProperty subtopic;
+
     /** ----- GETTERS ----- **/
     public Integer getIdQuestion() {
         return idQuestion;
@@ -48,6 +53,22 @@ public abstract class Question {
     public Integer getDuration() {
         return duration.getValue();
     }
+
+    public String getCategory() {
+        return category.getValue();
+    }
+
+    public String getSubject() {
+        return subject.getValue();
+    }
+
+    public String getTopic() {
+        return topic.getValue();
+    }
+
+    public String getSubtopic() {
+        return subtopic.getValue();
+    }
     /** ------------------- **/
 
     /** ----- SETTERS ----- **/
@@ -70,6 +91,22 @@ public abstract class Question {
     public void setDuration(Integer duration) {
         this.duration.setValue(duration);
     }
+
+    public void setCategory(String category) {
+        this.category.setValue(category);
+    }
+
+    public void setSubject(String subject) {
+        this.subject.setValue(subject);
+    }
+
+    public void setTopic(String topic) {
+        this.topic.setValue(topic);
+    }
+
+    public void setSubtopic(String subtopic) {
+        this.subtopic.setValue(subtopic);
+    }
     /** ------------------- **/
 
     public Question() {
@@ -77,5 +114,10 @@ public abstract class Question {
         this.bodyObjects = FXCollections.observableArrayList();
         this.weight = new SimpleIntegerProperty();
         this.duration = new SimpleIntegerProperty(0);
+
+        this.category = new SimpleStringProperty("");
+        this.subject = new SimpleStringProperty("");
+        this.topic = new SimpleStringProperty("");
+        this.subtopic = new SimpleStringProperty("");
     }
 }

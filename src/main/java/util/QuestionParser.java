@@ -14,6 +14,11 @@ public abstract class QuestionParser {
     private Integer duration;
     private Integer idQuestion;
 
+    private String category;
+    private String subject;
+    private String topic;
+    private String subtopic;
+
     public QuestionParser() {
 
     }
@@ -24,6 +29,11 @@ public abstract class QuestionParser {
         this.weight = question.getWeight();
         this.duration = question.getDuration();
         this.idQuestion = question.getIdQuestion();
+
+        this.category = question.getCategory();
+        this.subject = question.getSubject();
+        this.topic = question.getTopic();
+        this.subtopic = question.getSubtopic();
 
         this.bodyObjects = new ArrayList<>();
         List<ContentObject> aux = question.getBodyObjects();
@@ -37,6 +47,11 @@ public abstract class QuestionParser {
         aux.setWeight(this.weight);
         aux.setDuration(this.duration);
         aux.setIdQuestion(this.idQuestion);
+
+        aux.setCategory(this.category);
+        aux.setSubject(this.subject);
+        aux.setTopic(this.topic);
+        aux.setSubtopic(this.subtopic);
 
         List<ContentObject> auxList = new ArrayList<>();
         for(ContentObjectParser contentObject : this.bodyObjects){
@@ -71,6 +86,22 @@ public abstract class QuestionParser {
         this.duration = duration;
     }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public void setSubtopic(String subtopic) {
+        this.subtopic = subtopic;
+    }
+
     public Integer getIdQuestion() {
         return idQuestion;
     }
@@ -93,6 +124,22 @@ public abstract class QuestionParser {
 
     public Integer getDuration() {
         return duration;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public String getSubtopic() {
+        return subtopic;
     }
 
     abstract Question parseQuestion();
