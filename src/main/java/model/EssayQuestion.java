@@ -12,6 +12,7 @@ public class EssayQuestion extends Question {
 
     protected ObservableList<Section> sections;
     protected IntegerProperty answeringSpace;
+    protected ObservableList<ContentObject> solutionObjects;
 
     /** ----- GETTERS ----- **/
     public List<Section> getSections() {

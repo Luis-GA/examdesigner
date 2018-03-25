@@ -16,7 +16,7 @@
   "instructionDetails": "Se permite el uso de calculadora.",
   "parts": [
     {
-      "title": "Parte a Desarrollar",
+      "title": "Parte Test",
       "weigh": 0,
       "duration": 0,
       "instructions": "",
@@ -41,7 +41,7 @@
             }
           },
           "correctChoices": [
-            "La longitud de la clave puede ser 5."
+            "c"
           ],
           "title": "Si las distancias entre repeticiones de cadenas en el criptograma cifrado con algoritmo de Vigenère son 35, 125, 70:",
           "type": "TEST",
@@ -52,7 +52,7 @@
       ]
     },
     {
-      "title": "",
+      "title": "Parte a desarrollar",
       "weigh": 0,
       "duration": 0,
       "instructions": "",

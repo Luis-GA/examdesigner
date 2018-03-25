@@ -10,11 +10,11 @@ import java.util.Map;
 
 public class TestQuestion extends Question {
 
-    protected ObservableMap<String, Section> choices;
+    protected ObservableMap<String, Choice> choices;
     protected ObservableList<String> correctChoices;
 
     /** ----- GETTERS ----- **/
-    public Map<String, Section> getChoices() {
+    public Map<String, Choice> getChoices() {
         return choices;
     }
 
@@ -24,7 +24,7 @@ public class TestQuestion extends Question {
     /** ------------------- **/
 
     /** ----- SETTERS ----- **/
-    public void setChoices(Map<String, Section> choices) {
+    public void setChoices(Map<String, Choice> choices) {
         this.choices = FXCollections.observableMap(choices);
     }
 

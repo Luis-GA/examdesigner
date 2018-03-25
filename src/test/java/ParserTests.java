@@ -142,16 +142,16 @@ public class ParserTests {
 
         TestQuestion question1 = new TestQuestion();
         question1.setTitle("Si las distancias entre repeticiones de cadenas en el criptograma cifrado con algoritmo de Vigenère son 35, 125, 70:");
-        Section choice1 = new Section();
-        Section choice2 = new Section();
-        Section choice3 = new Section();
-        Section choice4 = new Section();
+        Choice choice1 = new Choice();
+        Choice choice2 = new Choice();
+        Choice choice3 = new Choice();
+        Choice choice4 = new Choice();
 
         choice1.setTitle("La longitud de la clave puede ser 7.");
         choice2.setTitle("La longitud de la clave puede ser 5.");
         choice3.setTitle("La longitud de la clave puede ser 15.");
         choice4.setTitle("La longitud de la clave puede ser 35.");
-        HashMap<String, Section> choices = new HashMap<>();
+        HashMap<String, Choice> choices = new HashMap<>();
         choices.put("a", choice1);
         choices.put("b", choice2);
         choices.put("c", choice3);

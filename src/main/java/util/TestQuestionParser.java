@@ -2,6 +2,7 @@ package util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import model.Choice;
 import model.Question;
 import model.Section;
 import model.TestQuestion;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 public class TestQuestionParser extends QuestionParser{
 
-    private Map<String, SectionParser> choices;
+    private Map<String, ChoiceParser> choices;
     private List<String> correctChoices;
 
     public TestQuestionParser(TestQuestion testQuestion){
@@ -24,9 +25,9 @@ public class TestQuestionParser extends QuestionParser{
         }
 
         this.choices = new HashMap<>();
-        Map<String, Section> aux = testQuestion.getChoices();
+        Map<String, Choice> aux = testQuestion.getChoices();
 
-        aux.forEach((k, v) -> this.choices.put(k, new SectionParser(v)));
+        aux.forEach((k, v) -> this.choices.put(k, new ChoiceParser(v)));
     }
 
     public TestQuestionParser (String questionJson){
@@ -49,9 +50,9 @@ public class TestQuestionParser extends QuestionParser{
         aux = (TestQuestion) super.parseQuestion(aux);
         aux.setCorrectChoices(this.correctChoices);
 
-        Map<String, Section> auxMap = new HashMap<>();
+        Map<String, Choice> auxMap = new HashMap<>();
 
-        this.choices.forEach((k, v) -> auxMap.put(k, v.parseSection()));
+        this.choices.forEach((k, v) -> auxMap.put(k, v.parseChoice()));
 
         return aux;
     }

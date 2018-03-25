@@ -6,11 +6,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.List;
 
-public class Section {
+public class Choice {
 
     protected StringProperty title;
     protected ObservableList<ContentObject> bodyObjects;
-    protected ObservableList<ContentObject> solutionObjects;
 
     /** ----- GETTERS ----- **/
     public String getTitle() {
@@ -19,10 +18,6 @@ public class Section {
 
     public List<ContentObject> getBodyObjects() {
         return bodyObjects;
-    }
-
-    public List<ContentObject> getSolutionObjects() {
-        return solutionObjects;
     }
     /** ------------------- **/
 
@@ -34,15 +29,10 @@ public class Section {
     public void setBodyObjects(List<ContentObject> bodyObjects) {
         this.bodyObjects = FXCollections.observableList(bodyObjects);
     }
-
-    public void setSolutionObjects(List<ContentObject> solutionObjects) {
-        this.solutionObjects = FXCollections.observableList(solutionObjects);
-    }
     /** ------------------- **/
 
-    public Section() {
+    public Choice() {
         this.title = new SimpleStringProperty("");
         this.bodyObjects = FXCollections.observableArrayList();
-        this.solutionObjects = FXCollections.observableArrayList();
     }
 }
