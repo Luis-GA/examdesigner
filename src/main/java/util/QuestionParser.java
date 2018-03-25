@@ -12,6 +12,7 @@ public abstract class QuestionParser {
     private List<ContentObjectParser> bodyObjects;
     private Integer weight;
     private Integer duration;
+    private Integer idQuestion;
 
     public QuestionParser() {
 
@@ -22,6 +23,7 @@ public abstract class QuestionParser {
         this.type = question.getType();
         this.weight = question.getWeight();
         this.duration = question.getDuration();
+        this.idQuestion = question.getIdQuestion();
 
         this.bodyObjects = new ArrayList<>();
         List<ContentObject> aux = question.getBodyObjects();
@@ -34,6 +36,7 @@ public abstract class QuestionParser {
         aux.setTitle(this.title);
         aux.setWeight(this.weight);
         aux.setDuration(this.duration);
+        aux.setIdQuestion(this.idQuestion);
 
         List<ContentObject> auxList = new ArrayList<>();
         for(ContentObjectParser contentObject : this.bodyObjects){
@@ -42,6 +45,10 @@ public abstract class QuestionParser {
         aux.setBodyObjects(auxList);
 
         return aux;
+    }
+
+    public void setIdQuestion(Integer idQuestion) {
+        this.idQuestion = idQuestion;
     }
 
     public void setTitle(String title) {
@@ -62,6 +69,10 @@ public abstract class QuestionParser {
 
     public void setDuration(Integer duration) {
         this.duration = duration;
+    }
+
+    public Integer getIdQuestion() {
+        return idQuestion;
     }
 
     public String getTitle() {

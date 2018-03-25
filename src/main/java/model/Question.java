@@ -22,8 +22,13 @@ public abstract class Question {
     protected ObservableList<ContentObject> bodyObjects;
     protected IntegerProperty weight;
     protected IntegerProperty duration;
+    protected Integer idQuestion;
 
     /** ----- GETTERS ----- **/
+    public Integer getIdQuestion() {
+        return idQuestion;
+    }
+
     public String getTitle() {
         return title.getValue();
     }
@@ -46,6 +51,10 @@ public abstract class Question {
     /** ------------------- **/
 
     /** ----- SETTERS ----- **/
+    public void setIdQuestion(Integer idQuestion) {
+        this.idQuestion = idQuestion;
+    }
+
     public void setTitle(String title) {
         this.title.setValue(title);
     }
