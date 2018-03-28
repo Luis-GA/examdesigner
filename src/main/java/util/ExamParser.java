@@ -97,37 +97,41 @@ public class ExamParser {
         return aux;
     }
 
-    public ExamParser (String examJson){
+    public ExamParser (String examJson) throws IllegalArgumentException {
         RuntimeTypeAdapterFactory<QuestionParser> adapter = RuntimeTypeAdapterFactory
                 .of(QuestionParser.class, "type")
                 .registerSubtype(TestQuestionParser.class, Question.Type.TEST.name())
                 .registerSubtype(EssayQuestionParser.class, Question.Type.ESSAY.name());
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(adapter).create();
-        ExamParser aux = gson.fromJson(examJson, ExamParser.class);
 
-        this.numQuestions = aux.numQuestions;
-        this.title = aux.title;
-        this.duration = aux.duration;
-        this.groupField = aux.groupField;
-        this.idNumberField = aux.idNumberField;
-        this.instructionDetails = aux.instructionDetails;
-        this.modality = aux.modality;
-        this.nameField = aux.nameField;
-        this.subject = aux.subject;
-        this.surnameField = aux.surnameField;
-        this.weigh = aux.weigh;
-        this.parts = aux.parts;
+        try {
+            ExamParser aux = gson.fromJson(examJson, ExamParser.class);
 
-        this.logo = aux.logo;
+            this.numQuestions = (aux.numQuestions != null ? aux.numQuestions : Integer.valueOf(0));
+            this.title = (aux.title != null ? aux.title : "");
+            this.duration = (aux.duration != null ? aux.duration : Integer.valueOf(0));
+            this.groupField = (aux.groupField != null ? aux.groupField : false);
+            this.idNumberField = (aux.idNumberField != null ? aux.idNumberField : false);
+            this.instructionDetails = (aux.instructionDetails != null ? aux.instructionDetails : "");
+            this.modality = (aux.modality!= null ? aux.modality : "");
+            this.nameField = (aux.nameField != null ? aux.nameField : false);
+            this.surnameField = (aux.surnameField != null ? aux.surnameField : false);
+            this.subject = (aux.subject != null ? aux.subject : "");
+            this.weigh = (aux.weigh != null ? aux.weigh : Integer.valueOf(0));
+            this.parts = (aux.parts != null ? aux.parts : new ArrayList<>());
 
-        this.examDate = aux.examDate;
-        this.publicationDate = aux.publicationDate;
-        this.reviewDate = aux.reviewDate;
+            this.logo = (aux.logo != null ? aux.logo : "");
+
+            this.examDate = (aux.examDate != null ? aux.examDate : "");
+            this.publicationDate = (aux.publicationDate != null ? aux.publicationDate : "");
+            this.reviewDate = (aux.reviewDate != null ? aux.reviewDate : "");
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid exam JSON file");
+        }
     }
 
     public String toJson(){
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(this);
     }
-
 }

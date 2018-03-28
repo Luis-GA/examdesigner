@@ -18,55 +18,37 @@ public class MainApp extends Application {
     private static System.Logger logger = System.getLogger(MainApp.class.getName());
 
     private static Stage primaryStage;
-    private BorderPane rootLayout;
 
     @Override public void start(Stage primaryStage) {
 
         this.primaryStage = primaryStage;
-        primaryStage.setMinWidth(700);
-        primaryStage.setMinHeight(500);
+        this.primaryStage.setMinWidth(900);
+        this.primaryStage.setMinHeight(600);
         this.primaryStage.setTitle(ResourceBundle.getBundle("languages/labels").getString("title.applicationName"));
         this.primaryStage.getIcons().add(new Image("images/exam_designer_256.png"));
 
         setPreferences();
 
-        initEmptyRootLayout();
         showWelcomeOverview();
     }
 
-    private void initEmptyRootLayout() {
-        try {
-            // Load root layout from fxml file.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("/view/EmptyRootLayout.fxml"));
-            loader.setResources(ResourceBundle.getBundle("languages/labels"));
-            rootLayout = (BorderPane) loader.load();
-
-            // Show the scene containing the root layout.
-            Scene scene = new Scene(rootLayout);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        } catch (IOException e) {
-            logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Root Layout");
-        }
-    }
-
-    /** * Shows the welcome overview inside the root layout. */
+    /** * Set welcome overview as primary scene and show. */
     private void showWelcomeOverview() {
         try {
             // Load exam overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("../view/WelcomeOverview.fxml"));
             loader.setResources(ResourceBundle.getBundle("languages/labels"));
-            AnchorPane examOverview = (AnchorPane) loader.load();
-
-            // Set exam overview into the center of root layout.
-            rootLayout.setCenter(examOverview);
-            rootLayout.setAlignment(examOverview, Pos.BOTTOM_RIGHT);
+            AnchorPane welcomeOverview = (AnchorPane) loader.load();
 
             // Give the controller access to the main app.
             WelcomeOverviewController controller = loader.getController();
             controller.setMainApp(this);
+            Scene scene = new Scene(welcomeOverview);
+
+            SceneManager sceneManager = SceneManager.getInstance();
+            sceneManager.setRootScene(primaryStage, scene, this);
+            primaryStage.show();
         } catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Welcome Overview");
         }

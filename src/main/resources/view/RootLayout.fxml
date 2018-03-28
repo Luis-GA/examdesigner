@@ -5,14 +5,15 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainApp">
+<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RootLayoutController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="%menu.file">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#showSettingsDialog" text="%menu.settings" />
+                  <MenuItem mnemonicParsing="false" onAction="#showOpenExamDialog" text="%menu.openFile" />
               <MenuItem mnemonicParsing="false" text="%menu.close" />
+                  <MenuItem mnemonicParsing="false" onAction="#showSettingsDialog" text="%menu.settings" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="%menu.edit">
