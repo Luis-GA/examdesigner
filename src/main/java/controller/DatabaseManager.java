@@ -1,6 +1,7 @@
 package controller;
 
 import org.dizitart.no2.*;
+import org.dizitart.no2.exceptions.IndexingException;
 import org.dizitart.no2.mapper.JacksonMapper;
 import org.dizitart.no2.mapper.NitriteMapper;
 
@@ -22,14 +23,19 @@ public class DatabaseManager {
     }
 
     private void initializeIndexes() {
-        IndexOptions indexOptions = new IndexOptions();
-        indexOptions.setIndexType(IndexType.Fulltext);
 
-        NitriteCollection questions = db.getCollection("questions");
-        questions.createIndex("type", indexOptions);
+        try {
+            IndexOptions indexOptions = new IndexOptions();
+            indexOptions.setIndexType(IndexType.Fulltext);
 
-        NitriteCollection exams = db.getCollection("exams");
-        questions.createIndex("title", indexOptions);
+            NitriteCollection questions = db.getCollection("questions");
+            questions.createIndex("type", indexOptions);
+
+            NitriteCollection exams = db.getCollection("exams");
+            questions.createIndex("title", indexOptions);
+        } catch (IndexingException e) {
+            logger.log(System.Logger.Level.INFO, "Indexes already exist");
+        }
     }
 
     private DatabaseManager() {}

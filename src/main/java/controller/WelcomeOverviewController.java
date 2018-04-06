@@ -26,13 +26,8 @@ public class WelcomeOverviewController {
 
     @FXML
     private void initialize() {
-        ObservableList<String> examListList = FXCollections.observableArrayList();
-
-        //TODO Just for testing, delete in the future
-        examListList.add("Multiplexores");
-        examListList.add("Algoritmos Voraces");
-        examListList.add("Patrones Software");
-        examListList.add("Ecuaciones en Diferencias");
+        DatabaseManager db = DatabaseManager.getInstance();
+        ObservableList<String> examListList = FXCollections.observableArrayList(db.getExams());
 
         // Add observable list data to the table
         examList.setItems(examListList);
