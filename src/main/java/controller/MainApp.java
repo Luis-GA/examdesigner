@@ -100,6 +100,18 @@ public class MainApp extends Application {
     }
 
     private EventHandler<WindowEvent> confirmCloseEventHandler = event -> {
+
+        //TODO ask if there are changes
+        /*
+        SceneManager sceneManager = SceneManager.getInstance();
+        if(sceneManager.changes()) {
+
+
+        } else {
+
+        }
+        */
+
         Alert closeConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
 
         Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(
