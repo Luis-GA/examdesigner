@@ -21,6 +21,7 @@ public class SceneManager {
     private static Stage primaryStage;
     private MainApp mainApp;
     private static System.Logger logger = System.getLogger(SceneManager.class.getName());
+    private BooleanProperty changes = new SimpleBooleanProperty(false);
 
     public static SceneManager getInstance() {
         if (instance == null) {
@@ -74,12 +75,16 @@ public class SceneManager {
             controller.setMainApp(this.mainApp);
             controller.setExam(exam);
 
-            Scene scene = setNewMenuScene(examOverview, exam, new SimpleBooleanProperty(false));
+            Scene scene = setNewMenuScene(examOverview, exam, this.changes);
 
             primaryStage.setScene(scene);
             scenes.push(scene);
         } catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Exam Overview");
         }
+    }
+
+    public boolean changes() {
+        return this.changes.getValue();
     }
 }
