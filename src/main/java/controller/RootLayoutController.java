@@ -53,4 +53,14 @@ public class RootLayoutController {
         }
         */
     }
+
+    @FXML
+    public void handleNewFile(){
+
+    }
+
+    @FXML
+    public void handleClose(){
+
+    }
 }

@@ -49,7 +49,7 @@
                         </AnchorPane>
                         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                            <children>
-                              <Button alignment="BASELINE_LEFT" minWidth="220.0" mnemonicParsing="false" text="%btn.createNewExam">
+                              <Button alignment="BASELINE_LEFT" minWidth="220.0" mnemonicParsing="false" onAction="#newExam" text="%btn.createNewExam">
                                  <graphic>
                                     <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                        <image>

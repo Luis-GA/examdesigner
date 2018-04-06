@@ -11,9 +11,12 @@
         <menus>
           <Menu mnemonicParsing="false" text="%menu.file">
             <items>
+                  <MenuItem mnemonicParsing="false" onAction="#handleNewFile" text="%menu.newFile" />
                   <MenuItem mnemonicParsing="false" onAction="#showOpenExamDialog" text="%menu.openFile" />
-              <MenuItem mnemonicParsing="false" text="%menu.close" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleSaveExam" text="%menu.saveFile" />
+                  <MenuItem mnemonicParsing="false" onAction="#showSaveAsExamDialog" text="%menu.saveFileAs" />
                   <MenuItem mnemonicParsing="false" onAction="#showSettingsDialog" text="%menu.settings" />
+              <MenuItem mnemonicParsing="false" onAction="#handleClose" text="%menu.close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="%menu.edit">

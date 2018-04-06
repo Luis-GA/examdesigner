@@ -1,10 +1,10 @@
 package controller;
 
-import com.sun.tools.javac.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
+import model.Exam;
 import util.ExamParser;
 import util.FileUtil;
 import java.nio.file.Path;
@@ -18,6 +18,7 @@ public class WelcomeOverviewController {
     // Reference to the main application.
     private MainApp mainApp;
     private Dialogs dialogs;
+    private SceneManager sceneManager;
 
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
@@ -36,6 +37,8 @@ public class WelcomeOverviewController {
 
         // Add observable list data to the table
         examList.setItems(examListList);
+
+        sceneManager = SceneManager.getInstance();
     }
 
     @FXML
@@ -56,7 +59,6 @@ public class WelcomeOverviewController {
             String examJson = FileUtil.readFile(path);
             try {
                 ExamParser examParser = new ExamParser(examJson);
-                SceneManager sceneManager = SceneManager.getInstance();
                 sceneManager.setExamOverviewScene(examParser.parseExam());
             } catch(IllegalArgumentException e) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -67,5 +69,11 @@ public class WelcomeOverviewController {
                 alert.showAndWait();
             }
         }
+    }
+
+    @FXML
+    public void newExam(){
+        Exam exam = new Exam();
+        sceneManager.setExamOverviewScene(exam);
     }
 }
