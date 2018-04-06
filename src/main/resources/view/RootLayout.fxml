@@ -12,7 +12,7 @@
           <Menu mnemonicParsing="false" text="%menu.file">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#showOpenExamDialog" text="%menu.openFile" />
-              <MenuItem mnemonicParsing="false" text="%menu.close" />
+              <MenuItem fx:id="menuClose" mnemonicParsing="false" text="%menu.close" />
                   <MenuItem mnemonicParsing="false" onAction="#showSettingsDialog" text="%menu.settings" />
             </items>
           </Menu>
