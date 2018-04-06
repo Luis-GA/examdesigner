@@ -1,6 +1,10 @@
 package controller;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuItem;
+import model.Exam;
 import util.ExamParser;
 import util.FileUtil;
 
@@ -12,6 +16,11 @@ public class RootLayoutController {
     // Reference to the main application.
     private MainApp mainApp;
     private Dialogs dialogs;
+    private Exam exam;
+    private BooleanProperty changes;
+
+    @FXML
+    MenuItem menuClose;
 
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
@@ -20,6 +29,9 @@ public class RootLayoutController {
 
     @FXML
     private void initialize() {
+        this.exam = new Exam();
+        this.changes = new SimpleBooleanProperty(false);
+        menuClose.disableProperty().bind(this.changes);
     }
 
     @FXML
@@ -44,14 +56,16 @@ public class RootLayoutController {
 
     @FXML
     public void handleSaveExam(){
-        /*
-        File examFile = getPathFromSomewhere
-        if (examFile != null) {
-            mainApp.savePersonDataToFile(examFile);
-        } else {
-            showSaveAsExamDialog();
-        }
-        */
+        DatabaseManager db = DatabaseManager.getInstance();
+        db.addExam(new ExamParser(exam).toJson());
+    }
+
+    public void setExam(Exam exam) {
+        this.exam = exam;
+    }
+
+    public void setChanges(BooleanProperty changes) {
+        this.changes = changes;
     }
 
     @FXML
