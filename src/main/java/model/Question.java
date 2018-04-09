@@ -17,18 +17,18 @@ public abstract class Question {
         ESSAY
     }
 
-    protected StringProperty title;
-    protected Type type;
-    protected ObservableList<ContentObject> bodyObjects;
-    protected IntegerProperty weight;
-    protected IntegerProperty duration;
-    protected IntegerProperty difficulty;
-    protected Integer idQuestion;
+    public StringProperty title;
+    public Type type;
+    public ObservableList<ContentObject> bodyObjects;
+    public IntegerProperty weight;
+    public IntegerProperty duration;
+    public IntegerProperty difficulty;
+    public Integer idQuestion;
 
-    protected StringProperty category;
-    protected StringProperty subject;
-    protected StringProperty topic;
-    protected StringProperty subtopic;
+    public StringProperty category;
+    public StringProperty subject;
+    public StringProperty topic;
+    public StringProperty subtopic;
 
     /** ----- GETTERS ----- **/
     public Integer getIdQuestion() {

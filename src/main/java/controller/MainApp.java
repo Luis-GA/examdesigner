@@ -26,56 +26,38 @@ public class MainApp extends Application {
     private static System.Logger logger = System.getLogger(MainApp.class.getName());
 
     private static Stage primaryStage;
-    private BorderPane rootLayout;
 
     @Override public void start(Stage primaryStage) {
 
         this.primaryStage = primaryStage;
-        primaryStage.setMinWidth(700);
-        primaryStage.setMinHeight(500);
+        this.primaryStage.setMinWidth(900);
+        this.primaryStage.setMinHeight(600);
         this.primaryStage.setTitle(ResourceBundle.getBundle("languages/labels").getString("title.applicationName"));
         this.primaryStage.getIcons().add(new Image("images/exam_designer_256.png"));
         this.primaryStage.setOnCloseRequest(confirmCloseEventHandler);
 
         setPreferences();
 
-        initEmptyRootLayout();
         showWelcomeOverview();
     }
 
-    private void initEmptyRootLayout() {
-        try {
-            // Load root layout from fxml file.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("/view/EmptyRootLayout.fxml"));
-            loader.setResources(ResourceBundle.getBundle("languages/labels"));
-            rootLayout = (BorderPane) loader.load();
-
-            // Show the scene containing the root layout.
-            Scene scene = new Scene(rootLayout);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        } catch (IOException e) {
-            logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Root Layout");
-        }
-    }
-
-    /** * Shows the welcome overview inside the root layout. */
+    /** * Set welcome overview as primary scene and show. */
     private void showWelcomeOverview() {
         try {
             // Load exam overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("../view/WelcomeOverview.fxml"));
             loader.setResources(ResourceBundle.getBundle("languages/labels"));
-            AnchorPane examOverview = (AnchorPane) loader.load();
-
-            // Set exam overview into the center of root layout.
-            rootLayout.setCenter(examOverview);
-            rootLayout.setAlignment(examOverview, Pos.BOTTOM_RIGHT);
+            AnchorPane welcomeOverview = (AnchorPane) loader.load();
 
             // Give the controller access to the main app.
             WelcomeOverviewController controller = loader.getController();
             controller.setMainApp(this);
+            Scene scene = new Scene(welcomeOverview);
+
+            SceneManager sceneManager = SceneManager.getInstance();
+            sceneManager.setRootScene(primaryStage, scene, this);
+            primaryStage.show();
         } catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Welcome Overview");
         }
@@ -99,32 +81,31 @@ public class MainApp extends Application {
         }
     }
 
+    public boolean closeConfirmation(){
+        SceneManager sceneManager = SceneManager.getInstance();
+        if(sceneManager.changes()){
+            Alert closeConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
+
+            Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(
+                    ButtonType.OK
+            );
+            exitButton.setText(ResourceBundle.getBundle("languages/labels").getString("btn.exit"));
+            closeConfirmation.setHeaderText(null);
+            closeConfirmation.setContentText(ResourceBundle.getBundle("languages/labels").getString("txt.exit"));
+            closeConfirmation.initModality(Modality.APPLICATION_MODAL);
+            closeConfirmation.initOwner(primaryStage);
+
+            Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
+            if (!ButtonType.OK.equals(closeResponse.get())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private EventHandler<WindowEvent> confirmCloseEventHandler = event -> {
 
-        //TODO ask if there are changes
-        /*
-        SceneManager sceneManager = SceneManager.getInstance();
-        if(sceneManager.changes()) {
-
-
-        } else {
-
-        }
-        */
-
-        Alert closeConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
-
-        Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(
-                ButtonType.OK
-        );
-        exitButton.setText(ResourceBundle.getBundle("languages/labels").getString("btn.exit"));
-        closeConfirmation.setHeaderText(null);
-        closeConfirmation.setContentText(ResourceBundle.getBundle("languages/labels").getString("txt.exit"));
-        closeConfirmation.initModality(Modality.APPLICATION_MODAL);
-        closeConfirmation.initOwner(primaryStage);
-
-        Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
-        if (!ButtonType.OK.equals(closeResponse.get())) {
+        if(!closeConfirmation()){
             event.consume();
         }
     };
