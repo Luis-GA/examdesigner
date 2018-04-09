@@ -81,10 +81,9 @@ public class MainApp extends Application {
         }
     }
 
-    private EventHandler<WindowEvent> confirmCloseEventHandler = event -> {
-
+    public boolean closeConfirmation(){
         SceneManager sceneManager = SceneManager.getInstance();
-        if(sceneManager.changes()) {
+        if(sceneManager.changes()){
             Alert closeConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
 
             Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(
@@ -98,8 +97,16 @@ public class MainApp extends Application {
 
             Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
             if (!ButtonType.OK.equals(closeResponse.get())) {
-                event.consume();
+                return false;
             }
+        }
+        return true;
+    }
+
+    private EventHandler<WindowEvent> confirmCloseEventHandler = event -> {
+
+        if(!closeConfirmation()){
+            event.consume();
         }
     };
 

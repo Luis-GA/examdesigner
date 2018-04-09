@@ -7,9 +7,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Exam;
+import model.ExamPart;
+import util.ExamParser;
 import util.FileUtil;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ResourceBundle;
@@ -75,7 +79,7 @@ public class Dialogs {
         } else return null;
     }
 
-    public void showSaveAsExamDialog() {
+    public void showSaveAsExamDialog(Exam exam) {
         FileChooser fileChooser = new FileChooser();
 
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(ResourceBundle.getBundle("languages/labels").getString("lbl.jsonFiles"), "*.json");
@@ -88,7 +92,13 @@ public class Dialogs {
                 file = new File(file.getPath() + ".json");
             }
 
-            //TODO finish this
+            ExamParser examParser = new ExamParser(exam);
+
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write(examParser.toJson());
+            } catch (IOException e) {
+                logger.log(System.Logger.Level.ERROR, "Error trying to save exam as JSON file");
+            }
         }
     }
 }

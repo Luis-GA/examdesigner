@@ -89,7 +89,8 @@ public class SceneManager {
         }
     }
 
-    public void setExamOverviewScene(Exam exam) {
+    public Scene newExamOverviewScene(Exam exam) {
+        Scene scene = null;
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("../view/ExamOverview.fxml"));
@@ -101,15 +102,34 @@ public class SceneManager {
             controller.setMainApp(this.mainApp);
             controller.setExam(exam);
 
-            Scene scene = setNewMenuScene(examOverview, exam, this.changes);
-
-            primaryStage.setScene(scene);
+            scene = setNewMenuScene(examOverview, exam, this.changes);
         } catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Exam Overview");
+        } finally {
+            if(scene == null){
+                scene = primaryStage.getScene();
+            }
+            return scene;
         }
+    }
+
+    public void setExamOverviewScene(Exam exam) {
+        Scene scene = newExamOverviewScene(exam);
+        primaryStage.setScene(scene);
+    }
+
+    public void changeExamOverviewScene(Exam exam) {
+        scenes.pop();
+        Scene scene = newExamOverviewScene(exam);
+        primaryStage.setScene(scene);
     }
 
     public boolean changes() {
         return scenes.peek().changes();
+    }
+
+    public void back() {
+        scenes.pop();
+        primaryStage.setScene(scenes.peek().scene);
     }
 }
