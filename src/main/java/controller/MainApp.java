@@ -38,11 +38,11 @@ public class MainApp extends Application {
 
         setPreferences();
 
-        showWelcomeOverview();
+        showWelcomeOverview(null);
     }
 
     /** * Set welcome overview as primary scene and show. */
-    private void showWelcomeOverview() {
+    public void showWelcomeOverview(Scene sceneOLD) {
         try {
             // Load exam overview.
             FXMLLoader loader = new FXMLLoader();
@@ -53,7 +53,13 @@ public class MainApp extends Application {
             // Give the controller access to the main app.
             WelcomeOverviewController controller = loader.getController();
             controller.setMainApp(this);
-            Scene scene = new Scene(welcomeOverview);
+
+            Scene scene;
+            if(sceneOLD != null) {
+                scene = new Scene(welcomeOverview, sceneOLD.getWidth(), sceneOLD.getHeight());
+            } else {
+                scene = new Scene(welcomeOverview);
+            }
 
             SceneManager sceneManager = SceneManager.getInstance();
             sceneManager.setRootScene(primaryStage, scene, this);

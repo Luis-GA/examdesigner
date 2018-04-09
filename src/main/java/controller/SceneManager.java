@@ -129,7 +129,12 @@ public class SceneManager {
     }
 
     public void back() {
-        scenes.pop();
-        primaryStage.setScene(scenes.peek().scene);
+        Scene sceneOLD = scenes.pop().scene;
+
+        if(scenes.peek().controller != null) {
+            primaryStage.setScene(scenes.peek().scene);
+        } else {
+            mainApp.showWelcomeOverview(sceneOLD);
+        }
     }
 }
