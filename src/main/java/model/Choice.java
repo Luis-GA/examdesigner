@@ -8,8 +8,8 @@ import java.util.List;
 
 public class Choice {
 
-    protected StringProperty title;
-    protected ObservableList<ContentObject> bodyObjects;
+    public StringProperty title;
+    public ObservableList<ContentObject> bodyObjects;
 
     /** ----- GETTERS ----- **/
     public String getTitle() {

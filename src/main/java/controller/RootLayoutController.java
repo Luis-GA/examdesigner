@@ -17,7 +17,7 @@ public class RootLayoutController {
     private MainApp mainApp;
     private Dialogs dialogs;
     private Exam exam;
-    private BooleanProperty changes;
+    private Exam examOLD;
 
     @FXML
     MenuItem menuClose;
@@ -30,8 +30,7 @@ public class RootLayoutController {
     @FXML
     private void initialize() {
         this.exam = new Exam();
-        this.changes = new SimpleBooleanProperty(false);
-        menuClose.disableProperty().bind(this.changes);
+        this.examOLD = new Exam();
     }
 
     @FXML
@@ -62,10 +61,11 @@ public class RootLayoutController {
 
     public void setExam(Exam exam) {
         this.exam = exam;
+        this.examOLD = exam.clone();
     }
 
-    public void setChanges(BooleanProperty changes) {
-        this.changes = changes;
+    public boolean changes() {
+        return !examOLD.equals(exam);
     }
 
     @FXML

@@ -16,12 +16,31 @@ import java.util.Stack;
 
 public class SceneManager {
 
-    private Stack<Scene> scenes;
+    private Stack<SceneWrapper> scenes;
     private static SceneManager instance;
     private static Stage primaryStage;
     private MainApp mainApp;
     private static System.Logger logger = System.getLogger(SceneManager.class.getName());
     private BooleanProperty changes = new SimpleBooleanProperty(false);
+
+    private class SceneWrapper {
+
+        private Scene scene;
+        private RootLayoutController controller;
+
+        public SceneWrapper(Scene scene, RootLayoutController controller) {
+            this.scene = scene;
+            this.controller = controller;
+        }
+
+        public boolean changes() {
+            if(controller != null) {
+                return controller.changes();
+            } else {
+                return false;
+            }
+        }
+    }
 
     public static SceneManager getInstance() {
         if (instance == null) {
@@ -34,13 +53,15 @@ public class SceneManager {
 
     public void setRootScene(Stage primaryStage, Scene rootScene, MainApp mainApp) {
         this.scenes = new Stack();
-        this.scenes.push(rootScene);
+        this.scenes.push(new SceneWrapper(rootScene, null));
         this.primaryStage = primaryStage;
         this.primaryStage.setScene(rootScene);
         this.mainApp = mainApp;
     }
 
     private Scene setNewMenuScene(AnchorPane pane, Exam exam, BooleanProperty changes) {
+        Scene scene = null;
+
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("../view/RootLayout.fxml"));
@@ -51,16 +72,21 @@ public class SceneManager {
             RootLayoutController controller = loader.getController();
             controller.setMainApp(this.mainApp);
             controller.setExam(exam);
-            controller.setChanges(changes);
 
             rootLayout.setCenter(pane);
             rootLayout.setAlignment(pane, Pos.BOTTOM_RIGHT);
 
-            return new Scene(rootLayout, primaryStage.getScene().getWidth(),primaryStage.getScene().getHeight());
+            scene = new Scene(rootLayout, primaryStage.getScene().getWidth(),primaryStage.getScene().getHeight());
+            scenes.push(new SceneWrapper(scene, controller));
+            return scene;
         } catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Root Layout");
+        } finally {
+            if(scene == null) {
+                scene = new Scene(pane, primaryStage.getScene().getWidth(),primaryStage.getScene().getHeight());
+            }
+            return scene;
         }
-        return new Scene(pane, primaryStage.getScene().getWidth(),primaryStage.getScene().getHeight());
     }
 
     public void setExamOverviewScene(Exam exam) {
@@ -78,13 +104,12 @@ public class SceneManager {
             Scene scene = setNewMenuScene(examOverview, exam, this.changes);
 
             primaryStage.setScene(scene);
-            scenes.push(scene);
         } catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Exam Overview");
         }
     }
 
     public boolean changes() {
-        return this.changes.getValue();
+        return scenes.peek().changes();
     }
 }

@@ -10,9 +10,9 @@ import java.util.List;
 
 public class EssayQuestion extends Question {
 
-    protected ObservableList<Section> sections;
-    protected IntegerProperty answeringSpace;
-    protected ObservableList<ContentObject> solutionObjects;
+    public ObservableList<Section> sections;
+    public IntegerProperty answeringSpace;
+    public ObservableList<ContentObject> solutionObjects;
 
     /** ----- GETTERS ----- **/
     public List<Section> getSections() {

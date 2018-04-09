@@ -83,31 +83,23 @@ public class MainApp extends Application {
 
     private EventHandler<WindowEvent> confirmCloseEventHandler = event -> {
 
-        //TODO ask if there are changes
-        /*
         SceneManager sceneManager = SceneManager.getInstance();
         if(sceneManager.changes()) {
+            Alert closeConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
 
+            Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(
+                    ButtonType.OK
+            );
+            exitButton.setText(ResourceBundle.getBundle("languages/labels").getString("btn.exit"));
+            closeConfirmation.setHeaderText(null);
+            closeConfirmation.setContentText(ResourceBundle.getBundle("languages/labels").getString("txt.exit"));
+            closeConfirmation.initModality(Modality.APPLICATION_MODAL);
+            closeConfirmation.initOwner(primaryStage);
 
-        } else {
-
-        }
-        */
-
-        Alert closeConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
-
-        Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(
-                ButtonType.OK
-        );
-        exitButton.setText(ResourceBundle.getBundle("languages/labels").getString("btn.exit"));
-        closeConfirmation.setHeaderText(null);
-        closeConfirmation.setContentText(ResourceBundle.getBundle("languages/labels").getString("txt.exit"));
-        closeConfirmation.initModality(Modality.APPLICATION_MODAL);
-        closeConfirmation.initOwner(primaryStage);
-
-        Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
-        if (!ButtonType.OK.equals(closeResponse.get())) {
-            event.consume();
+            Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
+            if (!ButtonType.OK.equals(closeResponse.get())) {
+                event.consume();
+            }
         }
     };
 

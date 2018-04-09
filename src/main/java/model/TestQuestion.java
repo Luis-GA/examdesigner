@@ -10,8 +10,8 @@ import java.util.Map;
 
 public class TestQuestion extends Question {
 
-    protected ObservableMap<String, Choice> choices;
-    protected ObservableList<String> correctChoices;
+    public ObservableMap<String, Choice> choices;
+    public ObservableList<String> correctChoices;
 
     /** ----- GETTERS ----- **/
     public Map<String, Choice> getChoices() {
