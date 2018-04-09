@@ -144,7 +144,7 @@ public class SceneManager {
     }
 
     public void reloadWelcomeOverview() {
-            mainApp.showWelcomeOverview(null);
+            mainApp.showWelcomeOverview(scenes.peek().scene);
     }
 
     public boolean deleteConfirmation() {
