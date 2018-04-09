@@ -38,11 +38,11 @@ public class MainApp extends Application {
 
         setPreferences();
 
-        showWelcomeOverview();
+        showWelcomeOverview(null);
     }
 
     /** * Set welcome overview as primary scene and show. */
-    private void showWelcomeOverview() {
+    public void showWelcomeOverview(Scene sceneOLD) {
         try {
             // Load exam overview.
             FXMLLoader loader = new FXMLLoader();
@@ -53,13 +53,20 @@ public class MainApp extends Application {
             // Give the controller access to the main app.
             WelcomeOverviewController controller = loader.getController();
             controller.setMainApp(this);
-            Scene scene = new Scene(welcomeOverview);
+
+            Scene scene;
+            if(sceneOLD != null) {
+                scene = new Scene(welcomeOverview, sceneOLD.getWidth(), sceneOLD.getHeight());
+            } else {
+                scene = new Scene(welcomeOverview);
+            }
 
             SceneManager sceneManager = SceneManager.getInstance();
             sceneManager.setRootScene(primaryStage, scene, this);
             primaryStage.show();
         } catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Welcome Overview");
+            e.printStackTrace();
         }
     }
 
@@ -81,32 +88,31 @@ public class MainApp extends Application {
         }
     }
 
+    public boolean closeConfirmation(){
+        SceneManager sceneManager = SceneManager.getInstance();
+        if(sceneManager.changes()){
+            Alert closeConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
+
+            Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(
+                    ButtonType.OK
+            );
+            exitButton.setText(ResourceBundle.getBundle("languages/labels").getString("btn.exit"));
+            closeConfirmation.setHeaderText(null);
+            closeConfirmation.setContentText(ResourceBundle.getBundle("languages/labels").getString("txt.exit"));
+            closeConfirmation.initModality(Modality.APPLICATION_MODAL);
+            closeConfirmation.initOwner(primaryStage);
+
+            Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
+            if (!ButtonType.OK.equals(closeResponse.get())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private EventHandler<WindowEvent> confirmCloseEventHandler = event -> {
 
-        //TODO ask if there are changes
-        /*
-        SceneManager sceneManager = SceneManager.getInstance();
-        if(sceneManager.changes()) {
-
-
-        } else {
-
-        }
-        */
-
-        Alert closeConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
-
-        Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(
-                ButtonType.OK
-        );
-        exitButton.setText(ResourceBundle.getBundle("languages/labels").getString("btn.exit"));
-        closeConfirmation.setHeaderText(null);
-        closeConfirmation.setContentText(ResourceBundle.getBundle("languages/labels").getString("txt.exit"));
-        closeConfirmation.initModality(Modality.APPLICATION_MODAL);
-        closeConfirmation.initOwner(primaryStage);
-
-        Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
-        if (!ButtonType.OK.equals(closeResponse.get())) {
+        if(!closeConfirmation()){
             event.consume();
         }
     };

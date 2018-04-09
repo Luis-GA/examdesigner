@@ -3,12 +3,14 @@ package controller;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
 import model.Exam;
 import util.ExamParser;
 import util.FileUtil;
 
 import java.nio.file.Path;
+import java.util.ResourceBundle;
 
 public class RootLayoutController {
 
@@ -17,7 +19,8 @@ public class RootLayoutController {
     private MainApp mainApp;
     private Dialogs dialogs;
     private Exam exam;
-    private BooleanProperty changes;
+    private Exam examOLD;
+    private SceneManager sceneManager = SceneManager.getInstance();
 
     @FXML
     MenuItem menuClose;
@@ -30,8 +33,7 @@ public class RootLayoutController {
     @FXML
     private void initialize() {
         this.exam = new Exam();
-        this.changes = new SimpleBooleanProperty(false);
-        menuClose.disableProperty().bind(this.changes);
+        this.examOLD = new Exam();
     }
 
     @FXML
@@ -46,35 +48,82 @@ public class RootLayoutController {
 
     @FXML
     public void showOpenExamDialog(){
-        dialogs.showOpenExamDialog();
+        Path path = dialogs.showOpenExamDialog();
+
+        if (path != null) {
+            String examJson = FileUtil.readFile(path);
+            try {
+                ExamParser examParser = new ExamParser(examJson);
+
+                if(mainApp.closeConfirmation()){
+                    sceneManager.changeExamOverviewScene(examParser.parseExam());
+                } else {
+                    if(!changes()) {
+                        sceneManager.changeExamOverviewScene(examParser.parseExam());
+                    }
+                }
+            } catch(IllegalArgumentException e) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.initOwner(mainApp.getPrimaryStage());
+                alert.setTitle(ResourceBundle.getBundle("languages/labels").getString("title.jsonError"));
+                alert.setHeaderText(null);
+                alert.setContentText(ResourceBundle.getBundle("languages/labels").getString("txt.jsonError"));
+                alert.showAndWait();
+            }
+        }
     }
 
     @FXML
     public void showSaveAsExamDialog(){
-        dialogs.showSaveAsExamDialog();
+        dialogs.showSaveAsExamDialog(exam);
     }
 
     @FXML
     public void handleSaveExam(){
         DatabaseManager db = DatabaseManager.getInstance();
         db.addExam(new ExamParser(exam).toJson());
+        examOLD = exam.clone();
     }
 
     public void setExam(Exam exam) {
         this.exam = exam;
+        this.examOLD = exam.clone();
     }
 
-    public void setChanges(BooleanProperty changes) {
-        this.changes = changes;
-    }
-
-    @FXML
-    public void handleNewFile(){
-
+    public boolean changes() {
+        return !examOLD.equals(exam);
     }
 
     @FXML
-    public void handleClose(){
+    public void handleNewFile() {
+        Exam exam = new Exam();
 
+        if(mainApp.closeConfirmation()){
+            sceneManager.changeExamOverviewScene(exam);
+        } else {
+            if(!changes()) {
+                sceneManager.changeExamOverviewScene(exam);
+            }
+        }
+    }
+
+    @FXML
+    public void handleClose() {
+        if(mainApp.closeConfirmation()){
+            sceneManager.back();
+        } else {
+            if(!changes()) {
+                sceneManager.back();
+            }
+        }
+    }
+
+    @FXML
+    public void handleDelete() {
+        if(sceneManager.deleteConfirmation()) {
+            DatabaseManager databaseManager = DatabaseManager.getInstance();
+            databaseManager.deleteExam(exam.title.getValue());
+            sceneManager.back();
+        }
     }
 }

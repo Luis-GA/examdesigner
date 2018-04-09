@@ -26,6 +26,8 @@ public class SettingsDialogController extends DialogController {
     private static final String EN = "en";
     private static final String ES = "es";
 
+    private DatabaseManager databaseManager = DatabaseManager.getInstance();
+
     @FXML
     private void initialize() {
 
@@ -92,5 +94,16 @@ public class SettingsDialogController extends DialogController {
     @FXML
     private void handleCancel() {
         dialogStage.close();
+    }
+
+    @FXML
+    private void handleImport() {
+        handleChange();
+    }
+
+    @FXML
+    private void handleExport() {
+        handleChange();
+        databaseManager.exportQuestions();
     }
 }

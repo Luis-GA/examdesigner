@@ -1,39 +1,41 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import util.DateUtil;
+import util.ImageUtil;
 
 /** Model class for an Exam **/
 
 public class Exam {
 
-    protected StringProperty title;
-    protected StringProperty subject;
-    protected StringProperty modality;
+    public StringProperty title;
+    public StringProperty subject;
+    public StringProperty modality;
 
-    protected IntegerProperty duration;
-    protected IntegerProperty weigh;
-    protected IntegerProperty numQuestions;
+    public IntegerProperty duration;
+    public IntegerProperty weigh;
+    public IntegerProperty numQuestions;
 
-    protected Image logo;
+    public Image logo;
 
-    protected ObjectProperty<LocalDate> examDate;
-    protected ObjectProperty<LocalDate> publicationDate;
-    protected ObjectProperty<LocalDate> reviewDate;
+    public ObjectProperty<LocalDate> examDate;
+    public ObjectProperty<LocalDate> publicationDate;
+    public ObjectProperty<LocalDate> reviewDate;
 
-    protected BooleanProperty nameField;
-    protected BooleanProperty surnameField;
-    protected BooleanProperty idNumberField;
-    protected BooleanProperty groupField;
+    public BooleanProperty nameField;
+    public BooleanProperty surnameField;
+    public BooleanProperty idNumberField;
+    public BooleanProperty groupField;
 
-    protected StringProperty instructionDetails;
+    public StringProperty instructionDetails;
 
-    protected ObservableList<ExamPart> parts;
+    public ObservableList<ExamPart> parts;
 
     /** ----- GETTERS ----- **/
     public String getTitle() {
@@ -195,4 +197,88 @@ public class Exam {
         this.parts = FXCollections.observableArrayList();
     }
 
+    @Override
+    public boolean equals(Object other){
+
+        if (other == null) return false;
+        if (other == this) return true;
+        if (!(other instanceof Exam))return false;
+
+        Exam exam = (Exam) other;
+
+        if(this.title.getValue() != exam.title.getValue())
+            return false;
+        if(this.subject.getValue() != exam.subject.getValue())
+            return false;
+        if(this.modality.getValue() != exam.modality.getValue())
+            return false;
+        if(this.duration.getValue() != exam.duration.getValue())
+            return false;
+        if(this.weigh.getValue() != exam.weigh.getValue())
+            return false;
+        if(this.numQuestions.getValue() != exam.numQuestions.getValue())
+            return false;
+        //TODO fix logo
+        /*
+        if(ImageUtil.getBase64(this.logo) != ImageUtil.getBase64(exam.logo))
+            return false;
+        */
+        if(this.examDate.getValue() != exam.examDate.getValue())
+            return false;
+        if(this.publicationDate.getValue() != exam.publicationDate.getValue())
+            return false;
+        if(this.reviewDate.getValue() != exam.reviewDate.getValue())
+            return false;
+        if(this.nameField.getValue() != exam.nameField.getValue())
+            return false;
+        if(this.surnameField.getValue() != exam.surnameField.getValue())
+            return false;
+        if(this.idNumberField.getValue() != exam.idNumberField.getValue())
+            return false;
+        if(this.groupField.getValue() != exam.groupField.getValue())
+            return false;
+        if(this.instructionDetails.getValue() != exam.instructionDetails.getValue())
+            return false;
+
+        //TODO implement parts.equals()
+        if(!this.parts.equals(exam.parts))
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public Exam clone() {
+
+        Exam aux = new Exam();
+
+        aux.setTitle(this.title.getValue());
+        aux.setSubject(this.subject.getValue());
+        aux.setModality(this.modality.getValue());
+
+        aux.setDuration(this.duration.getValue());
+        aux.setWeigh(this.weigh.getValue());
+        aux.setNumQuestions(this.numQuestions.getValue());
+
+        aux.setLogo(this.logo);
+
+        aux.setExamDate(this.examDate.getValue());
+        aux.setPublicationDate(this.publicationDate.getValue());
+        aux.setReviewDate(this.reviewDate.getValue());
+
+        aux.setNameField(this.nameField.getValue());
+        aux.setSurnameField(this.surnameField.getValue());
+        aux.setIdNumberField(this.idNumberField.getValue());
+        aux.setGroupField(this.groupField.getValue());
+
+        aux.setInstructionDetails(this.instructionDetails.getValue());
+
+        List<ExamPart> auxList = new ArrayList<>();
+        for(ExamPart part : this.parts){
+            auxList.add(part.clone());
+        }
+        aux.setParts(auxList);
+
+        return aux;
+    }
 }

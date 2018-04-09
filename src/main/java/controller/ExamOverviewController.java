@@ -24,6 +24,6 @@ public class ExamOverviewController {
 
     public void setExam(Exam exam) {
         this.exam = exam;
-        title.setText(exam.getTitle());
+        title.textProperty().bindBidirectional(exam.title);
     }
 }

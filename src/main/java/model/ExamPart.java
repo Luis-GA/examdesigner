@@ -73,4 +73,9 @@ public class ExamPart {
         this.instructions = new SimpleStringProperty("");
         this.questions = FXCollections.observableArrayList();
     }
+
+    //TODO implement
+    public ExamPart clone() {
+        return this;
+    }
 }
