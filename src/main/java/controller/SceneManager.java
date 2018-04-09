@@ -5,12 +5,17 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Exam;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
@@ -136,5 +141,28 @@ public class SceneManager {
         } else {
             mainApp.showWelcomeOverview(sceneOLD);
         }
+    }
+
+    public void reloadWelcomeOverview() {
+            mainApp.showWelcomeOverview(null);
+    }
+
+    public boolean deleteConfirmation() {
+        Alert closeConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
+
+        Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(
+                ButtonType.OK
+        );
+        exitButton.setText(ResourceBundle.getBundle("languages/labels").getString("btn.delete"));
+        closeConfirmation.setHeaderText(null);
+        closeConfirmation.setContentText(ResourceBundle.getBundle("languages/labels").getString("txt.deleteConfirmation"));
+        closeConfirmation.initModality(Modality.APPLICATION_MODAL);
+        closeConfirmation.initOwner(primaryStage);
+
+        Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
+        if (!ButtonType.OK.equals(closeResponse.get())) {
+            return false;
+        }
+        return true;
     }
 }

@@ -43,10 +43,10 @@
                   </ImageView>
                </graphic>
             </Label>
-             <HBox alignment="BOTTOM_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1" >
+             <HBox alignment="BOTTOM_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                  <children>
-                     <Button fx:id="exportDatabase" mnemonicParsing="false" text="%btn.import" />
-                     <Button fx:id="importDatabase" mnemonicParsing="false" text="%btn.export" />
+                     <Button fx:id="importDatabase" mnemonicParsing="false" onAction="#handleImport" text="%btn.import" />
+                     <Button fx:id="exportDatabase" mnemonicParsing="false" onAction="#handleExport" text="%btn.export" />
                  </children>
              </HBox>
          </children>

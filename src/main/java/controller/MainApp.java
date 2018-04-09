@@ -66,6 +66,7 @@ public class MainApp extends Application {
             primaryStage.show();
         } catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Welcome Overview");
+            e.printStackTrace();
         }
     }
 

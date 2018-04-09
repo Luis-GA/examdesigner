@@ -1,12 +1,22 @@
 package controller;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import model.Exam;
+import model.ExamPart;
 import org.dizitart.no2.*;
 import org.dizitart.no2.exceptions.IndexingException;
 import org.dizitart.no2.mapper.JacksonMapper;
 import org.dizitart.no2.mapper.NitriteMapper;
+import util.DateUtil;
+import util.ExamParser;
+import util.ImageUtil;
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
+
+import static org.dizitart.no2.filters.Filters.eq;
 
 public class DatabaseManager {
 
@@ -54,6 +64,11 @@ public class DatabaseManager {
         exams.insert(questionDocument);
     }
 
+    public void deleteExam(String examTitle) {
+        NitriteCollection collection = db.getCollection("exams");
+        collection.remove(eq("title", examTitle));
+    }
+
     public List<String> getExams() {
 
         NitriteCollection exams = db.getCollection("exams");
@@ -65,5 +80,52 @@ public class DatabaseManager {
         }
 
         return examsTitles;
+    }
+
+    public Exam getExam(String title) {
+        NitriteCollection collection = db.getCollection("exams");
+        Cursor cursor = collection.find(eq("title", title));
+        Document doc = cursor.firstOrDefault();
+        Exam aux = new Exam();
+
+        aux.setTitle((String)doc.get("title"));
+        aux.setSubject((String)doc.get("subject"));
+        aux.setModality((String)doc.get("modality"));
+
+        aux.setDuration((Integer) doc.get("duration"));
+        aux.setWeigh((Integer) doc.get("weight"));
+        aux.setNumQuestions((Integer) doc.get("numQuestions"));
+
+        aux.setLogo(ImageUtil.getImage((String)doc.get("logo")));
+
+        aux.setExamDate(DateUtil.parse((String)doc.get("examDate")));
+        aux.setPublicationDate(DateUtil.parse((String)doc.get("publicationDate")));
+        aux.setReviewDate(DateUtil.parse((String)doc.get("reviewDate")));
+
+        aux.setNameField((Boolean)doc.get("nameField"));
+        aux.setSurnameField((Boolean)doc.get("surnameField"));
+        aux.setIdNumberField((Boolean)doc.get("idNumberField"));
+        aux.setGroupField((Boolean)doc.get("groupField"));
+
+        aux.setInstructionDetails((String)doc.get("instructionDetails"));
+
+        //TODO finish parts list
+        /*
+        List<ExamPart> auxList = new ArrayList<>();
+        for(ExamPart part : this.parts){
+            auxList.add(part.parseExamPart());
+        }
+        aux.setParts(auxList);
+        */
+
+        return aux;
+    }
+
+    public void exportQuestions() {
+        //TODO finish exportQuestions()
+    }
+
+    public void importQuestions() {
+        //TODO finish importQuestions()
     }
 }

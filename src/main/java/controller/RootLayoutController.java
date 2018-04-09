@@ -117,4 +117,13 @@ public class RootLayoutController {
             }
         }
     }
+
+    @FXML
+    public void handleDelete() {
+        if(sceneManager.deleteConfirmation()) {
+            DatabaseManager databaseManager = DatabaseManager.getInstance();
+            databaseManager.deleteExam(exam.title.getValue());
+            sceneManager.back();
+        }
+    }
 }
