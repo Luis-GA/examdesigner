@@ -2,6 +2,7 @@ package util;
 
 import model.ContentObject;
 import model.Question;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public abstract class QuestionParser {
 
     }
 
-    public QuestionParser(Question question){
+    public QuestionParser(Question question) {
         this.title = question.getTitle();
         this.type = question.getType();
         this.weight = question.getWeight();
@@ -39,12 +40,12 @@ public abstract class QuestionParser {
 
         this.bodyObjects = new ArrayList<>();
         List<ContentObject> aux = question.getBodyObjects();
-        for(ContentObject contentObject : aux){
+        for (ContentObject contentObject : aux) {
             this.bodyObjects.add(new ContentObjectParser(contentObject));
         }
     }
 
-    public Question parseQuestion(Question aux){
+    public Question parseQuestion(Question aux) {
         aux.setTitle(this.title);
         aux.setWeight(this.weight);
         aux.setDuration(this.duration);
@@ -57,7 +58,7 @@ public abstract class QuestionParser {
         aux.setSubtopic(this.subtopic);
 
         List<ContentObject> auxList = new ArrayList<>();
-        for(ContentObjectParser contentObject : this.bodyObjects){
+        for (ContentObjectParser contentObject : this.bodyObjects) {
             auxList.add(contentObject.parseContentObject());
         }
         aux.setBodyObjects(auxList);
@@ -154,5 +155,6 @@ public abstract class QuestionParser {
     }
 
     abstract Question parseQuestion();
+
     abstract String toJson();
 }

@@ -8,9 +8,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Exam;
-import model.ExamPart;
 import util.ExamParser;
-import util.FileUtil;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -29,17 +27,17 @@ public class Dialogs {
         this.mainApp = mainApp;
     }
 
-    private void showDialog(String view, String title){
+    private void showDialog(String view, String title) {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource(view));
-            loader.setResources(ResourceBundle.getBundle("languages/labels"));
+            loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
             AnchorPane page = (AnchorPane) loader.load();
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
-            dialogStage.setTitle(ResourceBundle.getBundle("languages/labels").getString(title));
+            dialogStage.setTitle(ResourceBundle.getBundle(MainApp.LABELS).getString(title));
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.setResizable(false);
             dialogStage.initOwner(mainApp.getPrimaryStage());
@@ -62,14 +60,14 @@ public class Dialogs {
         showDialog("../view/SettingsDialog.fxml", "title.settings");
     }
 
-    public void showAboutDialog(){
+    public void showAboutDialog() {
         showDialog("../view/AboutDialog.fxml", "title.about");
     }
 
-    public Path showOpenExamDialog(){
+    public Path showOpenExamDialog() {
         FileChooser fileChooser = new FileChooser();
 
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(ResourceBundle.getBundle("languages/labels").getString("lbl.jsonFiles"), "*.json");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.jsonFiles"), "*.json");
         fileChooser.getExtensionFilters().add(extFilter);
 
         File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
@@ -82,7 +80,7 @@ public class Dialogs {
     public void showSaveAsExamDialog(Exam exam) {
         FileChooser fileChooser = new FileChooser();
 
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(ResourceBundle.getBundle("languages/labels").getString("lbl.jsonFiles"), "*.json");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.jsonFiles"), "*.json");
         fileChooser.getExtensionFilters().add(extFilter);
 
         File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());

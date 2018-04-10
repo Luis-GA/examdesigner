@@ -15,18 +15,14 @@ import javafx.stage.Stage;
 import model.Exam;
 
 import java.io.IOException;
-import java.util.Optional;
-import java.util.ResourceBundle;
-import java.util.Stack;
+import java.util.*;
 
 public class SceneManager {
 
-    private Stack<SceneWrapper> scenes;
+    private Deque<SceneWrapper> scenes;
     private static SceneManager instance;
-    private static Stage primaryStage;
     private MainApp mainApp;
     private static System.Logger logger = System.getLogger(SceneManager.class.getName());
-    private BooleanProperty changes = new SimpleBooleanProperty(false);
 
     private class SceneWrapper {
 
@@ -39,7 +35,7 @@ public class SceneManager {
         }
 
         public boolean changes() {
-            if(controller != null) {
+            if (controller != null) {
                 return controller.changes();
             } else {
                 return false;
@@ -54,23 +50,23 @@ public class SceneManager {
         return instance;
     }
 
-    private SceneManager() {}
+    private SceneManager() {
+    }
 
-    public void setRootScene(Stage primaryStage, Scene rootScene, MainApp mainApp) {
-        this.scenes = new Stack();
+    public void setRootScene(Scene rootScene, MainApp mainApp) {
+        this.scenes = new LinkedList<>();
         this.scenes.push(new SceneWrapper(rootScene, null));
-        this.primaryStage = primaryStage;
-        this.primaryStage.setScene(rootScene);
+        MainApp.primaryStage.setScene(rootScene);
         this.mainApp = mainApp;
     }
 
-    private Scene setNewMenuScene(AnchorPane pane, Exam exam, BooleanProperty changes) {
+    private Scene setNewMenuScene(AnchorPane pane, Exam exam) {
         Scene scene = null;
 
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("../view/RootLayout.fxml"));
-            loader.setResources(ResourceBundle.getBundle("languages/labels"));
+            loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
             BorderPane rootLayout = (BorderPane) loader.load();
 
             //Set MainApp
@@ -81,17 +77,17 @@ public class SceneManager {
             rootLayout.setCenter(pane);
             rootLayout.setAlignment(pane, Pos.BOTTOM_RIGHT);
 
-            scene = new Scene(rootLayout, primaryStage.getScene().getWidth(),primaryStage.getScene().getHeight());
+            scene = new Scene(rootLayout, MainApp.primaryStage.getScene().getWidth(), MainApp.primaryStage.getScene().getHeight());
             scenes.push(new SceneWrapper(scene, controller));
             return scene;
         } catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Root Layout");
         } finally {
-            if(scene == null) {
-                scene = new Scene(pane, primaryStage.getScene().getWidth(),primaryStage.getScene().getHeight());
+            if (scene == null) {
+                scene = new Scene(pane, MainApp.primaryStage.getScene().getWidth(), MainApp.primaryStage.getScene().getHeight());
             }
-            return scene;
         }
+        return scene;
     }
 
     public Scene newExamOverviewScene(Exam exam) {
@@ -99,7 +95,7 @@ public class SceneManager {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("../view/ExamOverview.fxml"));
-            loader.setResources(ResourceBundle.getBundle("languages/labels"));
+            loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
             AnchorPane examOverview = (AnchorPane) loader.load();
 
             // Set MainApp and give the controller access to the exam
@@ -107,26 +103,26 @@ public class SceneManager {
             controller.setMainApp(this.mainApp);
             controller.setExam(exam);
 
-            scene = setNewMenuScene(examOverview, exam, this.changes);
+            scene = setNewMenuScene(examOverview, exam);
         } catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Exam Overview");
         } finally {
-            if(scene == null){
-                scene = primaryStage.getScene();
+            if (scene == null) {
+                scene = MainApp.primaryStage.getScene();
             }
-            return scene;
         }
+        return scene;
     }
 
     public void setExamOverviewScene(Exam exam) {
         Scene scene = newExamOverviewScene(exam);
-        primaryStage.setScene(scene);
+        MainApp.primaryStage.setScene(scene);
     }
 
     public void changeExamOverviewScene(Exam exam) {
         scenes.pop();
         Scene scene = newExamOverviewScene(exam);
-        primaryStage.setScene(scene);
+        MainApp.primaryStage.setScene(scene);
     }
 
     public boolean changes() {
@@ -136,15 +132,15 @@ public class SceneManager {
     public void back() {
         Scene sceneOLD = scenes.pop().scene;
 
-        if(scenes.peek().controller != null) {
-            primaryStage.setScene(scenes.peek().scene);
+        if (scenes.peek().controller != null) {
+            MainApp.primaryStage.setScene(scenes.peek().scene);
         } else {
             mainApp.showWelcomeOverview(sceneOLD);
         }
     }
 
     public void reloadWelcomeOverview() {
-            mainApp.showWelcomeOverview(scenes.peek().scene);
+        mainApp.showWelcomeOverview(scenes.peek().scene);
     }
 
     public boolean deleteConfirmation() {
@@ -153,16 +149,13 @@ public class SceneManager {
         Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(
                 ButtonType.OK
         );
-        exitButton.setText(ResourceBundle.getBundle("languages/labels").getString("btn.delete"));
+        exitButton.setText(ResourceBundle.getBundle(MainApp.LABELS).getString("btn.delete"));
         closeConfirmation.setHeaderText(null);
-        closeConfirmation.setContentText(ResourceBundle.getBundle("languages/labels").getString("txt.deleteConfirmation"));
+        closeConfirmation.setContentText(ResourceBundle.getBundle(MainApp.LABELS).getString("txt.deleteConfirmation"));
         closeConfirmation.initModality(Modality.APPLICATION_MODAL);
-        closeConfirmation.initOwner(primaryStage);
+        closeConfirmation.initOwner(MainApp.primaryStage);
 
         Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
-        if (!ButtonType.OK.equals(closeResponse.get())) {
-            return false;
-        }
-        return true;
+        return ButtonType.OK.equals(closeResponse.get());
     }
 }

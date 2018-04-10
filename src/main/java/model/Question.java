@@ -6,9 +6,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import java.util.List;
 
-/** Model class for a Question **/
+/**
+ * Model class for a Question
+ **/
 
 public abstract class Question {
 
@@ -30,7 +33,9 @@ public abstract class Question {
     public StringProperty topic;
     public StringProperty subtopic;
 
-    /** ----- GETTERS ----- **/
+    /**
+     * ----- GETTERS -----
+     **/
     public Integer getIdQuestion() {
         return idQuestion;
     }
@@ -76,7 +81,9 @@ public abstract class Question {
     }
     /** ------------------- **/
 
-    /** ----- SETTERS ----- **/
+    /**
+     * ----- SETTERS -----
+     **/
     public void setIdQuestion(Integer idQuestion) {
         this.idQuestion = idQuestion;
     }
@@ -116,7 +123,10 @@ public abstract class Question {
     public void setSubtopic(String subtopic) {
         this.subtopic.setValue(subtopic);
     }
-    /** ------------------- **/
+
+    /**
+     * -------------------
+     **/
 
     public Question() {
         this.title = new SimpleStringProperty("");

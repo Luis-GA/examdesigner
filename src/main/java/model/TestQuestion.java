@@ -3,17 +3,22 @@ package model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+
 import java.util.List;
 import java.util.Map;
 
-/** Model class for a Test Question **/
+/**
+ * Model class for a Test Question
+ **/
 
 public class TestQuestion extends Question {
 
     public ObservableMap<String, Choice> choices;
     public ObservableList<String> correctChoices;
 
-    /** ----- GETTERS ----- **/
+    /**
+     * ----- GETTERS -----
+     **/
     public Map<String, Choice> getChoices() {
         return choices;
     }
@@ -23,7 +28,9 @@ public class TestQuestion extends Question {
     }
     /** ------------------- **/
 
-    /** ----- SETTERS ----- **/
+    /**
+     * ----- SETTERS -----
+     **/
     public void setChoices(Map<String, Choice> choices) {
         this.choices = FXCollections.observableMap(choices);
     }
@@ -31,7 +38,10 @@ public class TestQuestion extends Question {
     public void setCorrectChoices(List<String> correctChoices) {
         this.correctChoices = FXCollections.observableList(correctChoices);
     }
-    /** ------------------- **/
+
+    /**
+     * -------------------
+     **/
 
     public TestQuestion() {
         super();

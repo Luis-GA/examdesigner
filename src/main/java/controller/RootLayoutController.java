@@ -1,7 +1,5 @@
 package controller;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
@@ -42,12 +40,12 @@ public class RootLayoutController {
     }
 
     @FXML
-    public void showAboutDialog(){
+    public void showAboutDialog() {
         dialogs.showAboutDialog();
     }
 
     @FXML
-    public void showOpenExamDialog(){
+    public void showOpenExamDialog() {
         Path path = dialogs.showOpenExamDialog();
 
         if (path != null) {
@@ -55,39 +53,39 @@ public class RootLayoutController {
             try {
                 ExamParser examParser = new ExamParser(examJson);
 
-                if(mainApp.closeConfirmation()){
+                if (mainApp.closeConfirmation()) {
                     sceneManager.changeExamOverviewScene(examParser.parseExam());
                 } else {
-                    if(!changes()) {
+                    if (!changes()) {
                         sceneManager.changeExamOverviewScene(examParser.parseExam());
                     }
                 }
-            } catch(IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.initOwner(mainApp.getPrimaryStage());
-                alert.setTitle(ResourceBundle.getBundle("languages/labels").getString("title.jsonError"));
+                alert.setTitle(ResourceBundle.getBundle(MainApp.LABELS).getString("title.jsonError"));
                 alert.setHeaderText(null);
-                alert.setContentText(ResourceBundle.getBundle("languages/labels").getString("txt.jsonError"));
+                alert.setContentText(ResourceBundle.getBundle(MainApp.LABELS).getString("txt.jsonError"));
                 alert.showAndWait();
             }
         }
     }
 
     @FXML
-    public void showSaveAsExamDialog(){
+    public void showSaveAsExamDialog() {
         dialogs.showSaveAsExamDialog(exam);
     }
 
     @FXML
-    public void handleSaveExam(){
+    public void handleSaveExam() {
         DatabaseManager db = DatabaseManager.getInstance();
         db.addExam(new ExamParser(exam).toJson());
-        examOLD = exam.clone();
+        examOLD = exam.copy();
     }
 
     public void setExam(Exam exam) {
         this.exam = exam;
-        this.examOLD = exam.clone();
+        this.examOLD = exam.copy();
     }
 
     public boolean changes() {
@@ -96,23 +94,23 @@ public class RootLayoutController {
 
     @FXML
     public void handleNewFile() {
-        Exam exam = new Exam();
+        Exam aux = new Exam();
 
-        if(mainApp.closeConfirmation()){
-            sceneManager.changeExamOverviewScene(exam);
+        if (mainApp.closeConfirmation()) {
+            sceneManager.changeExamOverviewScene(aux);
         } else {
-            if(!changes()) {
-                sceneManager.changeExamOverviewScene(exam);
+            if (!changes()) {
+                sceneManager.changeExamOverviewScene(aux);
             }
         }
     }
 
     @FXML
     public void handleClose() {
-        if(mainApp.closeConfirmation()){
+        if (mainApp.closeConfirmation()) {
             sceneManager.back();
         } else {
-            if(!changes()) {
+            if (!changes()) {
                 sceneManager.back();
             }
         }
@@ -120,9 +118,9 @@ public class RootLayoutController {
 
     @FXML
     public void handleDelete() {
-        if(sceneManager.deleteConfirmation()) {
+        if (sceneManager.deleteConfirmation()) {
             DatabaseManager databaseManager = DatabaseManager.getInstance();
-            databaseManager.deleteExam(exam.title.getValue());
+            databaseManager.deleteExam(exam.getTitle());
             sceneManager.back();
         }
     }

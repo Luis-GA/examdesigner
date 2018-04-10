@@ -4,23 +4,23 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import model.Choice;
 import model.Question;
-import model.Section;
 import model.TestQuestion;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TestQuestionParser extends QuestionParser{
+public class TestQuestionParser extends QuestionParser {
 
     private Map<String, ChoiceParser> choices;
     private List<String> correctChoices;
 
-    public TestQuestionParser(TestQuestion testQuestion){
+    public TestQuestionParser(TestQuestion testQuestion) {
         super(testQuestion);
         this.correctChoices = new ArrayList<>();
 
-        for(String correctChoice : testQuestion.getCorrectChoices()){
+        for (String correctChoice : testQuestion.getCorrectChoices()) {
             correctChoices.add(correctChoice);
         }
 
@@ -30,7 +30,7 @@ public class TestQuestionParser extends QuestionParser{
         aux.forEach((k, v) -> this.choices.put(k, new ChoiceParser(v)));
     }
 
-    public TestQuestionParser (String questionJson){
+    public TestQuestionParser(String questionJson) {
         Gson gson = new GsonBuilder().create();
         TestQuestionParser aux = gson.fromJson(questionJson, TestQuestionParser.class);
 
@@ -44,7 +44,7 @@ public class TestQuestionParser extends QuestionParser{
         this.correctChoices = aux.correctChoices;
     }
 
-    public Question parseQuestion(){
+    public Question parseQuestion() {
         TestQuestion aux = new TestQuestion();
 
         aux = (TestQuestion) super.parseQuestion(aux);

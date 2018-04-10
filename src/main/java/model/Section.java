@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import java.util.List;
 
 public class Section {
@@ -12,7 +13,9 @@ public class Section {
     public ObservableList<ContentObject> bodyObjects;
     public ObservableList<ContentObject> solutionObjects;
 
-    /** ----- GETTERS ----- **/
+    /**
+     * ----- GETTERS -----
+     **/
     public String getTitle() {
         return title.getValue();
     }
@@ -26,7 +29,9 @@ public class Section {
     }
     /** ------------------- **/
 
-    /** ----- SETTERS ----- **/
+    /**
+     * ----- SETTERS -----
+     **/
     public void setTitle(String title) {
         this.title.setValue(title);
     }
@@ -38,7 +43,10 @@ public class Section {
     public void setSolutionObjects(List<ContentObject> solutionObjects) {
         this.solutionObjects = FXCollections.observableList(solutionObjects);
     }
-    /** ------------------- **/
+
+    /**
+     * -------------------
+     **/
 
     public Section() {
         this.title = new SimpleStringProperty("");

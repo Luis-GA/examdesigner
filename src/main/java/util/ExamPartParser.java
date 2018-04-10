@@ -4,6 +4,7 @@ import model.EssayQuestion;
 import model.ExamPart;
 import model.Question;
 import model.TestQuestion;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class ExamPartParser {
 
     private List<QuestionParser> questions;
 
-    public ExamPartParser(ExamPart examPart){
+    public ExamPartParser(ExamPart examPart) {
         this.title = examPart.getTitle();
         this.weigh = examPart.getWeigh();
         this.duration = examPart.getDuration();
@@ -24,15 +25,15 @@ public class ExamPartParser {
 
         this.questions = new ArrayList<>();
         List<Question> aux = examPart.getQuestions();
-        for(Question question : aux){
-            if(question instanceof TestQuestion)
+        for (Question question : aux) {
+            if (question instanceof TestQuestion)
                 this.questions.add(new TestQuestionParser((TestQuestion) question));
-            else if(question instanceof EssayQuestion)
+            else if (question instanceof EssayQuestion)
                 this.questions.add(new EssayQuestionParser((EssayQuestion) question));
         }
     }
 
-    public ExamPart parseExamPart(){
+    public ExamPart parseExamPart() {
         ExamPart aux = new ExamPart();
 
         aux.setTitle(this.title);
@@ -41,7 +42,7 @@ public class ExamPartParser {
         aux.setInstructions(this.instructions);
 
         List<Question> auxList = new ArrayList<>();
-        for(QuestionParser question : this.questions){
+        for (QuestionParser question : this.questions) {
             auxList.add(question.parseQuestion());
         }
         aux.setQuestions(auxList);

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class FileUtil {
 
@@ -14,8 +13,7 @@ public class FileUtil {
         throw new IllegalStateException("Utility class");
     }
 
-    public static String readFile(Path path)
-    {
+    public static String readFile(Path path) {
         String content = "";
         try {
             byte[] encoded = Files.readAllBytes(path);

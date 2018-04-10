@@ -1,14 +1,17 @@
 package util;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import model.Exam;
-import com.google.gson.Gson;
 import model.ExamPart;
 import model.Question;
+
 import java.util.ArrayList;
 import java.util.List;
 
-/** Class to parse an format Exam objects into Primitive attributes to generate and recover from json file**/
+/**
+ * Class to parse an format Exam objects into Primitive attributes to generate and recover from json file
+ **/
 
 public class ExamParser {
 
@@ -35,7 +38,7 @@ public class ExamParser {
 
     private List<ExamPartParser> parts;
 
-    public ExamParser(Exam exam){
+    public ExamParser(Exam exam) {
         this.title = exam.getTitle();
         this.subject = exam.getSubject();
         this.modality = exam.getModality();
@@ -59,12 +62,12 @@ public class ExamParser {
 
         this.parts = new ArrayList<>();
         List<ExamPart> aux = exam.getParts();
-        for(ExamPart part : aux){
+        for (ExamPart part : aux) {
             this.parts.add(new ExamPartParser(part));
         }
     }
 
-    public Exam parseExam(){
+    public Exam parseExam() {
         Exam aux = new Exam();
 
         aux.setTitle(this.title);
@@ -89,7 +92,7 @@ public class ExamParser {
         aux.setInstructionDetails(this.instructionDetails);
 
         List<ExamPart> auxList = new ArrayList<>();
-        for(ExamPartParser part : this.parts){
+        for (ExamPartParser part : this.parts) {
             auxList.add(part.parseExamPart());
         }
         aux.setParts(auxList);
@@ -97,7 +100,7 @@ public class ExamParser {
         return aux;
     }
 
-    public ExamParser (String examJson) throws IllegalArgumentException {
+    public ExamParser(String examJson) {
         RuntimeTypeAdapterFactory<QuestionParser> adapter = RuntimeTypeAdapterFactory
                 .of(QuestionParser.class, "type")
                 .registerSubtype(TestQuestionParser.class, Question.Type.TEST.name())
@@ -113,7 +116,7 @@ public class ExamParser {
             this.groupField = (aux.groupField != null ? aux.groupField : false);
             this.idNumberField = (aux.idNumberField != null ? aux.idNumberField : false);
             this.instructionDetails = (aux.instructionDetails != null ? aux.instructionDetails : "");
-            this.modality = (aux.modality!= null ? aux.modality : "");
+            this.modality = (aux.modality != null ? aux.modality : "");
             this.nameField = (aux.nameField != null ? aux.nameField : false);
             this.surnameField = (aux.surnameField != null ? aux.surnameField : false);
             this.subject = (aux.subject != null ? aux.subject : "");
@@ -130,7 +133,7 @@ public class ExamParser {
         }
     }
 
-    public String toJson(){
+    public String toJson() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(this);
     }

@@ -1,16 +1,18 @@
 package model;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import util.DateUtil;
-import util.ImageUtil;
 
-/** Model class for an Exam **/
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Model class for an Exam
+ **/
 
 public class Exam {
 
@@ -37,7 +39,9 @@ public class Exam {
 
     public ObservableList<ExamPart> parts;
 
-    /** ----- GETTERS ----- **/
+    /**
+     * ----- GETTERS -----
+     **/
     public String getTitle() {
         return title.getValue();
     }
@@ -97,12 +101,15 @@ public class Exam {
     public String getInstructionDetails() {
         return instructionDetails.getValue();
     }
+
     public List<ExamPart> getParts() {
         return parts;
     }
     /** ------------------- **/
 
-    /** ----- SETTERS ----- **/
+    /**
+     * ----- SETTERS -----
+     **/
     public void setTitle(String title) {
         this.title.setValue(title);
     }
@@ -170,9 +177,12 @@ public class Exam {
     public void setParts(List<ExamPart> parts) {
         this.parts = FXCollections.observableList(parts);
     }
-    /** ------------------- **/
 
-    public Exam(){
+    /**
+     * -------------------
+     **/
+
+    public Exam() {
         this.title = new SimpleStringProperty("");
         this.subject = new SimpleStringProperty("");
         this.modality = new SimpleStringProperty("");
@@ -198,57 +208,53 @@ public class Exam {
     }
 
     @Override
-    public boolean equals(Object other){
+    public boolean equals(Object other) {
 
         if (other == null) return false;
         if (other == this) return true;
-        if (!(other instanceof Exam))return false;
+        if (!(other instanceof Exam)) return false;
 
         Exam exam = (Exam) other;
 
-        if(this.title.getValue() != exam.title.getValue())
+        if (this.title.getValue() != exam.title.getValue())
             return false;
-        if(this.subject.getValue() != exam.subject.getValue())
+        if (this.subject.getValue() != exam.subject.getValue())
             return false;
-        if(this.modality.getValue() != exam.modality.getValue())
+        if (this.modality.getValue() != exam.modality.getValue())
             return false;
-        if(this.duration.getValue() != exam.duration.getValue())
+        if (this.duration.getValue() != exam.duration.getValue())
             return false;
-        if(this.weigh.getValue() != exam.weigh.getValue())
+        if (this.weigh.getValue() != exam.weigh.getValue())
             return false;
-        if(this.numQuestions.getValue() != exam.numQuestions.getValue())
+        if (this.numQuestions.getValue() != exam.numQuestions.getValue())
             return false;
         //TODO fix logo
         /*
         if(ImageUtil.getBase64(this.logo) != ImageUtil.getBase64(exam.logo))
             return false;
         */
-        if(this.examDate.getValue() != exam.examDate.getValue())
+        if (this.examDate.getValue() != exam.examDate.getValue())
             return false;
-        if(this.publicationDate.getValue() != exam.publicationDate.getValue())
+        if (this.publicationDate.getValue() != exam.publicationDate.getValue())
             return false;
-        if(this.reviewDate.getValue() != exam.reviewDate.getValue())
+        if (this.reviewDate.getValue() != exam.reviewDate.getValue())
             return false;
-        if(this.nameField.getValue() != exam.nameField.getValue())
+        if (this.nameField.getValue() != exam.nameField.getValue())
             return false;
-        if(this.surnameField.getValue() != exam.surnameField.getValue())
+        if (this.surnameField.getValue() != exam.surnameField.getValue())
             return false;
-        if(this.idNumberField.getValue() != exam.idNumberField.getValue())
+        if (this.idNumberField.getValue() != exam.idNumberField.getValue())
             return false;
-        if(this.groupField.getValue() != exam.groupField.getValue())
+        if (this.groupField.getValue() != exam.groupField.getValue())
             return false;
-        if(this.instructionDetails.getValue() != exam.instructionDetails.getValue())
+        if (this.instructionDetails.getValue() != exam.instructionDetails.getValue())
             return false;
 
         //TODO implement parts.equals()
-        if(!this.parts.equals(exam.parts))
-            return false;
-
-        return true;
+        return this.parts.equals(exam.parts);
     }
 
-    @Override
-    public Exam clone() {
+    public Exam copy() {
 
         Exam aux = new Exam();
 
@@ -274,8 +280,8 @@ public class Exam {
         aux.setInstructionDetails(this.instructionDetails.getValue());
 
         List<ExamPart> auxList = new ArrayList<>();
-        for(ExamPart part : this.parts){
-            auxList.add(part.clone());
+        for (ExamPart part : this.parts) {
+            auxList.add(part.copy());
         }
         aux.setParts(auxList);
 

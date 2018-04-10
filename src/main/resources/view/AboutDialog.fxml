@@ -1,41 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Hyperlink?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
-<AnchorPane prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AboutDialogController">
-   <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
-         <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <ImageView fitHeight="140.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@/images/exam_designer_256.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </HBox>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="87.0" layoutY="137.0" text="%txt.appName" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
-               <font>
-                  <Font name="Arial Narrow" size="40.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="50.0" layoutY="164.0" prefHeight="120.0" prefWidth="369.0" text="%txt.appVersion" textAlignment="CENTER" textFill="#000000cd" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="190.0">
-               <font>
-                  <Font name="Arial" size="18.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
-      <Button alignment="BOTTOM_RIGHT" layoutX="294.0" layoutY="255.0" mnemonicParsing="false" onAction="#handleClose" text="%btn.close" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="233.0" layoutY="288.0" text="%txt.about" textAlignment="JUSTIFY" wrapText="true" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="270.0" />
-      <Hyperlink alignment="CENTER" contentDisplay="CENTER" layoutX="214.0" layoutY="303.0" onAction="#handleClickLink" text="%lbl.gitHub" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="310.0" />
-   </children>
+<AnchorPane prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.121"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AboutDialogController">
+    <children>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                    AnchorPane.topAnchor="30.0">
+            <children>
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0"
+                      AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <ImageView fitHeight="140.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@/images/exam_designer_256.png"/>
+                            </image>
+                        </ImageView>
+                    </children>
+                </HBox>
+                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="87.0" layoutY="137.0" text="%txt.appName"
+                       wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                       AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
+                    <font>
+                        <Font name="Arial Narrow" size="40.0"/>
+                    </font>
+                </Label>
+                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="50.0" layoutY="164.0" prefHeight="120.0"
+                       prefWidth="369.0" text="%txt.appVersion" textAlignment="CENTER" textFill="#000000cd"
+                       wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                       AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="190.0">
+                    <font>
+                        <Font name="Arial" size="18.0"/>
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+        <Button alignment="BOTTOM_RIGHT" layoutX="294.0" layoutY="255.0" mnemonicParsing="false" onAction="#handleClose"
+                text="%btn.close" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0"/>
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="233.0" layoutY="288.0" text="%txt.about"
+               textAlignment="JUSTIFY" wrapText="true" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0"
+               AnchorPane.topAnchor="270.0"/>
+        <Hyperlink alignment="CENTER" contentDisplay="CENTER" layoutX="214.0" layoutY="303.0"
+                   onAction="#handleClickLink" text="%lbl.gitHub" AnchorPane.leftAnchor="120.0"
+                   AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="310.0"/>
+    </children>
 </AnchorPane>

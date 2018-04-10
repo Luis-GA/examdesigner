@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-/** * Helper functions for handling dates. * * @author Marco Jakob */
+/**
+ * Helper functions for handling dates. * * @author Marco Jakob
+ */
 
 public class DateUtil {
 

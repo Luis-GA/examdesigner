@@ -6,9 +6,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import java.util.List;
 
-/** Model class for an ExamPart **/
+/**
+ * Model class for an ExamPart
+ **/
 
 public class ExamPart {
 
@@ -18,7 +21,9 @@ public class ExamPart {
     protected StringProperty instructions;
     protected ObservableList<Question> questions;
 
-    /** ----- GETTERS ----- **/
+    /**
+     * ----- GETTERS -----
+     **/
     public String getTitle() {
         return title.getValue();
     }
@@ -40,7 +45,9 @@ public class ExamPart {
     }
     /** ------------------- **/
 
-    /** ----- SETTERS ----- **/
+    /**
+     * ----- SETTERS -----
+     **/
     public void setTitle(String title) {
         this.title.setValue(title);
     }
@@ -60,7 +67,10 @@ public class ExamPart {
     public void setQuestions(List<Question> questions) {
         this.questions = FXCollections.observableList(questions);
     }
-    /** ------------------- **/
+
+    /**
+     * -------------------
+     **/
 
     public void addQuestion(Question question) {
         this.questions.add(question);
@@ -75,7 +85,7 @@ public class ExamPart {
     }
 
     //TODO implement
-    public ExamPart clone() {
+    public ExamPart copy() {
         return this;
     }
 }

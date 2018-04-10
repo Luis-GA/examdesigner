@@ -4,9 +4,12 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import java.util.List;
 
-/** Model class for an Essay Question **/
+/**
+ * Model class for an Essay Question
+ **/
 
 public class EssayQuestion extends Question {
 
@@ -14,7 +17,9 @@ public class EssayQuestion extends Question {
     public IntegerProperty answeringSpace;
     public ObservableList<ContentObject> solutionObjects;
 
-    /** ----- GETTERS ----- **/
+    /**
+     * ----- GETTERS -----
+     **/
     public List<Section> getSections() {
         return sections;
     }
@@ -24,7 +29,9 @@ public class EssayQuestion extends Question {
     }
     /** ------------------- **/
 
-    /** ----- SETTERS ----- **/
+    /**
+     * ----- SETTERS -----
+     **/
     public void setSections(List sections) {
         this.sections = FXCollections.observableList(sections);
     }
@@ -32,7 +39,10 @@ public class EssayQuestion extends Question {
     public void setAnsweringSpace(Integer answeringSpace) {
         this.answeringSpace.setValue(answeringSpace);
     }
-    /** ------------------- **/
+
+    /**
+     * -------------------
+     **/
 
     public EssayQuestion() {
         super();
