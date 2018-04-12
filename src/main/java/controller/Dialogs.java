@@ -12,7 +12,6 @@ import util.ExamParser;
 import util.FileUtil;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ResourceBundle;

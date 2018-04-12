@@ -2,7 +2,6 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
 import javafx.stage.Stage;
 import model.Exam;
 import model.Question;
@@ -12,9 +11,6 @@ import org.dizitart.no2.mapper.JacksonMapper;
 import org.dizitart.no2.mapper.NitriteMapper;
 import util.*;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +21,10 @@ public class DatabaseManager {
     private static DatabaseManager instance;
     private Nitrite db = Nitrite.builder().filePath("exam-designer.db").openOrCreate();
     private static System.Logger logger = System.getLogger(DatabaseManager.class.getName());
+
+    private DatabaseManager() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static DatabaseManager getInstance() {
         if (instance == null) {
@@ -42,15 +42,14 @@ public class DatabaseManager {
 
             NitriteCollection questions = db.getCollection("questions");
             questions.createIndex("type", indexOptions);
+            questions.createIndex("topic", indexOptions);
 
             NitriteCollection exams = db.getCollection("exams");
-            questions.createIndex("title", indexOptions);
+            exams.createIndex("title", indexOptions);
         } catch (IndexingException e) {
             logger.log(System.Logger.Level.INFO, "Indexes already exist");
         }
     }
-
-    private DatabaseManager() {}
 
     public void addQuestion(String questionString) {
         NitriteCollection questions = db.getCollection("questions");
@@ -120,9 +119,8 @@ public class DatabaseManager {
         Dialogs.showExportDialog(stage, questions.toJson());
     }
 
-    public void importQuestions(String jsonString) {
+    public void importQuestions(String jsonString) throws IllegalArgumentException{
 
-        try {
             List<QuestionParser> questions = new Questions(jsonString).getQuestions();
 
             for(QuestionParser question : questions){
@@ -133,17 +131,14 @@ public class DatabaseManager {
                 }
                 addQuestion(question.toJson());
             }
-        } catch (IllegalArgumentException e) {
-            throw e;
-        }
     }
 
     private class Questions {
 
-        private List<QuestionParser> questions;
+        private List<QuestionParser> questionsList;
 
         public Questions() {
-            this.questions = new ArrayList<>();
+            this.questionsList = new ArrayList<>();
         }
 
         public Questions(String jsonString) {
@@ -162,7 +157,7 @@ public class DatabaseManager {
                 throw new IllegalArgumentException("Invalid exam JSON file");
             }
 
-            this.questions = aux.getQuestions();
+            this.questionsList = aux.getQuestions();
         }
 
         public String toJson() {
@@ -171,11 +166,11 @@ public class DatabaseManager {
         }
 
         public List<QuestionParser> getQuestions() {
-            return this.questions;
+            return this.questionsList;
         }
 
         public void setQuestions(List<QuestionParser> questions) {
-            this.questions = questions;
+            this.questionsList = questions;
         }
     }
 }

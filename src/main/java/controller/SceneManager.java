@@ -12,7 +12,10 @@ import javafx.stage.Modality;
 import model.Exam;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class SceneManager {
 
@@ -96,7 +99,6 @@ public class SceneManager {
 
             // Set MainApp and give the controller access to the exam
             ExamOverviewController controller = loader.getController();
-            controller.setMainApp(this.mainApp);
             controller.setExam(exam);
 
             scene = setNewMenuScene(examOverview, exam);

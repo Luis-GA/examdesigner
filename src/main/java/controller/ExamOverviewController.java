@@ -11,12 +11,6 @@ public class ExamOverviewController {
 
     Exam exam;
 
-    private MainApp mainApp;
-
-    public void setMainApp(MainApp mainApp) {
-        this.mainApp = mainApp;
-    }
-
     @FXML
     private void initialize() {
         title.setText("");
