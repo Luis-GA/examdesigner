@@ -75,6 +75,24 @@ public class Dialogs {
         } else return null;
     }
 
+    public static Path showOpenImageDialog(Stage stage) {
+
+        if(stage == null) {
+            stage = MainApp.getPrimaryStage();
+        }
+
+        FileChooser fileChooser = new FileChooser();
+
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.imageFiles"), "*.png", "*.jpg", "*.jpeg");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        File file = fileChooser.showOpenDialog(stage);
+
+        if (file != null) {
+            return file.toPath();
+        } else return null;
+    }
+
     public static void showSaveAsExamDialog(Exam exam) {
         ExamParser examParser = new ExamParser(exam);
         FileUtil.writeJsonFile(MainApp.getPrimaryStage(), examParser.toJson());
