@@ -68,7 +68,7 @@
             <CheckBox fx:id="idNumberField" mnemonicParsing="false" text="%lbl.idNumberField" GridPane.columnIndex="3" GridPane.rowIndex="6" />
             <CheckBox fx:id="groupField" mnemonicParsing="false" text="%lbl.groupField" GridPane.columnIndex="3" GridPane.rowIndex="7" />
             <Label layoutX="10.0" layoutY="350.0" text="%lbl.instructionDetails" GridPane.columnIndex="3" GridPane.rowIndex="9" />
-            <TextArea fx:id="instructionDetails" minHeight="-Infinity" prefHeight="100.0" prefWidth="224.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="10" GridPane.valignment="TOP" />
+            <TextArea fx:id="instructionDetails" minHeight="-Infinity" prefHeight="100.0" prefWidth="224.0" wrapText="true" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="10" GridPane.valignment="TOP" />
          </children>
          <padding>
             <Insets bottom="50.0" />
