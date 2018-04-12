@@ -23,7 +23,7 @@ public class DatabaseManager {
     private static System.Logger logger = System.getLogger(DatabaseManager.class.getName());
 
     private DatabaseManager() {
-        throw new IllegalStateException("Utility class");
+        //throw new IllegalStateException("Utility class");
     }
 
     public static DatabaseManager getInstance() {
@@ -37,15 +37,16 @@ public class DatabaseManager {
     private void initializeIndexes() {
 
         try {
+            //TODO indexed disabled for now because it does't work fine always
             IndexOptions indexOptions = new IndexOptions();
             indexOptions.setIndexType(IndexType.Fulltext);
 
             NitriteCollection questions = db.getCollection("questions");
-            questions.createIndex("type", indexOptions);
-            questions.createIndex("topic", indexOptions);
+            //questions.createIndex("type", indexOptions);
+            //questions.createIndex("topic", indexOptions);
 
             NitriteCollection exams = db.getCollection("exams");
-            exams.createIndex("title", indexOptions);
+            //exams.createIndex("title", indexOptions);
         } catch (IndexingException e) {
             logger.log(System.Logger.Level.INFO, "Indexes already exist");
         }
@@ -88,6 +89,7 @@ public class DatabaseManager {
         Cursor cursor = collection.find(eq("title", title));
         Document doc = cursor.firstOrDefault();
         JacksonMapper jacksonMapper = new JacksonMapper();
+
         ExamParser aux = new ExamParser(jacksonMapper.toJson(doc));
 
         return aux.parseExam();
