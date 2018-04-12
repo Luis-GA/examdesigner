@@ -11,7 +11,7 @@ import java.util.List;
 public class ExamPartParser {
 
     private String title;
-    private Integer weigh;
+    private Integer weight;
     private Integer duration;
     private String instructions;
 
@@ -19,7 +19,7 @@ public class ExamPartParser {
 
     public ExamPartParser(ExamPart examPart) {
         this.title = examPart.getTitle();
-        this.weigh = examPart.getWeigh();
+        this.weight = examPart.getWeigh();
         this.duration = examPart.getDuration();
         this.instructions = examPart.getInstructions();
 
@@ -37,7 +37,7 @@ public class ExamPartParser {
         ExamPart aux = new ExamPart();
 
         aux.setTitle(this.title);
-        aux.setWeigh(this.weigh);
+        aux.setWeigh(this.weight);
         aux.setDuration(this.duration);
         aux.setInstructions(this.instructions);
 

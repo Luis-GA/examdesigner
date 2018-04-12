@@ -20,7 +20,7 @@ public class ExamParser {
     private String modality;
 
     private Integer duration;
-    private Integer weigh;
+    private Integer weight;
     private Integer numQuestions;
 
     private String logo;
@@ -44,7 +44,7 @@ public class ExamParser {
         this.modality = exam.getModality();
 
         this.duration = exam.getDuration();
-        this.weigh = exam.getWeigh();
+        this.weight = exam.getWeight();
         this.numQuestions = exam.getNumQuestions();
 
         this.logo = ImageUtil.getBase64(exam.getLogo());
@@ -75,7 +75,7 @@ public class ExamParser {
         aux.setModality(this.modality);
 
         aux.setDuration(this.duration);
-        aux.setWeigh(this.weigh);
+        aux.setWeight(this.weight);
         aux.setNumQuestions(this.numQuestions);
 
         aux.setLogo(ImageUtil.getImage(this.logo));
@@ -120,7 +120,7 @@ public class ExamParser {
             this.nameField = (aux.nameField != null ? aux.nameField : false);
             this.surnameField = (aux.surnameField != null ? aux.surnameField : false);
             this.subject = (aux.subject != null ? aux.subject : "");
-            this.weigh = (aux.weigh != null ? aux.weigh : Integer.valueOf(0));
+            this.weight = (aux.weight != null ? aux.weight : Integer.valueOf(0));
             this.parts = (aux.parts != null ? aux.parts : new ArrayList<>());
 
             this.logo = (aux.logo != null ? aux.logo : "");

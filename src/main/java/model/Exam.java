@@ -21,7 +21,7 @@ public class Exam {
     public StringProperty modality;
 
     public IntegerProperty duration;
-    public IntegerProperty weigh;
+    public IntegerProperty weight;
     public IntegerProperty numQuestions;
 
     public Image logo;
@@ -58,8 +58,8 @@ public class Exam {
         return duration.getValue();
     }
 
-    public int getWeigh() {
-        return weigh.get();
+    public int getWeight() {
+        return weight.get();
     }
 
     public Integer getNumQuestions() {
@@ -126,8 +126,8 @@ public class Exam {
         this.duration.setValue(duration);
     }
 
-    public void setWeigh(Integer weigh) {
-        this.weigh.setValue(weigh);
+    public void setWeight(Integer weigh) {
+        this.weight.setValue(weigh);
     }
 
     public void setNumQuestions(Integer numQuestions) {
@@ -188,7 +188,7 @@ public class Exam {
         this.modality = new SimpleStringProperty("");
 
         this.duration = new SimpleIntegerProperty(60);
-        this.weigh = new SimpleIntegerProperty();
+        this.weight = new SimpleIntegerProperty();
         this.numQuestions = new SimpleIntegerProperty(0);
 
         this.logo = new Image("images/logo_default.png");
@@ -224,7 +224,7 @@ public class Exam {
             return false;
         if (this.duration.getValue() != exam.duration.getValue())
             return false;
-        if (this.weigh.getValue() != exam.weigh.getValue())
+        if (this.weight.getValue() != exam.weight.getValue())
             return false;
         if (this.numQuestions.getValue() != exam.numQuestions.getValue())
             return false;
@@ -263,7 +263,7 @@ public class Exam {
         aux.setModality(this.modality.getValue());
 
         aux.setDuration(this.duration.getValue());
-        aux.setWeigh(this.weigh.getValue());
+        aux.setWeight(this.weight.getValue());
         aux.setNumQuestions(this.numQuestions.getValue());
 
         aux.setLogo(this.logo);

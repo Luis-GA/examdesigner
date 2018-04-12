@@ -16,7 +16,7 @@ import java.util.List;
 public class ExamPart {
 
     protected StringProperty title;
-    protected IntegerProperty weigh;
+    protected IntegerProperty weight;
     protected IntegerProperty duration;
     protected StringProperty instructions;
     protected ObservableList<Question> questions;
@@ -29,7 +29,7 @@ public class ExamPart {
     }
 
     public Integer getWeigh() {
-        return weigh.getValue();
+        return weight.getValue();
     }
 
     public Integer getDuration() {
@@ -53,7 +53,7 @@ public class ExamPart {
     }
 
     public void setWeigh(Integer weigh) {
-        this.weigh.setValue(weigh);
+        this.weight.setValue(weigh);
     }
 
     public void setDuration(Integer duration) {
@@ -78,7 +78,7 @@ public class ExamPart {
 
     public ExamPart() {
         this.title = new SimpleStringProperty("");
-        this.weigh = new SimpleIntegerProperty();
+        this.weight = new SimpleIntegerProperty();
         this.duration = new SimpleIntegerProperty(0);
         this.instructions = new SimpleStringProperty("");
         this.questions = FXCollections.observableArrayList();
