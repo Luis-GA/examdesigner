@@ -88,39 +88,10 @@ public class DatabaseManager {
         NitriteCollection collection = db.getCollection("exams");
         Cursor cursor = collection.find(eq("title", title));
         Document doc = cursor.firstOrDefault();
-        Exam aux = new Exam();
+        JacksonMapper jacksonMapper = new JacksonMapper();
+        ExamParser aux = new ExamParser(jacksonMapper.toJson(doc));
 
-        aux.setTitle((String)doc.get("title"));
-        aux.setSubject((String)doc.get("subject"));
-        aux.setModality((String)doc.get("modality"));
-
-        aux.setDuration((Integer) doc.get("duration"));
-        aux.setWeigh((Integer) doc.get("weight"));
-        aux.setNumQuestions((Integer) doc.get("numQuestions"));
-
-        aux.setLogo(ImageUtil.getImage((String)doc.get("logo")));
-
-        aux.setExamDate(DateUtil.parse((String)doc.get("examDate")));
-        aux.setPublicationDate(DateUtil.parse((String)doc.get("publicationDate")));
-        aux.setReviewDate(DateUtil.parse((String)doc.get("reviewDate")));
-
-        aux.setNameField((Boolean)doc.get("nameField"));
-        aux.setSurnameField((Boolean)doc.get("surnameField"));
-        aux.setIdNumberField((Boolean)doc.get("idNumberField"));
-        aux.setGroupField((Boolean)doc.get("groupField"));
-
-        aux.setInstructionDetails((String)doc.get("instructionDetails"));
-
-        //TODO finish parts list
-        /*
-        List<ExamPart> auxList = new ArrayList<>();
-        for(ExamPart part : this.parts){
-            auxList.add(part.parseExamPart());
-        }
-        aux.setParts(auxList);
-        */
-
-        return aux;
+        return aux.parseExam();
     }
 
     public void exportQuestions(Stage stage) {
