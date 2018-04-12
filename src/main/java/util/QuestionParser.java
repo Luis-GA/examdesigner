@@ -21,9 +21,7 @@ public abstract class QuestionParser {
     private String topic;
     private String subtopic;
 
-    public QuestionParser() {
-
-    }
+    public QuestionParser() {}
 
     public QuestionParser(Question question) {
         this.title = question.getTitle();
@@ -154,7 +152,7 @@ public abstract class QuestionParser {
         return subtopic;
     }
 
-    abstract Question parseQuestion();
+    public abstract Question parseQuestion();
 
-    abstract String toJson();
+    public abstract String toJson();
 }

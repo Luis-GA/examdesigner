@@ -12,21 +12,12 @@ import java.util.ResourceBundle;
 
 public class RootLayoutController {
 
-
-    // Reference to the main application.
-    private MainApp mainApp;
-    private Dialogs dialogs;
     private Exam exam;
     private Exam examOLD;
     private SceneManager sceneManager = SceneManager.getInstance();
 
     @FXML
     MenuItem menuClose;
-
-    public void setMainApp(MainApp mainApp) {
-        this.mainApp = mainApp;
-        dialogs = new Dialogs(mainApp);
-    }
 
     @FXML
     private void initialize() {
@@ -36,24 +27,24 @@ public class RootLayoutController {
 
     @FXML
     public void showSettingsDialog() {
-        dialogs.showSettingsDialog();
+        Dialogs.showSettingsDialog();
     }
 
     @FXML
     public void showAboutDialog() {
-        dialogs.showAboutDialog();
+        Dialogs.showAboutDialog();
     }
 
     @FXML
     public void showOpenExamDialog() {
-        Path path = dialogs.showOpenExamDialog();
+        Path path = Dialogs.showOpenExamDialog(MainApp.getPrimaryStage());
 
         if (path != null) {
             String examJson = FileUtil.readFile(path);
             try {
                 ExamParser examParser = new ExamParser(examJson);
 
-                if (mainApp.closeConfirmation()) {
+                if (MainApp.closeConfirmation()) {
                     sceneManager.changeExamOverviewScene(examParser.parseExam());
                 } else {
                     if (!changes()) {
@@ -62,7 +53,7 @@ public class RootLayoutController {
                 }
             } catch (IllegalArgumentException e) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.initOwner(mainApp.getPrimaryStage());
+                alert.initOwner(MainApp.getPrimaryStage());
                 alert.setTitle(ResourceBundle.getBundle(MainApp.LABELS).getString("title.jsonError"));
                 alert.setHeaderText(null);
                 alert.setContentText(ResourceBundle.getBundle(MainApp.LABELS).getString("txt.jsonError"));
@@ -73,7 +64,7 @@ public class RootLayoutController {
 
     @FXML
     public void showSaveAsExamDialog() {
-        dialogs.showSaveAsExamDialog(exam);
+        Dialogs.showSaveAsExamDialog(exam);
     }
 
     @FXML
@@ -96,7 +87,7 @@ public class RootLayoutController {
     public void handleNewFile() {
         Exam aux = new Exam();
 
-        if (mainApp.closeConfirmation()) {
+        if (MainApp.closeConfirmation()) {
             sceneManager.changeExamOverviewScene(aux);
         } else {
             if (!changes()) {
@@ -107,7 +98,7 @@ public class RootLayoutController {
 
     @FXML
     public void handleClose() {
-        if (mainApp.closeConfirmation()) {
+        if (MainApp.closeConfirmation()) {
             sceneManager.back();
         } else {
             if (!changes()) {

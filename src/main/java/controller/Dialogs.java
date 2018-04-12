@@ -9,6 +9,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Exam;
 import util.ExamParser;
+import util.FileUtil;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -20,27 +21,20 @@ public class Dialogs {
 
     private static System.Logger logger = System.getLogger(DialogController.class.getName());
 
-    // Reference to the main application.
-    private MainApp mainApp;
-
-    public Dialogs(MainApp mainApp) {
-        this.mainApp = mainApp;
-    }
-
-    private void showDialog(String view, String title) {
+    private static void showDialog(String view, String title) {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource(view));
             loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
-            AnchorPane page = (AnchorPane) loader.load();
+            AnchorPane page = loader.load();
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
             dialogStage.setTitle(ResourceBundle.getBundle(MainApp.LABELS).getString(title));
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.setResizable(false);
-            dialogStage.initOwner(mainApp.getPrimaryStage());
+            dialogStage.initOwner(MainApp.getPrimaryStage());
             dialogStage.getIcons().add(new Image("images/exam_designer_256.png"));
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
@@ -56,47 +50,38 @@ public class Dialogs {
         }
     }
 
-    public void showSettingsDialog() {
+    public static void showSettingsDialog() {
         showDialog("../view/SettingsDialog.fxml", "title.settings");
     }
 
-    public void showAboutDialog() {
+    public static void showAboutDialog() {
         showDialog("../view/AboutDialog.fxml", "title.about");
     }
 
-    public Path showOpenExamDialog() {
+    public static Path showOpenExamDialog(Stage stage) {
+
+        if(stage == null) {
+            stage = MainApp.getPrimaryStage();
+        }
+
         FileChooser fileChooser = new FileChooser();
 
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.jsonFiles"), "*.json");
         fileChooser.getExtensionFilters().add(extFilter);
 
-        File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
+        File file = fileChooser.showOpenDialog(stage);
 
         if (file != null) {
             return file.toPath();
         } else return null;
     }
 
-    public void showSaveAsExamDialog(Exam exam) {
-        FileChooser fileChooser = new FileChooser();
+    public static void showSaveAsExamDialog(Exam exam) {
+        ExamParser examParser = new ExamParser(exam);
+        FileUtil.writeJsonFile(MainApp.getPrimaryStage(), examParser.toJson());
+    }
 
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.jsonFiles"), "*.json");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
-        if (file != null) {
-
-            if (!file.getPath().endsWith(".json")) {
-                file = new File(file.getPath() + ".json");
-            }
-
-            ExamParser examParser = new ExamParser(exam);
-
-            try (FileWriter writer = new FileWriter(file)) {
-                writer.write(examParser.toJson());
-            } catch (IOException e) {
-                logger.log(System.Logger.Level.ERROR, "Error trying to save exam as JSON file");
-            }
-        }
+    public static void showExportDialog(Stage stage, String questions) {
+        FileUtil.writeJsonFile(stage, questions);
     }
 }

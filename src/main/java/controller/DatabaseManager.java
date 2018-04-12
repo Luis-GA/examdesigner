@@ -1,19 +1,21 @@
 package controller;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
+import javafx.stage.Stage;
 import model.Exam;
-import model.ExamPart;
+import model.Question;
 import org.dizitart.no2.*;
 import org.dizitart.no2.exceptions.IndexingException;
 import org.dizitart.no2.mapper.JacksonMapper;
 import org.dizitart.no2.mapper.NitriteMapper;
-import util.DateUtil;
-import util.ExamParser;
-import util.ImageUtil;
+import util.*;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.List;
 
 import static org.dizitart.no2.filters.Filters.eq;
@@ -121,11 +123,88 @@ public class DatabaseManager {
         return aux;
     }
 
-    public void exportQuestions() {
-        //TODO finish exportQuestions()
+    public void exportQuestions(Stage stage) {
+        NitriteCollection collection = db.getCollection("questions");
+        Cursor cursor = collection.find();
+
+        ArrayList<QuestionParser> questionsList = new ArrayList<>();
+
+        for(Document question : cursor){
+            QuestionParser aux;
+            JacksonMapper jacksonMapper = new JacksonMapper();
+            String type = (String)question.get("type");
+
+            if(type.equals(Question.Type.TEST.name())) {
+                aux = new TestQuestionParser(jacksonMapper.toJson(question));
+            } else {
+                aux = new EssayQuestionParser(jacksonMapper.toJson(question));
+            }
+
+            questionsList.add(aux);
+        }
+
+        Questions questions = new Questions();
+        questions.setQuestions(questionsList);
+
+        Dialogs.showExportDialog(stage, questions.toJson());
     }
 
-    public void importQuestions() {
-        //TODO finish importQuestions()
+    public void importQuestions(String jsonString) {
+
+        try {
+            List<QuestionParser> questions = new Questions(jsonString).getQuestions();
+
+            for(QuestionParser question : questions){
+                if(question instanceof  TestQuestionParser) {
+                    question.setType(Question.Type.TEST.name());
+                } else {
+                    question.setType(Question.Type.ESSAY.name());
+                }
+                addQuestion(question.toJson());
+            }
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
+    }
+
+    private class Questions {
+
+        private List<QuestionParser> questions;
+
+        public Questions() {
+            this.questions = new ArrayList<>();
+        }
+
+        public Questions(String jsonString) {
+
+            RuntimeTypeAdapterFactory<QuestionParser> adapter = RuntimeTypeAdapterFactory
+                    .of(QuestionParser.class, "type")
+                    .registerSubtype(TestQuestionParser.class, Question.Type.TEST.name())
+                    .registerSubtype(EssayQuestionParser.class, Question.Type.ESSAY.name());
+            Gson gson = new GsonBuilder().registerTypeAdapterFactory(adapter).create();
+
+            Questions aux;
+
+            try {
+                aux = gson.fromJson(jsonString, Questions.class);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Invalid exam JSON file");
+            }
+
+            this.questions = aux.getQuestions();
+        }
+
+        public String toJson() {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            return gson.toJson(this);
+        }
+
+        public List<QuestionParser> getQuestions() {
+            return this.questions;
+        }
+
+        public void setQuestions(List<QuestionParser> questions) {
+            this.questions = questions;
+        }
     }
 }

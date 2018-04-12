@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import util.FileUtil;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -108,11 +109,24 @@ public class SettingsDialogController extends DialogController {
     @FXML
     private void handleImport() {
         handleChange();
+        String questionsJson = FileUtil.readJsonFile(dialogStage);
+        if(questionsJson != null) {
+            try {
+                databaseManager.importQuestions(questionsJson);
+            } catch (IllegalArgumentException e) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.initOwner(MainApp.getPrimaryStage());
+                alert.setTitle(ResourceBundle.getBundle(MainApp.LABELS).getString("title.jsonError"));
+                alert.setHeaderText(null);
+                alert.setContentText(ResourceBundle.getBundle(MainApp.LABELS).getString("txt.jsonError"));
+                alert.showAndWait();
+            }
+        }
     }
 
     @FXML
     private void handleExport() {
         handleChange();
-        databaseManager.exportQuestions();
+        databaseManager.exportQuestions(dialogStage);
     }
 }

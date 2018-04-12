@@ -1,7 +1,5 @@
 package controller;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,7 +9,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
-import javafx.stage.Stage;
 import model.Exam;
 
 import java.io.IOException;
@@ -56,7 +53,7 @@ public class SceneManager {
     public void setRootScene(Scene rootScene, MainApp mainApp) {
         this.scenes = new LinkedList<>();
         this.scenes.push(new SceneWrapper(rootScene, null));
-        MainApp.primaryStage.setScene(rootScene);
+        MainApp.getPrimaryStage().setScene(rootScene);
         this.mainApp = mainApp;
     }
 
@@ -67,24 +64,23 @@ public class SceneManager {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("../view/RootLayout.fxml"));
             loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
-            BorderPane rootLayout = (BorderPane) loader.load();
+            BorderPane rootLayout = loader.load();
 
             //Set MainApp
             RootLayoutController controller = loader.getController();
-            controller.setMainApp(this.mainApp);
             controller.setExam(exam);
 
             rootLayout.setCenter(pane);
             rootLayout.setAlignment(pane, Pos.BOTTOM_RIGHT);
 
-            scene = new Scene(rootLayout, MainApp.primaryStage.getScene().getWidth(), MainApp.primaryStage.getScene().getHeight());
+            scene = new Scene(rootLayout, MainApp.getPrimaryStage().getScene().getWidth(), MainApp.getPrimaryStage().getScene().getHeight());
             scenes.push(new SceneWrapper(scene, controller));
             return scene;
         } catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Root Layout");
         } finally {
             if (scene == null) {
-                scene = new Scene(pane, MainApp.primaryStage.getScene().getWidth(), MainApp.primaryStage.getScene().getHeight());
+                scene = new Scene(pane, MainApp.getPrimaryStage().getScene().getWidth(), MainApp.getPrimaryStage().getScene().getHeight());
             }
         }
         return scene;
@@ -96,7 +92,7 @@ public class SceneManager {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("../view/ExamOverview.fxml"));
             loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
-            AnchorPane examOverview = (AnchorPane) loader.load();
+            AnchorPane examOverview = loader.load();
 
             // Set MainApp and give the controller access to the exam
             ExamOverviewController controller = loader.getController();
@@ -108,7 +104,7 @@ public class SceneManager {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Exam Overview");
         } finally {
             if (scene == null) {
-                scene = MainApp.primaryStage.getScene();
+                scene = MainApp.getPrimaryStage().getScene();
             }
         }
         return scene;
@@ -116,13 +112,13 @@ public class SceneManager {
 
     public void setExamOverviewScene(Exam exam) {
         Scene scene = newExamOverviewScene(exam);
-        MainApp.primaryStage.setScene(scene);
+        MainApp.getPrimaryStage().setScene(scene);
     }
 
     public void changeExamOverviewScene(Exam exam) {
         scenes.pop();
         Scene scene = newExamOverviewScene(exam);
-        MainApp.primaryStage.setScene(scene);
+        MainApp.getPrimaryStage().setScene(scene);
     }
 
     public boolean changes() {
@@ -133,7 +129,7 @@ public class SceneManager {
         Scene sceneOLD = scenes.pop().scene;
 
         if (scenes.peek().controller != null) {
-            MainApp.primaryStage.setScene(scenes.peek().scene);
+            MainApp.getPrimaryStage().setScene(scenes.peek().scene);
         } else {
             mainApp.showWelcomeOverview(sceneOLD);
         }
@@ -153,7 +149,7 @@ public class SceneManager {
         closeConfirmation.setHeaderText(null);
         closeConfirmation.setContentText(ResourceBundle.getBundle(MainApp.LABELS).getString("txt.deleteConfirmation"));
         closeConfirmation.initModality(Modality.APPLICATION_MODAL);
-        closeConfirmation.initOwner(MainApp.primaryStage);
+        closeConfirmation.initOwner(MainApp.getPrimaryStage());
 
         Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
         return ButtonType.OK.equals(closeResponse.get());

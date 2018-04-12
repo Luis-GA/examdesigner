@@ -22,7 +22,7 @@ import java.util.prefs.Preferences;
 public class MainApp extends Application {
 
     public static final String LABELS = "languages/labels";
-    public static Stage primaryStage;
+    private static Stage primaryStage;
 
     @Override
     public void start(Stage primaryStage) {
@@ -49,10 +49,6 @@ public class MainApp extends Application {
             loader.setLocation(MainApp.class.getResource("../view/WelcomeOverview.fxml"));
             loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
             AnchorPane welcomeOverview = (AnchorPane) loader.load();
-
-            // Give the controller access to the main app.
-            WelcomeOverviewController controller = loader.getController();
-            controller.setMainApp(this);
 
             Scene scene;
             if (sceneOLD != null) {
@@ -88,7 +84,7 @@ public class MainApp extends Application {
         }
     }
 
-    public boolean closeConfirmation() {
+    public static boolean closeConfirmation() {
         SceneManager sceneManager = SceneManager.getInstance();
         if (sceneManager.changes()) {
             Alert closeConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
@@ -120,7 +116,7 @@ public class MainApp extends Application {
     /**
      * Returns the main stage. * @return
      */
-    public Stage getPrimaryStage() {
+    public static Stage getPrimaryStage() {
         return primaryStage;
     }
 

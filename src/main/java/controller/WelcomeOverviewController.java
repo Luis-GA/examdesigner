@@ -18,7 +18,6 @@ import model.Exam;
 import util.ExamParser;
 import util.FileUtil;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -91,18 +90,10 @@ public class WelcomeOverviewController {
     @FXML
     private ListView<HBoxCell> examList = new ListView<>();
 
-    // Reference to the main application.
-    private MainApp mainApp;
-    private Dialogs dialogs;
     private static SceneManager sceneManager;
     private static List<Button> deleteButtonList;
     private static List<Button> openButtonList;
     private static List<String> exams;
-
-    public void setMainApp(MainApp mainApp) {
-        this.mainApp = mainApp;
-        dialogs = new Dialogs(mainApp);
-    }
 
     @FXML
     private void initialize() {
@@ -128,26 +119,26 @@ public class WelcomeOverviewController {
 
     @FXML
     public void showSettingsDialog() {
-        dialogs.showSettingsDialog();
+        Dialogs.showSettingsDialog();
     }
 
     @FXML
     public void showAboutDialog() {
-        dialogs.showAboutDialog();
+        Dialogs.showAboutDialog();
     }
 
     @FXML
     public void showOpenExamDialog() {
-        Path path = dialogs.showOpenExamDialog();
 
-        if (path != null) {
-            String examJson = FileUtil.readFile(path);
+        String examJson = FileUtil.readJsonFile(MainApp.getPrimaryStage());
+
+        if(examJson != null) {
             try {
                 ExamParser examParser = new ExamParser(examJson);
                 sceneManager.setExamOverviewScene(examParser.parseExam());
             } catch (IllegalArgumentException e) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.initOwner(mainApp.getPrimaryStage());
+                alert.initOwner(MainApp.getPrimaryStage());
                 alert.setTitle(ResourceBundle.getBundle(MainApp.LABELS).getString("title.jsonError"));
                 alert.setHeaderText(null);
                 alert.setContentText(ResourceBundle.getBundle(MainApp.LABELS).getString("txt.jsonError"));
