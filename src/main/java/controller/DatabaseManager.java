@@ -22,9 +22,7 @@ public class DatabaseManager {
     private Nitrite db = Nitrite.builder().filePath("exam-designer.db").openOrCreate();
     private static System.Logger logger = System.getLogger(DatabaseManager.class.getName());
 
-    private DatabaseManager() {
-        //throw new IllegalStateException("Utility class");
-    }
+    private DatabaseManager() {}
 
     public static DatabaseManager getInstance() {
         if (instance == null) {
