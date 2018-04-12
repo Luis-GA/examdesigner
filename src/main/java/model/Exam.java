@@ -4,6 +4,7 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import util.DateUtil;
 
 import java.time.LocalDate;
@@ -20,11 +21,11 @@ public class Exam {
     public StringProperty subject;
     public StringProperty modality;
 
-    public IntegerProperty duration;
-    public IntegerProperty weight;
-    public IntegerProperty numQuestions;
+    public StringProperty duration;
+    public StringProperty weight;
+    public StringProperty numQuestions;
 
-    public Image logo;
+    public ImageView logo;
 
     public ObjectProperty<LocalDate> examDate;
     public ObjectProperty<LocalDate> publicationDate;
@@ -55,19 +56,19 @@ public class Exam {
     }
 
     public Integer getDuration() {
-        return duration.getValue();
+        return Integer.parseInt(duration.getValue());
     }
 
     public int getWeight() {
-        return weight.get();
+        return Integer.parseInt(weight.get());
     }
 
     public Integer getNumQuestions() {
-        return numQuestions.getValue();
+        return Integer.parseInt(numQuestions.getValue());
     }
 
     public Image getLogo() {
-        return logo;
+        return logo.getImage();
     }
 
     public String getExamDate() {
@@ -123,23 +124,23 @@ public class Exam {
     }
 
     public void setDuration(Integer duration) {
-        this.duration.setValue(duration);
+        this.duration.setValue(duration.toString());
     }
 
     public void setWeight(Integer weigh) {
-        this.weight.setValue(weigh);
+        this.weight.setValue(weigh.toString());
     }
 
     public void setNumQuestions(Integer numQuestions) {
-        this.numQuestions.setValue(numQuestions);
+        this.numQuestions.setValue(numQuestions.toString());
     }
 
     public void setLogo(Image logo) {
-        this.logo = logo;
+        this.logo = new ImageView(logo);
     }
 
     public void setLogo(String url) {
-        this.logo = new Image(url);
+        this.logo = new ImageView(new Image(url));
     }
 
     public void setExamDate(LocalDate examDate) {
@@ -187,11 +188,11 @@ public class Exam {
         this.subject = new SimpleStringProperty("");
         this.modality = new SimpleStringProperty("");
 
-        this.duration = new SimpleIntegerProperty(60);
-        this.weight = new SimpleIntegerProperty();
-        this.numQuestions = new SimpleIntegerProperty(0);
+        this.duration = new SimpleStringProperty("0");
+        this.weight = new SimpleStringProperty("0");
+        this.numQuestions = new SimpleStringProperty("0");
 
-        this.logo = new Image("images/logo_default.png");
+        this.logo = new ImageView(new Image("images/logo_default.png"));
 
         this.examDate = new SimpleObjectProperty<>(LocalDate.now());
         this.publicationDate = new SimpleObjectProperty<>(LocalDate.now());
@@ -216,42 +217,42 @@ public class Exam {
 
         Exam exam = (Exam) other;
 
-        if (this.title.getValue() != exam.title.getValue())
+        if (!this.title.getValue().equals(exam.title.getValue()))
             return false;
-        if (this.subject.getValue() != exam.subject.getValue())
+        if (!this.subject.getValue().equals(exam.subject.getValue()))
             return false;
-        if (this.modality.getValue() != exam.modality.getValue())
+        if (!this.modality.getValue().equals(exam.modality.getValue()))
             return false;
-        if (this.duration.getValue() != exam.duration.getValue())
+        if (!this.duration.getValue().equals(exam.duration.getValue()))
             return false;
-        if (this.weight.getValue() != exam.weight.getValue())
+        if (!this.weight.getValue().equals(exam.weight.getValue()))
             return false;
-        if (this.numQuestions.getValue() != exam.numQuestions.getValue())
+        if (!this.numQuestions.getValue().equals(exam.numQuestions.getValue()))
             return false;
         //TODO fix logo
         /*
         if(ImageUtil.getBase64(this.logo) != ImageUtil.getBase64(exam.logo))
             return false;
         */
-        if (this.examDate.getValue() != exam.examDate.getValue())
+        if (!this.examDate.getValue().equals(exam.examDate.getValue()))
             return false;
-        if (this.publicationDate.getValue() != exam.publicationDate.getValue())
+        if (!this.publicationDate.getValue().equals(exam.publicationDate.getValue()))
             return false;
-        if (this.reviewDate.getValue() != exam.reviewDate.getValue())
+        if (!this.reviewDate.getValue().equals(exam.reviewDate.getValue()))
             return false;
-        if (this.nameField.getValue() != exam.nameField.getValue())
+        if (!this.nameField.getValue().equals(exam.nameField.getValue()))
             return false;
-        if (this.surnameField.getValue() != exam.surnameField.getValue())
+        if (!this.surnameField.getValue().equals(exam.surnameField.getValue()))
             return false;
-        if (this.idNumberField.getValue() != exam.idNumberField.getValue())
+        if (!this.idNumberField.getValue().equals(exam.idNumberField.getValue()))
             return false;
-        if (this.groupField.getValue() != exam.groupField.getValue())
+        if (!this.groupField.getValue().equals(exam.groupField.getValue()))
             return false;
-        if (this.instructionDetails.getValue() != exam.instructionDetails.getValue())
+        if (!this.instructionDetails.getValue().equals(exam.instructionDetails.getValue()))
             return false;
 
-        //TODO implement parts.equals()
-        return this.parts.equals(exam.parts);
+        //TODO implement ExamPart.equals() and iterate the parts list
+        return true;
     }
 
     public Exam copy() {
@@ -262,11 +263,11 @@ public class Exam {
         aux.setSubject(this.subject.getValue());
         aux.setModality(this.modality.getValue());
 
-        aux.setDuration(this.duration.getValue());
-        aux.setWeight(this.weight.getValue());
-        aux.setNumQuestions(this.numQuestions.getValue());
+        aux.setDuration(Integer.parseInt(this.duration.getValue()));
+        aux.setWeight(Integer.parseInt(this.weight.getValue()));
+        aux.setNumQuestions(Integer.parseInt(this.numQuestions.getValue()));
 
-        aux.setLogo(this.logo);
+        aux.setLogo(this.logo.getImage());
 
         aux.setExamDate(this.examDate.getValue());
         aux.setPublicationDate(this.publicationDate.getValue());
