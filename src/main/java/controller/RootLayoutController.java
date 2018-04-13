@@ -77,13 +77,13 @@ public class RootLayoutController {
                 try {
                     db.addExam(new ExamParser(exam).toJson());
                 } catch (UniqueConstraintException e) {
-                    Dialogs.showInfoDialog("txt.examSaved");
+                    Dialogs.showInfoDialog("txt.titleInUse");
                 }
 
             } else {
                 db.updateExam(examOLD.getTitle(), new ExamParser(exam).toJson());
             }
-            Dialogs.showInfoDialog("txt.titleInUse");
+            Dialogs.showInfoDialog("txt.examSaved");
         }
 
         examOLD = exam.copy();
