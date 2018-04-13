@@ -15,11 +15,11 @@ import java.util.List;
 
 public class ExamPart {
 
-    protected StringProperty title;
-    protected IntegerProperty weight;
-    protected IntegerProperty duration;
-    protected StringProperty instructions;
-    protected ObservableList<Question> questions;
+    private StringProperty title;
+    private IntegerProperty weight;
+    private IntegerProperty duration;
+    private StringProperty instructions;
+    private ObservableList<Question> questions;
 
     /**
      * ----- GETTERS -----

@@ -2,6 +2,7 @@ package util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import model.ContentObject;
 import model.EssayQuestion;
 import model.Question;
 import model.Section;
@@ -13,6 +14,7 @@ public class EssayQuestionParser extends QuestionParser {
 
     private List<SectionParser> sections;
     private Integer answeringSpace;
+    private List<ContentObjectParser> solutionObjects;
 
     public EssayQuestionParser(EssayQuestion essayQuestion) {
         super(essayQuestion);
@@ -22,6 +24,12 @@ public class EssayQuestionParser extends QuestionParser {
         List<Section> aux = essayQuestion.getSections();
         for (Section section : aux) {
             this.sections.add(new SectionParser(section));
+        }
+
+        this.solutionObjects = new ArrayList<>();
+        List<ContentObject> aux2 = essayQuestion.getSolutionObjects();
+        for (ContentObject contentObject : aux2) {
+            this.solutionObjects.add(new ContentObjectParser(contentObject));
         }
     }
 
@@ -37,6 +45,7 @@ public class EssayQuestionParser extends QuestionParser {
 
         this.sections = aux.sections;
         this.answeringSpace = aux.answeringSpace;
+        this.solutionObjects = aux.solutionObjects;
     }
 
     public Question parseQuestion() {
@@ -50,6 +59,12 @@ public class EssayQuestionParser extends QuestionParser {
             auxList.add(section.parseSection());
         }
         aux.setSections(auxList);
+
+        List<ContentObject> auxList2 = new ArrayList<>();
+        for (ContentObjectParser contentObject : this.solutionObjects) {
+            auxList2.add(contentObject.parseContentObject());
+        }
+        aux.setSolutionObjects(auxList2);
 
         return aux;
     }

@@ -13,8 +13,8 @@ import java.util.Map;
 
 public class TestQuestion extends Question {
 
-    public ObservableMap<String, Choice> choices;
-    public ObservableList<String> correctChoices;
+    private ObservableMap<String, Choice> choices;
+    private ObservableList<String> correctChoices;
 
     /**
      * ----- GETTERS -----

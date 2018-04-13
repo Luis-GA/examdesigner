@@ -1,6 +1,5 @@
 package util;
 
-import controller.Dialogs;
 import controller.MainApp;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -35,7 +34,7 @@ public class FileUtil {
 
     public static String readJsonFile(Stage stage) {
 
-        Path path = Dialogs.showOpenExamDialog(stage);
+        Path path = DialogUtil.showOpenExamDialog(stage);
 
         String jsonString = null;
         if (path != null) {

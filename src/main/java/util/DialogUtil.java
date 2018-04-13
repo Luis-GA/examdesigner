@@ -1,23 +1,27 @@
-package controller;
+package util;
 
+import controller.DialogController;
+import controller.MainApp;
+import controller.SceneManager;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Exam;
-import util.ExamParser;
-import util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class Dialogs {
+public class DialogUtil {
 
     private static void showDialog(String view, String title) {
         try {
@@ -111,5 +115,39 @@ public class Dialogs {
         stage.getIcons().add(new Image("images/exam_designer_256.png"));
 
         languageChangedDialog.showAndWait();
+    }
+
+    public static boolean showCloseConfirmationDialog() {
+        SceneManager sceneManager = SceneManager.getInstance();
+        if (sceneManager.changes()) {
+            return showConfirmationDialog("btn.exit", "txt.exit");
+        } else {
+            return true;
+        }
+    }
+
+    public static boolean showDeleteConfirmationDialog() {
+        return showConfirmationDialog("btn.delete", "txt.deleteConfirmation");
+    }
+
+    public static boolean showConfirmationDialog(String title, String text) {
+        Alert closeConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
+
+        Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(
+                ButtonType.OK
+        );
+        exitButton.setText(ResourceBundle.getBundle(MainApp.LABELS).getString(title));
+        closeConfirmation.setHeaderText(null);
+        closeConfirmation.setContentText(ResourceBundle.getBundle(MainApp.LABELS).getString(text));
+        closeConfirmation.initModality(Modality.APPLICATION_MODAL);
+        closeConfirmation.initOwner(MainApp.getPrimaryStage());
+
+        Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
+
+        if (closeResponse.isPresent()) {
+            return ButtonType.OK.equals(closeResponse.get());
+        } else {
+            return false;
+        }
     }
 }

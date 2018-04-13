@@ -9,8 +9,8 @@ import java.util.List;
 
 public class Choice {
 
-    public StringProperty title;
-    public ObservableList<ContentObject> bodyObjects;
+    private StringProperty title;
+    private ObservableList<ContentObject> bodyObjects;
 
     /**
      * ----- GETTERS -----

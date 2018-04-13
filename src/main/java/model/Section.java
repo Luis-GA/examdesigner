@@ -9,9 +9,9 @@ import java.util.List;
 
 public class Section {
 
-    public StringProperty title;
-    public ObservableList<ContentObject> bodyObjects;
-    public ObservableList<ContentObject> solutionObjects;
+    private StringProperty title;
+    private ObservableList<ContentObject> bodyObjects;
+    private ObservableList<ContentObject> solutionObjects;
 
     /**
      * ----- GETTERS -----

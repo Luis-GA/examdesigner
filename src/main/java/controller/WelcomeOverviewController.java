@@ -3,7 +3,6 @@ package controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -15,12 +14,13 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import model.Exam;
+import org.dizitart.no2.exceptions.UniqueConstraintException;
+import util.DialogUtil;
 import util.ExamParser;
 import util.FileUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class WelcomeOverviewController {
 
@@ -71,7 +71,7 @@ public class WelcomeOverviewController {
         }
 
         private static void deleteExam(Object button) {
-            if (sceneManager.deleteConfirmation()) {
+            if (DialogUtil.showDeleteConfirmationDialog()) {
                 DatabaseManager databaseManager = DatabaseManager.getInstance();
                 int index = deleteButtonList.indexOf(button);
                 databaseManager.deleteExam(exams.get(index));
@@ -119,12 +119,12 @@ public class WelcomeOverviewController {
 
     @FXML
     public void showSettingsDialog() {
-        Dialogs.showSettingsDialog();
+        DialogUtil.showSettingsDialog();
     }
 
     @FXML
     public void showAboutDialog() {
-        Dialogs.showAboutDialog();
+        DialogUtil.showAboutDialog();
     }
 
     @FXML
@@ -139,12 +139,9 @@ public class WelcomeOverviewController {
                 databaseManager.addExam(examJson);
                 sceneManager.setExamOverviewScene(examParser.parseExam());
             } catch (IllegalArgumentException e) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.initOwner(MainApp.getPrimaryStage());
-                alert.setTitle(ResourceBundle.getBundle(MainApp.LABELS).getString("title.jsonError"));
-                alert.setHeaderText(null);
-                alert.setContentText(ResourceBundle.getBundle(MainApp.LABELS).getString("txt.jsonError"));
-                alert.showAndWait();
+                DialogUtil.showInfoDialog("txt.jsonError");
+            } catch (UniqueConstraintException e) {
+                DialogUtil.showInfoDialog("txt.titleInUse");
             }
         }
     }

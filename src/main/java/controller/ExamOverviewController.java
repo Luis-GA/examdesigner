@@ -5,9 +5,9 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.Exam;
+import util.DialogUtil;
 
 import java.nio.file.Path;
-import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 
 public class ExamOverviewController {
@@ -52,21 +52,21 @@ public class ExamOverviewController {
 
     public void setExam(Exam exam) {
         this.exam = exam;
-        title.textProperty().bindBidirectional(exam.title);
-        subject.textProperty().bindBidirectional(exam.subject);
-        modality.textProperty().bindBidirectional(exam.modality);
-        duration.textProperty().bindBidirectional(exam.duration);
-        weight.textProperty().bindBidirectional(exam.weight);
-        numQuestions.textProperty().bindBidirectional(exam.numQuestions);
-        logo.imageProperty().bindBidirectional(exam.logo.imageProperty());
-        examDate.valueProperty().bindBidirectional(exam.examDate);
-        publicationDate.valueProperty().bindBidirectional(exam.publicationDate);
-        reviewDate.valueProperty().bindBidirectional(exam.reviewDate);
-        nameField.selectedProperty().bindBidirectional(exam.nameField);
-        surnameField.selectedProperty().bindBidirectional(exam.surnameField);
-        idNumberField.selectedProperty().bindBidirectional(exam.idNumberField);
-        groupField.selectedProperty().bindBidirectional(exam.groupField);
-        instructionDetails.textProperty().bindBidirectional(exam.instructionDetails);
+        title.textProperty().bindBidirectional(exam.titleProperty());
+        subject.textProperty().bindBidirectional(exam.subjectProperty());
+        modality.textProperty().bindBidirectional(exam.modalityProperty());
+        duration.textProperty().bindBidirectional(exam.durationProperty());
+        weight.textProperty().bindBidirectional(exam.weightProperty());
+        numQuestions.textProperty().bindBidirectional(exam.numQuestionsProperty());
+        logo.imageProperty().bindBidirectional(exam.getLogoView().imageProperty());
+        examDate.valueProperty().bindBidirectional(exam.examDateProperty());
+        publicationDate.valueProperty().bindBidirectional(exam.publicationDateProperty());
+        reviewDate.valueProperty().bindBidirectional(exam.reviewDateProperty());
+        nameField.selectedProperty().bindBidirectional(exam.nameFieldProperty());
+        surnameField.selectedProperty().bindBidirectional(exam.surnameFieldProperty());
+        idNumberField.selectedProperty().bindBidirectional(exam.idNumberFieldProperty());
+        groupField.selectedProperty().bindBidirectional(exam.groupFieldProperty());
+        instructionDetails.textProperty().bindBidirectional(exam.instructionDetailsProperty());
 
         UnaryOperator<TextFormatter.Change> integerFilter = change -> {
             String input = change.getText();
@@ -83,19 +83,14 @@ public class ExamOverviewController {
 
     @FXML
     public void openLogoImageFile() {
-        Path path = Dialogs.showOpenImageDialog(MainApp.getPrimaryStage());
+        Path path = DialogUtil.showOpenImageDialog(MainApp.getPrimaryStage());
 
         if(path != null) {
             try {
                 Image image = new Image("file:///" + path.toString());
                 logo.setImage(image);
             } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.initOwner(MainApp.getPrimaryStage());
-                alert.setTitle(ResourceBundle.getBundle(MainApp.LABELS).getString("title.imageError"));
-                alert.setHeaderText(null);
-                alert.setContentText(ResourceBundle.getBundle(MainApp.LABELS).getString("txt.imageError"));
-                alert.showAndWait();
+                DialogUtil.showInfoDialog("txt.imageError");
             }
         }
     }

@@ -13,9 +13,9 @@ import java.util.List;
 
 public class EssayQuestion extends Question {
 
-    public ObservableList<Section> sections;
-    public IntegerProperty answeringSpace;
-    public ObservableList<ContentObject> solutionObjects;
+    private ObservableList<Section> sections;
+    private IntegerProperty answeringSpace;
+    private ObservableList<ContentObject> solutionObjects;
 
     /**
      * ----- GETTERS -----
@@ -26,6 +26,10 @@ public class EssayQuestion extends Question {
 
     public Integer getAnsweringSpace() {
         return answeringSpace.getValue();
+    }
+
+    public List<ContentObject> getSolutionObjects() {
+        return solutionObjects;
     }
     /** ------------------- **/
 
@@ -40,6 +44,9 @@ public class EssayQuestion extends Question {
         this.answeringSpace.setValue(answeringSpace);
     }
 
+    public void setSolutionObjects(List<ContentObject> bodyObjects) {
+        this.solutionObjects = FXCollections.observableList(bodyObjects);
+    }
     /**
      * -------------------
      **/

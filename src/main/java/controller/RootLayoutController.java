@@ -1,15 +1,14 @@
 package controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
 import model.Exam;
 import org.dizitart.no2.exceptions.UniqueConstraintException;
+import util.DialogUtil;
 import util.ExamParser;
 import util.FileUtil;
 
 import java.nio.file.Path;
-import java.util.ResourceBundle;
 
 public class RootLayoutController {
 
@@ -28,24 +27,24 @@ public class RootLayoutController {
 
     @FXML
     public void showSettingsDialog() {
-        Dialogs.showSettingsDialog();
+        DialogUtil.showSettingsDialog();
     }
 
     @FXML
     public void showAboutDialog() {
-        Dialogs.showAboutDialog();
+        DialogUtil.showAboutDialog();
     }
 
     @FXML
     public void showOpenExamDialog() {
-        Path path = Dialogs.showOpenExamDialog(MainApp.getPrimaryStage());
+        Path path = DialogUtil.showOpenExamDialog(MainApp.getPrimaryStage());
 
         if (path != null) {
             String examJson = FileUtil.readFile(path);
             try {
                 ExamParser examParser = new ExamParser(examJson);
 
-                if (MainApp.closeConfirmation()) {
+                if (DialogUtil.showCloseConfirmationDialog()) {
                     sceneManager.changeExamOverviewScene(examParser.parseExam());
                 } else {
                     if (!changes()) {
@@ -53,12 +52,7 @@ public class RootLayoutController {
                     }
                 }
             } catch (IllegalArgumentException e) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.initOwner(MainApp.getPrimaryStage());
-                alert.setTitle(ResourceBundle.getBundle(MainApp.LABELS).getString("title.jsonError"));
-                alert.setHeaderText(null);
-                alert.setContentText(ResourceBundle.getBundle(MainApp.LABELS).getString("txt.jsonError"));
-                alert.showAndWait();
+                DialogUtil.showInfoDialog("txt.jsonError");
             }
         }
     }
@@ -66,9 +60,9 @@ public class RootLayoutController {
     @FXML
     public void showSaveAsExamDialog() {
         if(!exam.getTitle().equals("")) {
-            Dialogs.showSaveAsExamDialog(exam);
+            DialogUtil.showSaveAsExamDialog(exam);
         } else {
-            Dialogs.showInfoDialog("txt.titleMandatory");
+            DialogUtil.showInfoDialog("txt.titleMandatory");
         }
     }
 
@@ -81,20 +75,20 @@ public class RootLayoutController {
                 if (examOLD.getTitle().equals("")) {
                     try {
                         db.addExam(new ExamParser(exam).toJson());
-                        Dialogs.showInfoDialog("txt.examSaved");
+                        DialogUtil.showInfoDialog("txt.examSaved");
                         examOLD = exam.copy();
                     } catch (UniqueConstraintException e) {
-                        Dialogs.showInfoDialog("txt.titleInUse");
+                        DialogUtil.showInfoDialog("txt.titleInUse");
                     }
 
                 } else {
                     db.updateExam(examOLD.getTitle(), new ExamParser(exam).toJson());
                     examOLD = exam.copy();
-                    Dialogs.showInfoDialog("txt.examSaved");
+                    DialogUtil.showInfoDialog("txt.examSaved");
                 }
             }
         } else {
-            Dialogs.showInfoDialog("txt.titleMandatory");
+            DialogUtil.showInfoDialog("txt.titleMandatory");
         }
 
     }
@@ -112,7 +106,7 @@ public class RootLayoutController {
     public void handleNewFile() {
         Exam aux = new Exam();
 
-        if (MainApp.closeConfirmation()) {
+        if (DialogUtil.showCloseConfirmationDialog()) {
             sceneManager.changeExamOverviewScene(aux);
         } else {
             if (!changes()) {
@@ -123,7 +117,7 @@ public class RootLayoutController {
 
     @FXML
     public void handleClose() {
-        if (MainApp.closeConfirmation()) {
+        if (DialogUtil.showCloseConfirmationDialog()) {
             sceneManager.back();
         } else {
             if (!changes()) {
@@ -134,7 +128,7 @@ public class RootLayoutController {
 
     @FXML
     public void handleDelete() {
-        if (sceneManager.deleteConfirmation()) {
+        if (DialogUtil.showDeleteConfirmationDialog()) {
             DatabaseManager databaseManager = DatabaseManager.getInstance();
             databaseManager.deleteExam(exam.getTitle());
             sceneManager.back();

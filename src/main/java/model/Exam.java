@@ -17,32 +17,25 @@ import java.util.List;
 
 public class Exam {
 
-    public StringProperty title;
-    public StringProperty subject;
-    public StringProperty modality;
+    private StringProperty title;
+    private StringProperty subject;
+    private StringProperty modality;
+    private StringProperty duration;
+    private StringProperty weight;
+    private StringProperty numQuestions;
+    private ImageView logo;
+    private ObjectProperty<LocalDate> examDate;
+    private ObjectProperty<LocalDate> publicationDate;
+    private ObjectProperty<LocalDate> reviewDate;
+    private BooleanProperty nameField;
+    private BooleanProperty surnameField;
+    private BooleanProperty idNumberField;
+    private BooleanProperty groupField;
+    private StringProperty instructionDetails;
 
-    public StringProperty duration;
-    public StringProperty weight;
-    public StringProperty numQuestions;
+    private ObservableList<ExamPart> parts;
 
-    public ImageView logo;
-
-    public ObjectProperty<LocalDate> examDate;
-    public ObjectProperty<LocalDate> publicationDate;
-    public ObjectProperty<LocalDate> reviewDate;
-
-    public BooleanProperty nameField;
-    public BooleanProperty surnameField;
-    public BooleanProperty idNumberField;
-    public BooleanProperty groupField;
-
-    public StringProperty instructionDetails;
-
-    public ObservableList<ExamPart> parts;
-
-    /**
-     * ----- GETTERS -----
-     **/
+    /** ----- GETTERS ----- **/
     public String getTitle() {
         return title.getValue();
     }
@@ -106,11 +99,85 @@ public class Exam {
     public List<ExamPart> getParts() {
         return parts;
     }
+
+    public StringProperty titleProperty() {
+        return title;
+    }
+
+    public StringProperty subjectProperty() {
+        return subject;
+    }
+
+    public StringProperty modalityProperty() {
+        return modality;
+    }
+
+    public StringProperty durationProperty() {
+        return duration;
+    }
+
+    public StringProperty weightProperty() {
+        return weight;
+    }
+
+    public StringProperty numQuestionsProperty() {
+        return numQuestions;
+    }
+
+    public ObjectProperty<LocalDate> examDateProperty() {
+        return examDate;
+    }
+
+    public ObjectProperty<LocalDate> publicationDateProperty() {
+        return publicationDate;
+    }
+
+    public ObjectProperty<LocalDate> reviewDateProperty() {
+        return reviewDate;
+    }
+
+    public boolean isNameField() {
+        return nameField.get();
+    }
+
+    public BooleanProperty nameFieldProperty() {
+        return nameField;
+    }
+
+    public boolean isSurnameField() {
+        return surnameField.get();
+    }
+
+    public BooleanProperty surnameFieldProperty() {
+        return surnameField;
+    }
+
+    public boolean isIdNumberField() {
+        return idNumberField.get();
+    }
+
+    public BooleanProperty idNumberFieldProperty() {
+        return idNumberField;
+    }
+
+    public boolean isGroupField() {
+        return groupField.get();
+    }
+
+    public BooleanProperty groupFieldProperty() {
+        return groupField;
+    }
+
+    public StringProperty instructionDetailsProperty() {
+        return instructionDetails;
+    }
+
+    public ImageView getLogoView() {
+        return this.logo;
+    }
     /** ------------------- **/
 
-    /**
-     * ----- SETTERS -----
-     **/
+    /** ----- SETTERS ----- **/
     public void setTitle(String title) {
         this.title.setValue(title);
     }
@@ -178,10 +245,7 @@ public class Exam {
     public void setParts(List<ExamPart> parts) {
         this.parts = FXCollections.observableList(parts);
     }
-
-    /**
-     * -------------------
-     **/
+    /** ------------------- **/
 
     public Exam() {
         this.title = new SimpleStringProperty("");

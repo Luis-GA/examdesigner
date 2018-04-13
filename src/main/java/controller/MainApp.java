@@ -4,18 +4,14 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import util.DialogUtil;
 
 import java.io.IOException;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
@@ -84,34 +80,9 @@ public class MainApp extends Application {
         }
     }
 
-    public static boolean closeConfirmation() {
-        SceneManager sceneManager = SceneManager.getInstance();
-        if (sceneManager.changes()) {
-            Alert closeConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
-
-            Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(
-                    ButtonType.OK
-            );
-            exitButton.setText(ResourceBundle.getBundle(MainApp.LABELS).getString("btn.exit"));
-            closeConfirmation.setHeaderText(null);
-            closeConfirmation.setContentText(ResourceBundle.getBundle(MainApp.LABELS).getString("txt.exit"));
-            closeConfirmation.initModality(Modality.APPLICATION_MODAL);
-            closeConfirmation.initOwner(primaryStage);
-
-            Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
-            if (closeResponse.isPresent()) {
-                return ButtonType.OK.equals(closeResponse.get());
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
-    }
-
     private EventHandler<WindowEvent> confirmCloseEventHandler = event -> {
 
-        if (!closeConfirmation()) {
+        if (!DialogUtil.showCloseConfirmationDialog()) {
             event.consume();
         }
     };
