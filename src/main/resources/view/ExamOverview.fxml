@@ -38,7 +38,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-              <Label text="%lbl.title" />
+              <Label text="%lbl.titleMandatory" />
               <TextField fx:id="title" prefWidth="300.0" GridPane.columnIndex="1" />
             <Label layoutX="10.0" layoutY="15.0" text="%lbl.subject" GridPane.rowIndex="1" />
             <TextField fx:id="subject" layoutX="10.0" layoutY="10.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
