@@ -135,6 +135,8 @@ public class WelcomeOverviewController {
         if(examJson != null) {
             try {
                 ExamParser examParser = new ExamParser(examJson);
+                DatabaseManager databaseManager = DatabaseManager.getInstance();
+                databaseManager.addExam(examJson);
                 sceneManager.setExamOverviewScene(examParser.parseExam());
             } catch (IllegalArgumentException e) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);

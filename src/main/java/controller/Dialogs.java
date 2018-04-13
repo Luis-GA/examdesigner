@@ -2,6 +2,7 @@ package controller;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
@@ -100,5 +101,16 @@ public class Dialogs {
 
     public static void showExportDialog(Stage stage, String questions) {
         FileUtil.writeJsonFile(stage, questions);
+    }
+
+    public static void showInfoDialog(String labelKey) {
+        Alert languageChangedDialog = new Alert(Alert.AlertType.INFORMATION);
+        languageChangedDialog.setHeaderText(null);
+        languageChangedDialog.setContentText(ResourceBundle.getBundle(MainApp.LABELS).getString(labelKey));
+
+        Stage stage = (Stage) languageChangedDialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("images/exam_designer_256.png"));
+
+        languageChangedDialog.showAndWait();
     }
 }

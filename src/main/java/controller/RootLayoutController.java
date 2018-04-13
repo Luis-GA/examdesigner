@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
 import model.Exam;
+import org.dizitart.no2.exceptions.UniqueConstraintException;
 import util.ExamParser;
 import util.FileUtil;
 
@@ -69,8 +70,22 @@ public class RootLayoutController {
 
     @FXML
     public void handleSaveExam() {
-        DatabaseManager db = DatabaseManager.getInstance();
-        db.addExam(new ExamParser(exam).toJson());
+        if(changes()) {
+            DatabaseManager db = DatabaseManager.getInstance();
+
+            if(examOLD.getTitle().equals("")) {
+                try {
+                    db.addExam(new ExamParser(exam).toJson());
+                } catch (UniqueConstraintException e) {
+                    Dialogs.showInfoDialog("txt.examSaved");
+                }
+
+            } else {
+                db.updateExam(examOLD.getTitle(), new ExamParser(exam).toJson());
+            }
+            Dialogs.showInfoDialog("txt.titleInUse");
+        }
+
         examOLD = exam.copy();
     }
 
