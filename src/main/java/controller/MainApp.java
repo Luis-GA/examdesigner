@@ -27,7 +27,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        MainApp.primaryStage = primaryStage;
+        this.primaryStage = primaryStage;
         MainApp.primaryStage.setMinWidth(900);
         MainApp.primaryStage.setMinHeight(600);
         MainApp.primaryStage.setTitle(ResourceBundle.getBundle(MainApp.LABELS).getString("title.applicationName"));

@@ -19,11 +19,9 @@ public class SettingsDialogController extends DialogController {
 
     @FXML
     private ComboBox languageComboBox;
-
     @FXML
     private Button okButton;
 
-    private ObservableList<String> languagesList;
     private HashMap<String, String> languagesMap;
     private boolean languageChanged;
 
@@ -39,6 +37,8 @@ public class SettingsDialogController extends DialogController {
 
         languageChanged = false;
         okButton.setDisable(true);
+
+        ObservableList<String> languagesList;
 
         languagesMap = new HashMap<>();
         languagesList = FXCollections.observableArrayList();

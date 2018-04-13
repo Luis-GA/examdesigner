@@ -23,9 +23,9 @@ public class DatabaseManager {
     private Nitrite db = Nitrite.builder().filePath("exam-designer.db").openOrCreate();
     private static System.Logger logger = System.getLogger(DatabaseManager.class.getName());
 
-    private final String QUESTIONS = "questions";
-    private final String EXAMS = "exams";
-    private final String TITLE = "title";
+    private static final String questions_collection = "questions";
+    private static final String exams_collection = "exams";
+    private static final String title_attribute = "title";
 
     private DatabaseManager() {}
 
@@ -46,71 +46,71 @@ public class DatabaseManager {
             IndexOptions questionIndexOptions = new IndexOptions();
             questionIndexOptions.setIndexType(IndexType.NonUnique);
 
-            NitriteCollection questions = db.getCollection(QUESTIONS);
+            NitriteCollection questions = db.getCollection(questions_collection);
             questions.createIndex("type", questionIndexOptions);
             questions.createIndex("topic", questionIndexOptions);
 
-            NitriteCollection exams = db.getCollection(EXAMS);
-            exams.createIndex(TITLE, examIndexOptions);
+            NitriteCollection exams = db.getCollection(exams_collection);
+            exams.createIndex(title_attribute, examIndexOptions);
         } catch (IndexingException e) {
             logger.log(System.Logger.Level.INFO, "Indexes already exist");
         }
     }
 
     public void addQuestion(String questionString) {
-        NitriteCollection questions = db.getCollection(QUESTIONS);
+        NitriteCollection questions = db.getCollection(questions_collection);
         NitriteMapper nitriteMapper = new JacksonMapper();
         Document questionDocument = nitriteMapper.parse(questionString);
         questions.insert(questionDocument);
     }
 
     public void updateQuestion(Integer questionId, String questionString) {
-        NitriteCollection collection = db.getCollection(QUESTIONS);
+        NitriteCollection collection = db.getCollection(questions_collection);
         NitriteMapper nitriteMapper = new JacksonMapper();
         Document questionDocument = nitriteMapper.parse(questionString);
         collection.update(eq("_id", questionId), questionDocument);
     }
 
     public void deleteQuestion(Integer questionId) {
-        NitriteCollection collection = db.getCollection(QUESTIONS);
+        NitriteCollection collection = db.getCollection(questions_collection);
         collection.remove(eq("_id", questionId));
     }
 
-    public void addExam(String examString) throws UniqueConstraintException {
-        NitriteCollection exams = db.getCollection(EXAMS);
+    public void addExam(String examString) {
+        NitriteCollection exams = db.getCollection(exams_collection);
         NitriteMapper nitriteMapper = new JacksonMapper();
         Document examDocument = nitriteMapper.parse(examString);
         exams.insert(examDocument);
     }
 
     public void updateExam(String examTitle, String examString) {
-        NitriteCollection collection = db.getCollection(EXAMS);
+        NitriteCollection collection = db.getCollection(exams_collection);
         NitriteMapper nitriteMapper = new JacksonMapper();
         Document examDocument = nitriteMapper.parse(examString);
-        collection.update(eq(TITLE, examTitle), examDocument);
+        collection.update(eq(title_attribute, examTitle), examDocument);
     }
 
     public void deleteExam(String examTitle) {
-        NitriteCollection collection = db.getCollection(EXAMS);
-        collection.remove(eq(TITLE, examTitle));
+        NitriteCollection collection = db.getCollection(exams_collection);
+        collection.remove(eq(title_attribute, examTitle));
     }
 
     public List<String> getExams() {
 
-        NitriteCollection exams = db.getCollection(EXAMS);
+        NitriteCollection exams = db.getCollection(exams_collection);
         Cursor cursor = exams.find();
 
         ArrayList<String> examsTitles = new ArrayList<>();
         for (Document exam : cursor) {
-            examsTitles.add((String)exam.get(TITLE));
+            examsTitles.add((String)exam.get(title_attribute));
         }
 
         return examsTitles;
     }
 
     public Exam getExam(String title) {
-        NitriteCollection collection = db.getCollection(EXAMS);
-        Cursor cursor = collection.find(eq(TITLE, title));
+        NitriteCollection collection = db.getCollection(exams_collection);
+        Cursor cursor = collection.find(eq(title_attribute, title));
         Document doc = cursor.firstOrDefault();
         JacksonMapper jacksonMapper = new JacksonMapper();
 
@@ -120,7 +120,7 @@ public class DatabaseManager {
     }
 
     public void exportQuestions(Stage stage) {
-        NitriteCollection collection = db.getCollection(QUESTIONS);
+        NitriteCollection collection = db.getCollection(questions_collection);
         Cursor cursor = collection.find();
 
         ArrayList<QuestionParser> questionsList = new ArrayList<>();
@@ -145,7 +145,7 @@ public class DatabaseManager {
         Dialogs.showExportDialog(stage, questions.toJson());
     }
 
-    public void importQuestions(String jsonString) throws IllegalArgumentException{
+    public void importQuestions(String jsonString) {
 
             List<QuestionParser> questions = new Questions(jsonString).getQuestions();
 

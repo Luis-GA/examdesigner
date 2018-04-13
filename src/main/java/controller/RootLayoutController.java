@@ -65,28 +65,38 @@ public class RootLayoutController {
 
     @FXML
     public void showSaveAsExamDialog() {
-        Dialogs.showSaveAsExamDialog(exam);
+        if(!exam.getTitle().equals("")) {
+            Dialogs.showSaveAsExamDialog(exam);
+        } else {
+            Dialogs.showInfoDialog("txt.titleMandatory");
+        }
     }
 
     @FXML
     public void handleSaveExam() {
-        if(changes()) {
-            DatabaseManager db = DatabaseManager.getInstance();
+        if(!exam.getTitle().equals("")) {
+            if (changes()) {
+                DatabaseManager db = DatabaseManager.getInstance();
 
-            if(examOLD.getTitle().equals("")) {
-                try {
-                    db.addExam(new ExamParser(exam).toJson());
-                } catch (UniqueConstraintException e) {
-                    Dialogs.showInfoDialog("txt.titleInUse");
+                if (examOLD.getTitle().equals("")) {
+                    try {
+                        db.addExam(new ExamParser(exam).toJson());
+                        Dialogs.showInfoDialog("txt.examSaved");
+                        examOLD = exam.copy();
+                    } catch (UniqueConstraintException e) {
+                        Dialogs.showInfoDialog("txt.titleInUse");
+                    }
+
+                } else {
+                    db.updateExam(examOLD.getTitle(), new ExamParser(exam).toJson());
+                    examOLD = exam.copy();
+                    Dialogs.showInfoDialog("txt.examSaved");
                 }
-
-            } else {
-                db.updateExam(examOLD.getTitle(), new ExamParser(exam).toJson());
             }
-            Dialogs.showInfoDialog("txt.examSaved");
+        } else {
+            Dialogs.showInfoDialog("txt.titleMandatory");
         }
 
-        examOLD = exam.copy();
     }
 
     public void setExam(Exam exam) {

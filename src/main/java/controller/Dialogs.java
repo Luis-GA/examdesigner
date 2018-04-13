@@ -19,8 +19,6 @@ import java.util.ResourceBundle;
 
 public class Dialogs {
 
-    private static System.Logger logger = System.getLogger(DialogController.class.getName());
-
     private static void showDialog(String view, String title) {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
@@ -46,6 +44,7 @@ public class Dialogs {
             dialogStage.showAndWait();
 
         } catch (IOException e) {
+            System.Logger logger = System.getLogger(DialogController.class.getName());
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while showing dialog");
         }
     }
