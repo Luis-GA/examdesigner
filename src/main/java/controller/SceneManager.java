@@ -154,6 +154,11 @@ public class SceneManager {
         closeConfirmation.initOwner(MainApp.getPrimaryStage());
 
         Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
-        return ButtonType.OK.equals(closeResponse.get());
+
+        if (closeResponse.isPresent()) {
+            return ButtonType.OK.equals(closeResponse.get());
+        } else {
+            return false;
+        }
     }
 }

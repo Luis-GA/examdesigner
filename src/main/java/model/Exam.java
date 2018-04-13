@@ -255,6 +255,11 @@ public class Exam {
         return true;
     }
 
+    @Override
+    public int hashCode(){
+        return this.title.hashCode();
+    }
+
     public Exam copy() {
 
         Exam aux = new Exam();

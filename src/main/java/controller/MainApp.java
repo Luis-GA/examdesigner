@@ -27,7 +27,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        this.primaryStage = primaryStage;
+        MainApp.primaryStage = primaryStage;
         MainApp.primaryStage.setMinWidth(900);
         MainApp.primaryStage.setMinHeight(600);
         MainApp.primaryStage.setTitle(ResourceBundle.getBundle(MainApp.LABELS).getString("title.applicationName"));
@@ -48,7 +48,7 @@ public class MainApp extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("../view/WelcomeOverview.fxml"));
             loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
-            AnchorPane welcomeOverview = (AnchorPane) loader.load();
+            AnchorPane welcomeOverview = loader.load();
 
             Scene scene;
             if (sceneOLD != null) {
@@ -99,11 +99,14 @@ public class MainApp extends Application {
             closeConfirmation.initOwner(primaryStage);
 
             Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
-            if (!ButtonType.OK.equals(closeResponse.get())) {
+            if (closeResponse.isPresent()) {
+                return ButtonType.OK.equals(closeResponse.get());
+            } else {
                 return false;
             }
+        } else {
+            return true;
         }
-        return true;
     }
 
     private EventHandler<WindowEvent> confirmCloseEventHandler = event -> {
