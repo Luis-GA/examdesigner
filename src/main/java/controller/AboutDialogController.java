@@ -2,6 +2,7 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
+import javafx.stage.Stage;
 
 import java.awt.*;
 import java.net.URI;
@@ -28,5 +29,13 @@ public class AboutDialogController extends DialogController {
     @FXML
     public void handleClose() {
         dialogStage.close();
+    }
+
+    public void setDialogStage(Stage dialogStage) {
+        this.dialogStage = dialogStage;
+    }
+
+    public Stage getDialogStage() {
+        return this.dialogStage;
     }
 }

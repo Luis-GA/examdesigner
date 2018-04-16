@@ -1,12 +1,16 @@
 package controller;
 
 import javafx.stage.Stage;
+import model.ContentObject;
+import java.util.List;
 
-public class DialogController {
+public abstract class DialogController {
 
     protected Stage dialogStage;
 
-    public void setDialogStage(Stage dialogStage) {
-        this.dialogStage = dialogStage;
-    }
+    public abstract void setDialogStage(Stage dialogStage);
+
+    public abstract Stage getDialogStage();
+
+    public void setContentObjects(List<ContentObject> contentObjects) {}
 }

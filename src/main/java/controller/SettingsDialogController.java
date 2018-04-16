@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.stage.Stage;
 import util.DialogUtil;
 import util.FileUtil;
 
@@ -109,5 +110,13 @@ public class SettingsDialogController extends DialogController {
     private void handleExport() {
         handleChange();
         databaseManager.exportQuestions(dialogStage);
+    }
+
+    public void setDialogStage(Stage dialogStage) {
+        this.dialogStage = dialogStage;
+    }
+
+    public Stage getDialogStage() {
+        return this.dialogStage;
     }
 }

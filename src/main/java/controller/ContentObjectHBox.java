@@ -77,7 +77,8 @@ public class ContentObjectHBox extends GridPane {
             if(contentObject.getType() == ContentObject.Type.IMAGE) {
                 typesComboBox.getSelectionModel().select(IMAGE);
                 imageLoaded = true;
-                image = contentObject.getImageProperty();
+                image.setImage(contentObject.getImage());
+                openImageButton.setVisible(false);
             } else {
                 title.setText(contentObject.getText());
             }
@@ -130,7 +131,6 @@ public class ContentObjectHBox extends GridPane {
             }
         }
     }
-
 
     public ContentObject getContentObject() {
         ContentObject aux = new ContentObject();

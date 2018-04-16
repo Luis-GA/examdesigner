@@ -13,17 +13,19 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.ContentObject;
 import model.Exam;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DialogUtil {
 
-    private static void showDialog(String view, String title) {
+    private static DialogController showDialog(String view, String title) {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
@@ -45,24 +47,27 @@ public class DialogUtil {
             controller.setDialogStage(dialogStage);
 
             // Show the dialog and wait until the user closes it
-            dialogStage.showAndWait();
+            return controller;
 
         } catch (IOException e) {
             System.Logger logger = System.getLogger(DialogController.class.getName());
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while showing dialog");
         }
+        return null;
     }
 
-    public static void showContentObjectDialog() {
-        showDialog("../view/ContentObjectDialog.fxml", "title.contentObject");
+    public static void showContentObjectDialog(List<ContentObject> contentObjects) {
+        DialogController controller = showDialog("../view/ContentObjectDialog.fxml", "title.contentObject");
+        controller.getDialogStage().show();
+        controller.setContentObjects(contentObjects);
     }
 
     public static void showSettingsDialog() {
-        showDialog("../view/SettingsDialog.fxml", "title.settings");
+        showDialog("../view/SettingsDialog.fxml", "title.settings").getDialogStage().showAndWait();
     }
 
     public static void showAboutDialog() {
-        showDialog("../view/AboutDialog.fxml", "title.about");
+        showDialog("../view/AboutDialog.fxml", "title.about").getDialogStage().showAndWait();
     }
 
     public static Path showOpenExamDialog(Stage stage) {
