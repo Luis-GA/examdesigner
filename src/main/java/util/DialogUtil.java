@@ -53,6 +53,10 @@ public class DialogUtil {
         }
     }
 
+    public static void showContentObjectDialog() {
+        showDialog("../view/ContentObjectDialog.fxml", "title.contentObject");
+    }
+
     public static void showSettingsDialog() {
         showDialog("../view/SettingsDialog.fxml", "title.settings");
     }

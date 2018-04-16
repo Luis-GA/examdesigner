@@ -1,5 +1,6 @@
 package util;
 
+import javafx.scene.image.ImageView;
 import model.ContentObject;
 
 public class ContentObjectParser {
@@ -16,7 +17,7 @@ public class ContentObjectParser {
         ContentObject aux = new ContentObject();
 
         if (this.type == ContentObject.Type.IMAGE)
-            aux.setContent(ImageUtil.getImage(this.content));
+            aux.setContent(new ImageView(ImageUtil.getImage(this.content)));
         else if (this.type == ContentObject.Type.TEXT)
             aux.setContent(this.content);
 

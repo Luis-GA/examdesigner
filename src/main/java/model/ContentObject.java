@@ -1,6 +1,7 @@
 package model;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import util.ImageUtil;
 
 public class ContentObject {
@@ -18,14 +19,14 @@ public class ContentObject {
         this.type = Type.TEXT;
     }
 
-    public void setContent(Image content) {
+    public void setContent(ImageView content) {
         this.content = content;
         this.type = Type.IMAGE;
     }
 
     public Image getImage() {
         if (this.type == Type.IMAGE)
-            return (Image) this.content;
+            return ((ImageView) content).getImage();
         else
             return null;
     }
@@ -48,5 +49,12 @@ public class ContentObject {
 
     public Type getType() {
         return this.type;
+    }
+
+    public ImageView getImageProperty() {
+        if (this.type == Type.IMAGE)
+            return ((ImageView) content);
+        else
+            return null;
     }
 }
