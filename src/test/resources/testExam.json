@@ -22,32 +22,144 @@
       "instructions": "",
       "questions": [
         {
+          "bodyObjects": [],
           "choices": {
             "a": {
-              "title": "Utiliza las columnas de la tabla que se muestra a continuación para describir los pasos necesarios para generar la secuencia cifrante del generador G1",
-              "bodyObjects": []
+              "bodyObjects": [],
+              "title": "S\u00f3lo a una mitad de los bits cada bloque del texto en claro"
             },
             "b": {
-              "title": "Escribe en la cabecera la operación que se realiza en el apartado 1.1. Muestra la secuencia obtenida en la pregunta 1.1 y su período.",
-              "bodyObjects": []
+              "bodyObjects": [],
+              "title": "A todos los bits de cada bloque del texto en claro"
             },
             "c": {
-              "title": "Respecto a la secuencia S1 obtenida en la pregunta 1.2. ¿Se trata de una m-secuencia? ¿Cumple esta secuencia S1 los tres postulados de Golomb? Justifica detalladamente tus respuestas (NOTA describe la autocorrelación fuera de fase sólo para las 5 primeras iteraciones)",
-              "bodyObjects": []
+              "bodyObjects": [],
+              "title": "S\u00f3lo a la mitad de los bits la clave"
             },
             "d": {
-              "title": "Se desea cifrar el mensaje M utilizando un nuevo generador G que aumenta la complejidad lineal de G1 uniendo en una operación XOR (suma mod 2) las secuencias cifrantes generadas por G1 y G2. Realiza las operaciones necesarias para obtener el cifrado de M",
-              "bodyObjects": []
+              "bodyObjects": [],
+              "title": "S\u00f3lo a los 48 bits de salida de las cajas S del DES"
             }
           },
           "correctChoices": [
-            "c"
+            "S\u00f3lo a una mitad de los bits cada bloque del texto en claro"
           ],
-          "title": "Si las distancias entre repeticiones de cadenas en el criptograma cifrado con algoritmo de Vigenère son 35, 125, 70:",
+          "duration": 0,
+          "title": "Un cifrador tipo Feistel aplicada operaciones con subclaves en cada vuelta:",
           "type": "TEST",
+          "weight": 0
+        },
+        {
           "bodyObjects": [],
-          "weight": 0,
-          "duration": 0
+          "choices": {
+            "a": {
+              "bodyObjects": [],
+              "title": "Se aplica l\u00f3gica booleana"
+            },
+            "b": {
+              "bodyObjects": [],
+              "title": "Se usan funciones lineales para poder luego descifrar"
+            },
+            "c": {
+              "bodyObjects": [],
+              "title": "Se aplican varias vueltas o rondas en la cifra de cada bloque"
+            },
+            "d": {
+              "bodyObjects": [],
+              "title": "Se usan claves mayores que 64 bits"
+            }
+          },
+          "correctChoices": [
+            "Se aplican varias vueltas o rondas en la cifra de cada bloque"
+          ],
+          "duration": 0,
+          "title": "Para que los algoritmos de cifra sim\u00e9trica tengan fortaleza:",
+          "type": "TEST",
+          "weight": 0
+        },
+        {
+          "bodyObjects": [],
+          "choices": {
+            "a": {
+              "bodyObjects": [],
+              "title": "Se podr\u00eda criptoanalizar m\u00e1s f\u00e1cilmente"
+            },
+            "b": {
+              "bodyObjects": [],
+              "title": "Se podr\u00eda descifrar el criptograma m\u00e1s f\u00e1cilmente"
+            },
+            "c": {
+              "bodyObjects": [],
+              "title": "No pasar\u00eda nada"
+            },
+            "d": {
+              "bodyObjects": [],
+              "title": "Ser\u00eda aconsejable para que fuese m\u00e1s r\u00e1pido"
+            }
+          },
+          "correctChoices": [
+            "Se podr\u00eda criptoanalizar m\u00e1s f\u00e1cilmente"
+          ],
+          "duration": 0,
+          "title": "Si un algoritmo sim\u00e9trico de n vueltas lo implementamos con menos vueltas:",
+          "type": "TEST",
+          "weight": 0
+        },
+        {
+          "bodyObjects": [],
+          "choices": {
+            "a": {
+              "bodyObjects": [],
+              "title": "Cifra bloques de texto en claro con una clave que est\u00e1 en un libro"
+            },
+            "b": {
+              "bodyObjects": [],
+              "title": "Cifra bloques de texto en claro independientes"
+            },
+            "c": {
+              "bodyObjects": [],
+              "title": "Cifra bloques de texto en claro de 64 bits"
+            },
+            "d": {
+              "bodyObjects": [],
+              "title": "Cifra bloques de texto en claro usando una segunda clave"
+            }
+          },
+          "correctChoices": [
+            "Cifra bloques de texto en claro independientes"
+          ],
+          "duration": 0,
+          "title": "El m\u00e9todo de cifra Electronic CodeBook ECB tiene como caracter\u00edstica que:",
+          "type": "TEST",
+          "weight": 0
+        },
+        {
+          "bodyObjects": [],
+          "choices": {
+            "a": {
+              "bodyObjects": [],
+              "title": "1973"
+            },
+            "b": {
+              "bodyObjects": [],
+              "title": "1974"
+            },
+            "c": {
+              "bodyObjects": [],
+              "title": "1976"
+            },
+            "d": {
+              "bodyObjects": [],
+              "title": "1980"
+            }
+          },
+          "correctChoices": [
+            "1976"
+          ],
+          "duration": 0,
+          "title": "El algoritmo DES se adopta como est\u00e1ndar en el a\u00f1o:",
+          "type": "TEST",
+          "weight": 0
         }
       ]
     },

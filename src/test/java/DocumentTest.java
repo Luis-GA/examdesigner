@@ -81,7 +81,7 @@ public class DocumentTest {
     void testDocumentGeneration() {
         ExamParser exam = new ExamParser(examJson);
         DocumentGenerator documentGenerator = new DocumentGenerator(exam);
-        String path = "exam.docx";
+        String path = "test.docx";
         documentGenerator.generateDocument(path);
     }
 }

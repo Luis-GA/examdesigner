@@ -124,6 +124,10 @@ public class DocumentGenerator {
         if(exam.weight > 0) {
             run.setText("Peso: " + exam.weight + "%");
         }
+        paragraph = document.getLastParagraph();
+        paragraph.setStyle(paragraphStyle);
+        run = paragraph.createRun();
+        run.setBold(true);
         if(exam.nameField || exam.surnameField) {
             run.addBreak();
             run.addBreak();
