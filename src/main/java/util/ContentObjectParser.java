@@ -5,8 +5,8 @@ import model.ContentObject;
 
 public class ContentObjectParser {
 
-    private ContentObject.Type type;
-    private String content;
+    protected ContentObject.Type type;
+    protected String content;
 
     public ContentObjectParser(ContentObject contentObject) {
         this.type = contentObject.getType();

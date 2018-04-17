@@ -40,4 +40,9 @@ public class ImageUtil {
         InputStream in = new ByteArrayInputStream(bytes);
         return new Image(in);
     }
+
+    public static InputStream getInputStream(String base64) {
+        byte[] bytes = Base64.getDecoder().decode(base64);
+        return new ByteArrayInputStream(bytes);
+    }
 }

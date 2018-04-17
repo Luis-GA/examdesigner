@@ -13,8 +13,8 @@ import java.util.Map;
 
 public class TestQuestionParser extends QuestionParser {
 
-    private Map<String, ChoiceParser> choices;
-    private List<String> correctChoices;
+    protected Map<String, ChoiceParser> choices;
+    protected List<String> correctChoices;
 
     public TestQuestionParser(TestQuestion testQuestion) {
         super(testQuestion);

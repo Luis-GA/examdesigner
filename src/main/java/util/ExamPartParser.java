@@ -10,12 +10,12 @@ import java.util.List;
 
 public class ExamPartParser {
 
-    private String title;
-    private Integer weight;
-    private Integer duration;
-    private String instructions;
+    protected String title;
+    protected Integer weight;
+    protected Integer duration;
+    protected String instructions;
 
-    private List<QuestionParser> questions;
+    protected List<QuestionParser> questions;
 
     public ExamPartParser(ExamPart examPart) {
         this.title = examPart.getTitle();
