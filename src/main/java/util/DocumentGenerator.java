@@ -22,7 +22,6 @@ public class DocumentGenerator {
     private static final String paragraphStyle = "paragraph";
     private static System.Logger logger = System.getLogger(DocumentGenerator.class.getName());
 
-
     public DocumentGenerator(ExamParser exam){
         this.exam = exam;
         try(FileInputStream fileInputStream = new FileInputStream("template.docx")) {
@@ -37,7 +36,6 @@ public class DocumentGenerator {
         setHead();
         setParts();
 
-        //TODO write document in path
         try {
             FileOutputStream out = new FileOutputStream(path);
             document.write(out);
