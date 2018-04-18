@@ -60,8 +60,10 @@ public class FileUtil {
 
             try (FileWriter writer = new FileWriter(file)) {
                 writer.write(jsonString);
+                DialogUtil.showInfoDialog("txt.questionsSaved");
             } catch (IOException e) {
                 logger.log(System.Logger.Level.ERROR, "Error trying to save exam as JSON file");
+                DialogUtil.showInfoDialog("txt.questionsSaveError");
             }
         }
     }

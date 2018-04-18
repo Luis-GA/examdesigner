@@ -100,7 +100,8 @@ public class SettingsDialogController extends DialogController {
         if(questionsJson != null) {
             try {
                 databaseManager.importQuestions(questionsJson);
-            } catch (IllegalArgumentException e) {
+                DialogUtil.showInfoDialog("txt.questionsImported");
+            } catch (Exception e) {
                 DialogUtil.showInfoDialog("txt.jsonError");
             }
         }

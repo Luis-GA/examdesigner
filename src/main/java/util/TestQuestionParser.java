@@ -39,6 +39,12 @@ public class TestQuestionParser extends QuestionParser {
         this.setBodyObjects(aux.getBodyObjects());
         this.setWeight(aux.getWeight());
         this.setDuration(aux.getDuration());
+        this.setDifficulty(aux.getDifficulty());
+        this.setIdQuestion(aux.getIdQuestion());
+        this.setTopic(aux.getTopic());
+        this.setSubtopic(aux.getSubtopic());
+        this.setSubject(aux.getSubject());
+        this.setCategory(aux.getCategory());
 
         this.choices = aux.choices;
         this.correctChoices = aux.correctChoices;

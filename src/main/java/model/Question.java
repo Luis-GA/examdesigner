@@ -139,5 +139,7 @@ public abstract class Question {
         this.subject = new SimpleStringProperty("");
         this.topic = new SimpleStringProperty("");
         this.subtopic = new SimpleStringProperty("");
+
+        this.idQuestion = new Integer((int)System.currentTimeMillis());
     }
 }

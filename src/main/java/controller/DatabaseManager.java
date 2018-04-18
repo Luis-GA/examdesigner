@@ -46,6 +46,7 @@ public class DatabaseManager {
             questionIndexOptions.setIndexType(IndexType.NonUnique);
 
             NitriteCollection questions = db.getCollection(QUESTIONS);
+            questions.createIndex("idQuestion", questionIndexOptions);
             questions.createIndex("type", questionIndexOptions);
             questions.createIndex("topic", questionIndexOptions);
 
