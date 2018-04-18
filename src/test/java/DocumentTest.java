@@ -11,7 +11,7 @@ public class DocumentTest {
     void testDocumentGeneration() {
         String examJson = FileUtil.readFile(Paths.get("src/test/resources/testExam.json"));
         ExamParser exam = new ExamParser(examJson);
-        DocumentGenerator documentGenerator = new DocumentGenerator(exam);
+        DocumentGenerator documentGenerator = new DocumentGenerator(exam, true);
         String path = "test.docx";
         documentGenerator.generateDocument(path);
     }

@@ -68,7 +68,7 @@ public class FileUtil {
         }
     }
 
-    public static void writeDocumentFile(Stage stage, ExamParser exam) {
+    public static void writeWordFile(Stage stage, ExamParser exam, boolean solutions) {
 
         FileChooser fileChooser = new FileChooser();
 
@@ -77,7 +77,7 @@ public class FileUtil {
 
         File file = fileChooser.showSaveDialog(stage);
         if (file != null) {
-            DocumentGenerator documentGenerator = new DocumentGenerator(exam);
+            DocumentGenerator documentGenerator = new DocumentGenerator(exam, solutions);
             try {
                 documentGenerator.generateDocument(file.getPath());
                 DialogUtil.showInfoDialog("txt.documentGenerated");

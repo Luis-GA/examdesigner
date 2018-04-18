@@ -23,9 +23,11 @@ public class DocumentGenerator {
     private static final String heading2Style = "heading2";
     private static final String paragraphStyle = "paragraph";
     private static System.Logger logger = System.getLogger(DocumentGenerator.class.getName());
+    private boolean solutions;
 
-    public DocumentGenerator(ExamParser exam){
+    public DocumentGenerator(ExamParser exam, boolean solutions){
         this.exam = exam;
+        this.solutions = solutions;
         try(FileInputStream fileInputStream = new FileInputStream("template.docx")) {
             document = new XWPFDocument(fileInputStream);
         } catch (Exception e) {
@@ -258,21 +260,23 @@ public class DocumentGenerator {
             setContentObjects(entry.getValue().bodyObjects, null);
         }
 
-        XWPFTable table;
-        table = document.createTable(1, 1);
-        setTableAlignment(table, STJc.CENTER);
-        widthCellsAcrossRow(table, 0, 0, 9000);
-        paragraph = table.getRow(0).getCell(0).getParagraphArray(0);
-        paragraph.setStyle(paragraphStyle);
-        paragraph.setSpacingAfter(0);
-        run = paragraph.createRun();
-        run.setText("Opciones correctas: ");
-        for(String correctChoice : testQuestion.correctChoices) {
-            run.addBreak();
+        if(solutions) {
+            XWPFTable table;
+            table = document.createTable(1, 1);
+            setTableAlignment(table, STJc.CENTER);
+            widthCellsAcrossRow(table, 0, 0, 9000);
+            paragraph = table.getRow(0).getCell(0).getParagraphArray(0);
+            paragraph.setStyle(paragraphStyle);
+            paragraph.setSpacingAfter(0);
             run = paragraph.createRun();
-            run.setBold(true);
-            run.addTab();
-            run.setText(correctChoice);
+            run.setText("Opciones correctas: ");
+            for (String correctChoice : testQuestion.correctChoices) {
+                run.addBreak();
+                run = paragraph.createRun();
+                run.setBold(true);
+                run.addTab();
+                run.setText(correctChoice);
+            }
         }
         document.createParagraph();
     }
@@ -291,18 +295,19 @@ public class DocumentGenerator {
             setContentObjects(section.bodyObjects, null);
         }
 
-        XWPFTable table;
-        table = document.createTable(1, 1);
-        setTableAlignment(table, STJc.CENTER);
-        widthCellsAcrossRow(table, 0, 0, 9000);
-        paragraph = table.getRow(0).getCell(0).getParagraphArray(0);
-        paragraph.setStyle(paragraphStyle);
-        paragraph.setSpacingAfter(0);
-        run = paragraph.createRun();
-        run.setText("Solución: ");
-        run.addBreak();
-        setContentObjects(essayQuestion.solutionObjects, table.getRow(0).getCell(0));
-
+        if(solutions) {
+            XWPFTable table;
+            table = document.createTable(1, 1);
+            setTableAlignment(table, STJc.CENTER);
+            widthCellsAcrossRow(table, 0, 0, 9000);
+            paragraph = table.getRow(0).getCell(0).getParagraphArray(0);
+            paragraph.setStyle(paragraphStyle);
+            paragraph.setSpacingAfter(0);
+            run = paragraph.createRun();
+            run.setText("Solución: ");
+            run.addBreak();
+            setContentObjects(essayQuestion.solutionObjects, table.getRow(0).getCell(0));
+        }
         document.createParagraph();
     }
 

@@ -59,6 +59,7 @@ public class TestQuestionParser extends QuestionParser {
         Map<String, Choice> auxMap = new HashMap<>();
 
         this.choices.forEach((k, v) -> auxMap.put(k, v.parseChoice()));
+        aux.setChoices(auxMap);
 
         return aux;
     }

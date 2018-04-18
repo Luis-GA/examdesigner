@@ -68,8 +68,17 @@ public class RootLayoutController {
 
     @FXML
     public void showGenerateDocumentDialog() {
+        showGenerateWordDialog(false);
+    }
+
+    @FXML
+    public void showGenerateSolutionsDialog() {
+        showGenerateWordDialog(true);
+    }
+
+    private void showGenerateWordDialog(boolean solutions) {
         if(!exam.getTitle().equals("")) {
-            DialogUtil.showGenerateDocumentDialog(exam);
+            DialogUtil.showGenerateWordDialog(exam, solutions);
         } else {
             DialogUtil.showInfoDialog("txt.titleMandatory");
         }

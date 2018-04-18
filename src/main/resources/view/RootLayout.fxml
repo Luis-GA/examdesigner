@@ -16,6 +16,7 @@
                         <MenuItem mnemonicParsing="false" onAction="#handleSaveExam" text="%menu.saveFile" />
                         <MenuItem mnemonicParsing="false" onAction="#showSaveAsExamDialog" text="%menu.saveFileAs" />
                   <MenuItem mnemonicParsing="false" onAction="#showGenerateDocumentDialog" text="%menu.generateDocument" />
+                  <MenuItem mnemonicParsing="false" onAction="#showGenerateSolutionsDialog" text="%menu.generateSolutions" />
                         <MenuItem mnemonicParsing="false" onAction="#showSettingsDialog" text="%menu.settings" />
                         <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#handleClose" text="%menu.close" />
                     </items>
