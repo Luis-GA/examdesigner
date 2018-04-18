@@ -12,9 +12,9 @@ import java.util.List;
 
 public class EssayQuestionParser extends QuestionParser {
 
-    private List<SectionParser> sections;
-    private Integer answeringSpace;
-    private List<ContentObjectParser> solutionObjects;
+    protected List<SectionParser> sections;
+    protected Integer answeringSpace;
+    protected List<ContentObjectParser> solutionObjects;
 
     public EssayQuestionParser(EssayQuestion essayQuestion) {
         super(essayQuestion);
@@ -72,5 +72,9 @@ public class EssayQuestionParser extends QuestionParser {
     public String toJson() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(this);
+    }
+
+    public void setType() {
+        this.type = Question.Type.ESSAY.name();
     }
 }

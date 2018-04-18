@@ -111,6 +111,11 @@ public class DialogUtil {
         FileUtil.writeJsonFile(MainApp.getPrimaryStage(), examParser.toJson());
     }
 
+    public static void showGenerateDocumentDialog(Exam exam) {
+        ExamParser examParser = new ExamParser(exam);
+        FileUtil.writeDocumentFile(MainApp.getPrimaryStage(), examParser);
+    }
+
     public static void showExportDialog(Stage stage, String questions) {
         FileUtil.writeJsonFile(stage, questions);
     }

@@ -65,4 +65,23 @@ public class FileUtil {
             }
         }
     }
+
+    public static void writeDocumentFile(Stage stage, ExamParser exam) {
+
+        FileChooser fileChooser = new FileChooser();
+
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.wordFiles"), "*.docx");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        File file = fileChooser.showSaveDialog(stage);
+        if (file != null) {
+            DocumentGenerator documentGenerator = new DocumentGenerator(exam);
+            try {
+                documentGenerator.generateDocument(file.getPath());
+                DialogUtil.showInfoDialog("txt.documentGenerated");
+            } catch (Exception e) {
+                DialogUtil.showInfoDialog("txt.documentError");
+            }
+        }
+    }
 }

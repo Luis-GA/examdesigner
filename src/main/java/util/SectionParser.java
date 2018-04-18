@@ -8,9 +8,9 @@ import java.util.List;
 
 public class SectionParser {
 
-    private String title;
-    private List<ContentObjectParser> bodyObjects;
-    private List<ContentObjectParser> solutionObjects;
+    protected String title;
+    protected List<ContentObjectParser> bodyObjects;
+    protected List<ContentObjectParser> solutionObjects;
 
     public SectionParser(Section section) {
         this.title = section.getTitle();

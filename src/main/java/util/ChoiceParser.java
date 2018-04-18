@@ -8,8 +8,8 @@ import java.util.List;
 
 public class ChoiceParser {
 
-    private String title;
-    private List<ContentObjectParser> bodyObjects;
+    protected String title;
+    protected List<ContentObjectParser> bodyObjects;
 
     public ChoiceParser(Choice choice) {
         this.title = choice.getTitle();

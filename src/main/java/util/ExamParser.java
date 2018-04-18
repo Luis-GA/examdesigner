@@ -15,28 +15,28 @@ import java.util.List;
 
 public class ExamParser {
 
-    private String title;
-    private String subject;
-    private String modality;
+    protected String title;
+    protected String subject;
+    protected String modality;
 
-    private Integer duration;
-    private Integer weight;
-    private Integer numQuestions;
+    protected Integer duration;
+    protected Integer weight;
+    protected Integer numQuestions;
 
-    private String logo;
+    protected String logo;
 
-    private String examDate;
-    private String publicationDate;
-    private String reviewDate;
+    protected String examDate;
+    protected String publicationDate;
+    protected String reviewDate;
 
-    private Boolean nameField;
-    private Boolean surnameField;
-    private Boolean idNumberField;
-    private Boolean groupField;
+    protected Boolean nameField;
+    protected Boolean surnameField;
+    protected Boolean idNumberField;
+    protected Boolean groupField;
 
-    private String instructionDetails;
+    protected String instructionDetails;
 
-    private List<ExamPartParser> parts;
+    protected List<ExamPartParser> parts;
 
     public ExamParser(Exam exam) {
         this.title = exam.getTitle();

@@ -8,18 +8,18 @@ import java.util.List;
 
 public abstract class QuestionParser {
 
-    private String title;
-    private String type;
-    private List<ContentObjectParser> bodyObjects;
-    private Integer weight;
-    private Integer duration;
-    private Integer difficulty;
-    private Integer idQuestion;
+    protected String title;
+    protected String type;
+    protected List<ContentObjectParser> bodyObjects;
+    protected Integer weight;
+    protected Integer duration;
+    protected Integer difficulty;
+    protected Integer idQuestion;
 
-    private String category;
-    private String subject;
-    private String topic;
-    private String subtopic;
+    protected String category;
+    protected String subject;
+    protected String topic;
+    protected String subtopic;
 
     public QuestionParser() {}
 
@@ -155,4 +155,6 @@ public abstract class QuestionParser {
     public abstract Question parseQuestion();
 
     public abstract String toJson();
+
+    public abstract void setType();
 }

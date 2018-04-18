@@ -67,6 +67,15 @@ public class RootLayoutController {
     }
 
     @FXML
+    public void showGenerateDocumentDialog() {
+        if(!exam.getTitle().equals("")) {
+            DialogUtil.showGenerateDocumentDialog(exam);
+        } else {
+            DialogUtil.showInfoDialog("txt.titleMandatory");
+        }
+    }
+
+    @FXML
     public void handleSaveExam() {
         if(!exam.getTitle().equals("")) {
             if (changes()) {
