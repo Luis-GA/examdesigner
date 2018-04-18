@@ -135,9 +135,13 @@ public class WelcomeOverviewController {
         if(examJson != null) {
             try {
                 ExamParser examParser = new ExamParser(examJson);
-                DatabaseManager databaseManager = DatabaseManager.getInstance();
-                databaseManager.addExam(examJson);
-                sceneManager.setExamOverviewScene(examParser.parseExam());
+                if(!examParser.isValid())  {
+                    throw new IllegalArgumentException();
+                } else {
+                    DatabaseManager databaseManager = DatabaseManager.getInstance();
+                    databaseManager.addExam(examJson);
+                    sceneManager.setExamOverviewScene(examParser.parseExam());
+                }
             } catch (IllegalArgumentException e) {
                 DialogUtil.showInfoDialog("txt.jsonError");
             } catch (UniqueConstraintException e) {

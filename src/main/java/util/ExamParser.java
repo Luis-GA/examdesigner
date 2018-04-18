@@ -137,4 +137,8 @@ public class ExamParser {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(this);
     }
+
+    public boolean isValid() {
+        return !this.title.equals("");
+    }
 }
