@@ -155,4 +155,6 @@ public abstract class QuestionParser {
     public abstract Question parseQuestion();
 
     public abstract String toJson();
+
+    public abstract void setType();
 }

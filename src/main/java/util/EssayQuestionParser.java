@@ -73,4 +73,8 @@ public class EssayQuestionParser extends QuestionParser {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(this);
     }
+
+    public void setType() {
+        this.type = Question.Type.ESSAY.name();
+    }
 }

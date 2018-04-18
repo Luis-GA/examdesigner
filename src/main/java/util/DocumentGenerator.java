@@ -1,6 +1,7 @@
 package util;
 
 import javafx.scene.image.Image;
+import model.ContentObject;
 import org.apache.poi.util.Units;
 import org.apache.poi.wp.usermodel.HeaderFooterType;
 import org.apache.poi.xwpf.usermodel.*;
@@ -12,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 public class DocumentGenerator {
 
@@ -113,23 +115,22 @@ public class DocumentGenerator {
         /** -- BODY -- **/
         paragraph = document.getLastParagraph();
         paragraph.setStyle(paragraphStyle);
+        paragraph.setAlignment(ParagraphAlignment.RIGHT);
         run = paragraph.createRun();
 
         if(exam.duration > 0) {
             run.setText("Duración: " + exam.duration + " minutos");
             run.addTab();
+            run.addTab();
         }
         if(exam.weight > 0) {
             run.setText("Peso: " + exam.weight + "%");
         }
-        paragraph = document.getLastParagraph();
+        paragraph = document.createParagraph();
         paragraph.setStyle(paragraphStyle);
         run = paragraph.createRun();
         run.setBold(true);
-        if(exam.nameField || exam.surnameField) {
-            run.addBreak();
-            run.addBreak();
-        }
+
         if(exam.nameField) {
             run.setText("Nombre: ");
             run.addTab();
@@ -163,17 +164,20 @@ public class DocumentGenerator {
             paragraph = document.createParagraph();
             paragraph.setStyle(heading1Style);
             run = paragraph.createRun();
-            run.addBreak();
-            i++;
-            if(exam.parts.size() > 1) {
-                run.setText(i + ". ");
+            if(i == 0){
+                run.addBreak();
             }
+            i++;
             run.setText(part.title);
-            paragraph = document.createParagraph();
-            run = paragraph.createRun();
-            paragraph.setStyle(paragraphStyle);
+
+            if(part.duration > 0 || part.weight > 0) {
+                paragraph = document.createParagraph();
+                run = paragraph.createRun();
+                paragraph.setStyle(paragraphStyle);
+            }
             if(part.duration > 0) {
                 run.setText("Duración: " + part.duration + " minutos");
+                run.addTab();
                 run.addTab();
             }
             if(part.weight > 0) {
@@ -193,6 +197,7 @@ public class DocumentGenerator {
             setTableAlignment(table, STJc.CENTER);
             widthCellsAcrossRow(table, 0, 0, 9000);
             paragraph = table.getRow(0).getCell(0).getParagraphArray(0);
+            paragraph.setStyle(paragraphStyle);
             paragraph.setSpacingAfter(0);
             run = paragraph.createRun();
             run.setText("   INSTRUCCIONES:");
@@ -209,47 +214,114 @@ public class DocumentGenerator {
             paragraph = document.createParagraph();
             paragraph.setStyle(heading2Style);
             run = paragraph.createRun();
-            run.addBreak();
             i++;
             run.setText(i + ". ");
             run.setText(question.title);
+
+            if(question.duration > 0 || question.weight > 0) {
+                paragraph = document.createParagraph();
+                paragraph.setStyle(paragraphStyle);
+                run = paragraph.createRun();
+            }
+            if(question.duration > 0) {
+                run.setText("Duración: " + question.duration + " minutos");
+                run.addTab();
+            }
+            if(question.weight > 0) {
+                run.setText("Peso: " + question.weight + "%");
+            }
             setQuestion(question);
         }
     }
 
     private void setQuestion(QuestionParser question) {
-        /*
-        title;
-        weight;
-        duration;
-        difficulty;
-        idQuestion;
-        category;
-        subject;
-        topic;
-        subtopic;
-        */
 
-        /*
-        setContentObjects(question.bodyObjects);
-
-        if(question.type.toString() == "TEST") {
+        setContentObjects(question.bodyObjects, null);
+        question.setType();
+        if(question.type.equals("TEST")) {
             setTestQuestion((TestQuestionParser) question);
         } else {
             setEssayQuestion((EssayQuestionParser) question);
-        }*/
+        }
     }
 
     private void setTestQuestion(TestQuestionParser testQuestion) {
-        //TODO implement
+        XWPFParagraph paragraph;
+        XWPFRun run;
+        for(Map.Entry<String, ChoiceParser> entry : testQuestion.choices.entrySet()) {
+            paragraph = document.createParagraph();
+            paragraph.setStyle(paragraphStyle);
+            run = paragraph.createRun();
+            run.addTab();
+            run.setText(entry.getKey() + ". ");
+            run.setText(entry.getValue().title);
+            setContentObjects(entry.getValue().bodyObjects, null);
+        }
+
+        XWPFTable table;
+        table = document.createTable(1, 1);
+        setTableAlignment(table, STJc.CENTER);
+        widthCellsAcrossRow(table, 0, 0, 9000);
+        paragraph = table.getRow(0).getCell(0).getParagraphArray(0);
+        paragraph.setStyle(paragraphStyle);
+        paragraph.setSpacingAfter(0);
+        run = paragraph.createRun();
+        run.setText("Opciones correctas: ");
+        for(String correctChoice : testQuestion.correctChoices) {
+            run.addBreak();
+            run = paragraph.createRun();
+            run.setBold(true);
+            run.addTab();
+            run.setText(correctChoice);
+        }
+        document.createParagraph();
     }
 
     private void setEssayQuestion(EssayQuestionParser essayQuestion) {
-        //TODO implement
+        XWPFParagraph paragraph;
+        XWPFRun run;
+        int i = 0;
+        for(SectionParser section : essayQuestion.sections) {
+            paragraph = document.createParagraph();
+            paragraph.setStyle(paragraphStyle);
+            run = paragraph.createRun();
+            run.addTab();
+            run.setText(++i + ". ");
+            run.setText(section.title);
+            setContentObjects(section.bodyObjects, null);
+        }
+
+        XWPFTable table;
+        table = document.createTable(1, 1);
+        setTableAlignment(table, STJc.CENTER);
+        widthCellsAcrossRow(table, 0, 0, 9000);
+        paragraph = table.getRow(0).getCell(0).getParagraphArray(0);
+        paragraph.setStyle(paragraphStyle);
+        paragraph.setSpacingAfter(0);
+        run = paragraph.createRun();
+        run.setText("Solución: ");
+        run.addBreak();
+        setContentObjects(essayQuestion.solutionObjects, table.getRow(0).getCell(0));
+
+        document.createParagraph();
     }
 
-    private void setContentObjects(List<ContentObjectParser> contentObjects) {
-        //TODO implement
+    private void setContentObjects(List<ContentObjectParser> contentObjects, XWPFTableCell cell) {
+        XWPFParagraph paragraph;
+        XWPFRun run;
+        for(ContentObjectParser contentObject : contentObjects) {
+            if(cell != null) {
+                paragraph = cell.addParagraph();
+            } else {
+                paragraph = document.createParagraph();
+            }
+            if(contentObject.type.equals(ContentObject.Type.IMAGE)) {
+                insertImage(paragraph, contentObject.content);
+            } else {
+                run = paragraph.createRun();
+                run.setText(contentObject.content);
+            }
+        }
     }
 
     private static void setTableAlignment(XWPFTable table, STJc.Enum justification) {
