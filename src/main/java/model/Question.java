@@ -23,9 +23,9 @@ public abstract class Question {
     private StringProperty title;
     protected Type type;
     private ObservableList<ContentObject> bodyObjects;
-    private IntegerProperty weight;
-    private IntegerProperty duration;
-    private IntegerProperty difficulty;
+    private StringProperty weight;
+    private StringProperty duration;
+    private StringProperty difficulty;
     private Integer idQuestion;
 
     private StringProperty category;
@@ -53,15 +53,15 @@ public abstract class Question {
     }
 
     public Integer getWeight() {
-        return weight.getValue();
+        return Integer.valueOf(weight.getValue());
     }
 
     public Integer getDuration() {
-        return duration.getValue();
+        return Integer.valueOf(duration.getValue());
     }
 
     public Integer getDifficulty() {
-        return difficulty.getValue();
+        return Integer.valueOf(difficulty.getValue());
     }
 
     public String getCategory() {
@@ -79,6 +79,39 @@ public abstract class Question {
     public String getSubtopic() {
         return subtopic.getValue();
     }
+
+    public StringProperty titleProperty() {
+        return title;
+    }
+
+    public StringProperty weightProperty() {
+        return weight;
+    }
+
+    public StringProperty durationProperty() {
+        return duration;
+    }
+
+    public StringProperty difficultyProperty() {
+        return difficulty;
+    }
+
+    public StringProperty categoryProperty() {
+        return category;
+    }
+
+    public StringProperty subjectProperty() {
+        return subject;
+    }
+
+    public StringProperty topicProperty() {
+        return topic;
+    }
+
+    public StringProperty subtopicProperty() {
+        return subtopic;
+    }
+
     /** ------------------- **/
 
     /**
@@ -97,15 +130,15 @@ public abstract class Question {
     }
 
     public void setWeight(Integer weight) {
-        this.weight.setValue(weight);
+        this.weight.setValue(weight.toString());
     }
 
     public void setDuration(Integer duration) {
-        this.duration.setValue(duration);
+        this.duration.setValue(duration.toString());
     }
 
     public void setDifficulty(Integer difficulty) {
-        this.difficulty.setValue(difficulty);
+        this.difficulty.setValue(difficulty.toString());
     }
 
     public void setCategory(String category) {
@@ -131,9 +164,9 @@ public abstract class Question {
     public Question() {
         this.title = new SimpleStringProperty("");
         this.bodyObjects = FXCollections.observableArrayList();
-        this.weight = new SimpleIntegerProperty();
-        this.duration = new SimpleIntegerProperty(0);
-        this.difficulty = new SimpleIntegerProperty(0);
+        this.weight = new SimpleStringProperty("0");
+        this.duration = new SimpleStringProperty("0");
+        this.difficulty = new SimpleStringProperty("0");
 
         this.category = new SimpleStringProperty("");
         this.subject = new SimpleStringProperty("");
