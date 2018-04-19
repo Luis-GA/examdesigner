@@ -108,7 +108,7 @@ public class DialogUtil {
 
     public static void showSaveAsExamDialog(Exam exam) {
         ExamParser examParser = new ExamParser(exam);
-        FileUtil.writeJsonFile(MainApp.getPrimaryStage(), examParser.toJson());
+        FileUtil.writeJsonFile(MainApp.getPrimaryStage(), examParser.toJson(), "txt.examSaved", "txt.examSaveError");
     }
 
     public static void showGenerateWordDialog(Exam exam, boolean solutions) {
@@ -117,7 +117,7 @@ public class DialogUtil {
     }
 
     public static void showExportDialog(Stage stage, String questions) {
-        FileUtil.writeJsonFile(stage, questions);
+        FileUtil.writeJsonFile(stage, questions, "txt.questionsSaved", "txt.questionsSaveError");
     }
 
     public static void showInfoDialog(String labelKey) {

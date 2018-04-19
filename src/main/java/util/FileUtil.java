@@ -44,7 +44,7 @@ public class FileUtil {
         return jsonString;
     }
 
-    public static void writeJsonFile(Stage stage, String jsonString) {
+    public static void writeJsonFile(Stage stage, String jsonString, String correctKey, String errorKey) {
 
         FileChooser fileChooser = new FileChooser();
 
@@ -60,10 +60,10 @@ public class FileUtil {
 
             try (FileWriter writer = new FileWriter(file)) {
                 writer.write(jsonString);
-                DialogUtil.showInfoDialog("txt.questionsSaved");
+                DialogUtil.showInfoDialog(correctKey);
             } catch (IOException e) {
                 logger.log(System.Logger.Level.ERROR, "Error trying to save exam as JSON file");
-                DialogUtil.showInfoDialog("txt.questionsSaveError");
+                DialogUtil.showInfoDialog(errorKey);
             }
         }
     }
