@@ -1,14 +1,18 @@
 package controller;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import model.EssayQuestion;
 import model.Question;
 import model.TestQuestion;
@@ -17,11 +21,11 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 
-public class QuestionOverviewController {
+public class QuestionOverviewController extends DialogController{
 
-    private AnchorPane anchorPane;
+    private VBox vBox;
     private static System.Logger logger = System.getLogger(QuestionOverviewController.class.getName());
-    private Pane testQuestionGrid, essayQuestionGrid;
+    private Node testQuestionNode, essayQuestionNode;
     private TestQuestion testQuestion;
     private EssayQuestion essayQuestion;
 
@@ -46,17 +50,26 @@ public class QuestionOverviewController {
 
     @FXML
     public void initialize() {
-        testQuestionGrid = getPane("../view/TestQuestionOverview.fxml");
-        essayQuestionGrid = getPane("../view/EssayQuestionOverview.fxml");
-        anchorPane.setBottomAnchor(testQuestionGrid, Double.valueOf(50));
-        anchorPane.setBottomAnchor(essayQuestionGrid, Double.valueOf(50));
-        essayQuestionGrid.setVisible(false);
-
         ObservableList<String> typeList = FXCollections.observableArrayList();
         typeList.add(Question.Type.TEST.name());
-        typeList.add(Question.Type.TEST.name());
+        typeList.add(Question.Type.ESSAY.name());
         typeSelector.setItems(typeList);
         typeSelector.getSelectionModel().select(Question.Type.TEST.name());
+        typeSelector.valueProperty().addListener(new ChangeListener<String>() {
+            @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
+                if(newValue.equals(Question.Type.TEST.name())) {
+                    essayQuestionNode.setManaged(false);
+                    essayQuestionNode.setVisible(false);
+                    testQuestionNode.setManaged(true);
+                    testQuestionNode.setVisible(true);
+                } else {
+                    testQuestionNode.setManaged(false);
+                    testQuestionNode.setVisible(false);
+                    essayQuestionNode.setManaged(true);
+                    essayQuestionNode.setVisible(true);
+                }
+            }
+        });
     }
 
     @FXML
@@ -64,33 +77,18 @@ public class QuestionOverviewController {
 
     }
 
-    @FXML
-    public void handleTypeChange() {
-        if(typeSelector.getSelectionModel().equals(Question.Type.TEST.name())) {
-            essayQuestionGrid.setVisible(false);
-            testQuestionGrid.setVisible(true);
-        } else {
-            testQuestionGrid.setVisible(false);
-            essayQuestionGrid.setVisible(true);
-        }
-    }
-
-    public void setAnchorPane(AnchorPane anchorPane) {
-        this.anchorPane = anchorPane;
-    }
-
-    private Pane getPane(String view) {
-        Pane auxPane;
+    private Node getNode(String view) {
+        Node auxNode;
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource(view));
             loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
-            auxPane = loader.load();
+            auxNode = loader.load();
         }  catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing specific questionOverview");
-            auxPane = new Pane();
+            auxNode = new Pane();
         }
-        return auxPane;
+        return auxNode;
     }
 
     public void setQuestion(TestQuestion testQuestion, EssayQuestion essayQuestion) {
@@ -116,5 +114,24 @@ public class QuestionOverviewController {
 
         duration.setTextFormatter(new TextFormatter<String>(integerFilter));
         weight.setTextFormatter(new TextFormatter<String>(integerFilter));
+    }
+
+    public void setDialogStage(Stage dialogStage) {
+        this.dialogStage = dialogStage;
+    }
+
+    public Stage getDialogStage() {
+        return this.dialogStage;
+    }
+
+    public void setQuestions(TestQuestion testQuestion, EssayQuestion essayQuestion) {
+
+    }
+
+    public void setNodes(Node testQuestionNode, Node essayQuestionNode) {
+        this.testQuestionNode = testQuestionNode;
+        this.essayQuestionNode = essayQuestionNode;
+        this.essayQuestionNode.setVisible(false);
+        this.essayQuestionNode.setManaged(false);
     }
 }

@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
+import model.EssayQuestion;
+import model.TestQuestion;
 import util.DialogUtil;
 import util.FileUtil;
 
@@ -111,6 +113,11 @@ public class SettingsDialogController extends DialogController {
     private void handleExport() {
         handleChange();
         databaseManager.exportQuestions(dialogStage);
+    }
+
+    @FXML
+    private void addQuestion() {
+        DialogUtil.showQuestionOverviewDialog(new TestQuestion(), new EssayQuestion(), this.dialogStage);
     }
 
     public void setDialogStage(Stage dialogStage) {

@@ -2,19 +2,25 @@ package util;
 
 import controller.DialogController;
 import controller.MainApp;
+import controller.QuestionOverviewController;
 import controller.SceneManager;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.ContentObject;
+import model.EssayQuestion;
 import model.Exam;
+import model.TestQuestion;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +30,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DialogUtil {
+
+    private static System.Logger logger = System.getLogger(DialogController.class.getName());
 
     private static DialogController showDialog(String view, String title) {
         try {
@@ -50,7 +58,6 @@ public class DialogUtil {
             return controller;
 
         } catch (IOException e) {
-            System.Logger logger = System.getLogger(DialogController.class.getName());
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while showing dialog");
         }
         return null;
@@ -68,6 +75,43 @@ public class DialogUtil {
 
     public static void showAboutDialog() {
         showDialog("../view/AboutDialog.fxml", "title.about").getDialogStage().showAndWait();
+    }
+
+    public static void showQuestionOverviewDialog(TestQuestion testQuestion, EssayQuestion essayQuestion, Stage stage) {
+
+        try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("../view/QuestionOverview.fxml"));
+            loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
+            VBox vBox = loader.load();
+
+            Node testQuestionNode = getNode("../view/TestQuestionOverview.fxml");
+            Node essayQuestionNode = getNode("../view/EssayQuestionOverview.fxml");
+
+            vBox.getChildren().add(testQuestionNode);
+            vBox.getChildren().add(essayQuestionNode);
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle(ResourceBundle.getBundle(MainApp.LABELS).getString("title.editQuestion"));
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.setResizable(false);
+            dialogStage.initOwner(stage);
+            dialogStage.getIcons().add(new Image("images/exam_designer_256.png"));
+            Scene scene = new Scene(vBox);
+            dialogStage.setScene(scene);
+            QuestionOverviewController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setNodes(testQuestionNode, essayQuestionNode);
+            controller.setQuestions(testQuestion, essayQuestion);
+
+            // Show the dialog and wait until the user closes it
+            controller.getDialogStage().show();
+            controller.setQuestions(testQuestion, essayQuestion);
+        } catch (IOException e) {
+            logger.log(System.Logger.Level.ERROR, "Error trying to load resources while showing dialog");
+        }
     }
 
     public static Path showOpenExamDialog(Stage stage) {
@@ -163,5 +207,19 @@ public class DialogUtil {
         } else {
             return false;
         }
+    }
+
+    private static Node getNode(String view) {
+        Node auxNode;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource(view));
+            loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
+            auxNode = loader.load();
+        }  catch (IOException e) {
+            logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing specific questionOverview");
+            auxNode = new Pane();
+        }
+        return auxNode;
     }
 }

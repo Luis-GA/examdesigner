@@ -1,7 +1,11 @@
 package controller;
 
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.ContentObject;
+import model.EssayQuestion;
+import model.TestQuestion;
+
 import java.util.List;
 
 public abstract class DialogController {
@@ -13,4 +17,5 @@ public abstract class DialogController {
     public abstract Stage getDialogStage();
 
     public void setContentObjects(List<ContentObject> contentObjects) {}
+
 }
