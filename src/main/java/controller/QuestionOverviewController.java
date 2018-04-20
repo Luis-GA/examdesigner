@@ -6,10 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.EssayQuestion;
 import model.Question;
@@ -27,7 +24,7 @@ public class QuestionOverviewController extends DialogController{
     private EssayQuestion essayQuestion;
 
     @FXML
-    private TextField title;
+    private TextArea title;
     @FXML
     private TextField difficulty;
     @FXML
