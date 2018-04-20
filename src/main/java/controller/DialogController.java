@@ -2,6 +2,7 @@ package controller;
 
 import javafx.stage.Stage;
 import model.ContentObject;
+
 import java.util.List;
 
 public abstract class DialogController {
@@ -13,4 +14,5 @@ public abstract class DialogController {
     public abstract Stage getDialogStage();
 
     public void setContentObjects(List<ContentObject> contentObjects) {}
+
 }

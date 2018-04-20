@@ -1,7 +1,5 @@
 package controller;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
@@ -13,30 +11,43 @@ import java.util.List;
 public class ContentObjectDialogController extends DialogController{
 
     @FXML
-    ListView<ContentObjectHBox> contentList;
-
-    BooleanProperty disableButtons;
+    private ListView<ContentObjectHBox> contentList;
+    private List<ContentObject> contentObjects;
+    private boolean saved = false;
 
     @FXML
     public void initialize() {
-        disableButtons = new SimpleBooleanProperty(true);
-        contentList.getItems().add(new ContentObjectHBox(contentList.getItems(), disableButtons, null));
-        contentList.getItems().add(new ContentObjectHBox(contentList.getItems(), disableButtons, null));
+        contentList.getItems().add(new ContentObjectHBox(contentList.getItems(), null));
+        contentList.getItems().add(new ContentObjectHBox(contentList.getItems(), null));
     }
 
     @FXML
     public void addContentObjectHBox() {
-        contentList.getItems().add(new ContentObjectHBox(contentList.getItems(), disableButtons, null));
-        if(contentList.getItems().size() > 2)
-            disableButtons.setValue(false);
+        contentList.getItems().add(new ContentObjectHBox(contentList.getItems(), null));
     }
 
-    private List<ContentObject> getContentObjectList() {
-        ArrayList<ContentObject> aux = new ArrayList<>();
-        for(ContentObjectHBox contentObjectHBox : contentList.getItems()) {
-            aux.add(contentObjectHBox.getContentObject());
+    @FXML
+    public void handleCancel() {
+        saved = false;
+        dialogStage.close();
+    }
+
+    @FXML
+    public void handleOk() {
+        saved = true;
+        dialogStage.close();
+    }
+
+    public List<ContentObject> getContentObjectList() {
+        if(saved == true) {
+            ArrayList<ContentObject> aux = new ArrayList<>();
+            for (ContentObjectHBox contentObjectHBox : contentList.getItems()) {
+                aux.add(contentObjectHBox.getContentObject());
+            }
+            return aux;
+        } else {
+            return this.contentObjects;
         }
-        return aux;
     }
 
     @Override
@@ -44,9 +55,10 @@ public class ContentObjectDialogController extends DialogController{
         if(contentObjects != null) {
             contentList.getItems().clear();
             for(ContentObject contentObject : contentObjects) {
-                contentList.getItems().add(new ContentObjectHBox(contentList.getItems(), disableButtons, contentObject));
+                contentList.getItems().add(new ContentObjectHBox(contentList.getItems(), contentObject));
             }
         }
+        this.contentObjects = contentObjects;
     }
 
     public void setDialogStage(Stage dialogStage) {

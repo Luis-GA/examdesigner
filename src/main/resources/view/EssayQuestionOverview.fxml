@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.*?>
+<AnchorPane minHeight="-Infinity" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EssayQuestionOverviewController">
+  <children>
+    <ListView fx:id="sectionsList" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="10.0" />
+      <HBox spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="50.0">
+         <children>
+             <Button mnemonicParsing="false" onAction="#addSection" text="%btn.add" />
+             <Button mnemonicParsing="false" onAction="#setContent" text="%btn.content" />
+         </children>
+      </HBox>
+  </children>
+</AnchorPane>
