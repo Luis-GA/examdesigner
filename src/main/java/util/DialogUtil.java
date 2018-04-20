@@ -1,9 +1,6 @@
 package util;
 
-import controller.DialogController;
-import controller.MainApp;
-import controller.QuestionOverviewController;
-import controller.SceneManager;
+import controller.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -12,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -33,7 +31,12 @@ public class DialogUtil {
 
     private static System.Logger logger = System.getLogger(DialogController.class.getName());
 
-    private static DialogController showDialog(String view, String title) {
+    private static DialogController showDialog(String view, String title, Stage stage) {
+
+        if(stage == null) {
+            stage = MainApp.getPrimaryStage();
+        }
+
         try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
@@ -46,7 +49,7 @@ public class DialogUtil {
             dialogStage.setTitle(ResourceBundle.getBundle(MainApp.LABELS).getString(title));
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.setResizable(false);
-            dialogStage.initOwner(MainApp.getPrimaryStage());
+            dialogStage.initOwner(stage);
             dialogStage.getIcons().add(new Image("images/exam_designer_256.png"));
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
@@ -63,18 +66,19 @@ public class DialogUtil {
         return null;
     }
 
-    public static void showContentObjectDialog(List<ContentObject> contentObjects) {
-        DialogController controller = showDialog("../view/ContentObjectDialog.fxml", "title.contentObject");
-        controller.getDialogStage().show();
+    public static List<ContentObject> showContentObjectDialog(List<ContentObject> contentObjects, Stage stage) {
+        ContentObjectDialogController controller = (ContentObjectDialogController) showDialog("../view/ContentObjectDialog.fxml", "title.contentObject", stage);
         controller.setContentObjects(contentObjects);
+        controller.getDialogStage().showAndWait();
+        return controller.getContentObjectList();
     }
 
     public static void showSettingsDialog() {
-        showDialog("../view/SettingsDialog.fxml", "title.settings").getDialogStage().showAndWait();
+        showDialog("../view/SettingsDialog.fxml", "title.settings", null).getDialogStage().showAndWait();
     }
 
     public static void showAboutDialog() {
-        showDialog("../view/AboutDialog.fxml", "title.about").getDialogStage().showAndWait();
+        showDialog("../view/AboutDialog.fxml", "title.about", null).getDialogStage().showAndWait();
     }
 
     public static void showQuestionOverviewDialog(TestQuestion testQuestion, EssayQuestion essayQuestion, Stage stage) {
@@ -86,11 +90,30 @@ public class DialogUtil {
             loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
             VBox vBox = loader.load();
 
-            Node testQuestionNode = getNode("../view/TestQuestionOverview.fxml");
-            Node essayQuestionNode = getNode("../view/EssayQuestionOverview.fxml");
+            TestQuestionOverviewController testController = new TestQuestionOverviewController();
+            Node testQuestionNode = getNode("../view/TestQuestionOverview.fxml", testController);
+            testController.setStage(stage);
+            EssayQuestionOverviewController essayController = new EssayQuestionOverviewController();
+            Node essayQuestionNode = getNode("../view/EssayQuestionOverview.fxml", essayController);
+            essayController.setStage(stage);
 
             vBox.getChildren().add(testQuestionNode);
             vBox.getChildren().add(essayQuestionNode);
+
+            AnchorPane buttonsAnchorPane = new AnchorPane();
+            HBox buttonsHBox = new HBox();
+            buttonsHBox.setSpacing(10);
+            Button saveButton = new Button();
+            Button cancelButton = new Button();
+            buttonsHBox.getChildren().add(saveButton);
+            buttonsHBox.getChildren().add(cancelButton);
+            saveButton.setText(ResourceBundle.getBundle(MainApp.LABELS).getString("btn.save"));
+            cancelButton.setText(ResourceBundle.getBundle(MainApp.LABELS).getString("btn.cancel"));
+            cancelButton.setOnAction(event -> stage.close());
+            buttonsAnchorPane.getChildren().add(buttonsHBox);
+            buttonsAnchorPane.setBottomAnchor(buttonsHBox, Double.valueOf(10));
+            buttonsAnchorPane.setRightAnchor(buttonsHBox, Double.valueOf(10));
+            vBox.getChildren().add(buttonsAnchorPane);
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
@@ -105,10 +128,12 @@ public class DialogUtil {
             controller.setDialogStage(dialogStage);
             controller.setNodes(testQuestionNode, essayQuestionNode);
             controller.setQuestions(testQuestion, essayQuestion);
+            controller.setQuestions(testQuestion, essayQuestion);
+            controller.setSaveButton(saveButton);
 
             // Show the dialog and wait until the user closes it
-            controller.getDialogStage().show();
-            controller.setQuestions(testQuestion, essayQuestion);
+            controller.getDialogStage().showAndWait();
+
         } catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while showing dialog");
         }
@@ -209,13 +234,14 @@ public class DialogUtil {
         }
     }
 
-    private static Node getNode(String view) {
+    private static Node getNode(String view, Object controller) {
         Node auxNode;
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource(view));
             loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
             auxNode = loader.load();
+            controller = loader.getController();
         }  catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing specific questionOverview");
             auxNode = new Pane();

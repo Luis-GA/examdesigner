@@ -5,48 +5,45 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.EssayQuestion;
 import model.Question;
 import model.TestQuestion;
+import util.DialogUtil;
+import util.EssayQuestionParser;
+import util.TestQuestionParser;
 
-import java.io.IOException;
-import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 
 public class QuestionOverviewController extends DialogController{
 
-    private VBox vBox;
-    private static System.Logger logger = System.getLogger(QuestionOverviewController.class.getName());
     private Node testQuestionNode, essayQuestionNode;
     private TestQuestion testQuestion;
     private EssayQuestion essayQuestion;
 
     @FXML
-    TextField title;
+    private TextField title;
     @FXML
-    TextField difficulty;
+    private TextField difficulty;
     @FXML
-    TextField duration;
+    private TextField duration;
     @FXML
-    TextField weight;
+    private TextField weight;
     @FXML
-    TextField category;
+    private TextField category;
     @FXML
-    TextField subject;
+    private TextField subject;
     @FXML
-    TextField topic;
+    private TextField topic;
     @FXML
-    TextField subtopic;
+    private TextField subtopic;
     @FXML
-    ComboBox typeSelector;
+    private ComboBox typeSelector;
 
     @FXML
     public void initialize() {
@@ -74,24 +71,16 @@ public class QuestionOverviewController extends DialogController{
 
     @FXML
     public void showSetContentDialog() {
+        this.testQuestion.setBodyObjects(DialogUtil.showContentObjectDialog(this.testQuestion.getBodyObjects(), this.getDialogStage()));
+        this.essayQuestion.setBodyObjects(this.testQuestion.getBodyObjects());
+    }
+
+    @FXML
+    private void saveQuestion() {
 
     }
 
-    private Node getNode(String view) {
-        Node auxNode;
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource(view));
-            loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
-            auxNode = loader.load();
-        }  catch (IOException e) {
-            logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing specific questionOverview");
-            auxNode = new Pane();
-        }
-        return auxNode;
-    }
-
-    public void setQuestion(TestQuestion testQuestion, EssayQuestion essayQuestion) {
+    public void setQuestions(TestQuestion testQuestion, EssayQuestion essayQuestion) {
         this.testQuestion = testQuestion;
         this.essayQuestion = essayQuestion;
 
@@ -103,6 +92,14 @@ public class QuestionOverviewController extends DialogController{
         duration.textProperty().bindBidirectional(essayQuestion.durationProperty());
         weight.textProperty().bindBidirectional(testQuestion.weightProperty());
         weight.textProperty().bindBidirectional(essayQuestion.weightProperty());
+        category.textProperty().bindBidirectional(testQuestion.categoryProperty());
+        category.textProperty().bindBidirectional(essayQuestion.categoryProperty());
+        subject.textProperty().bindBidirectional(testQuestion.subjectProperty());
+        subject.textProperty().bindBidirectional(essayQuestion.subjectProperty());
+        topic.textProperty().bindBidirectional(testQuestion.topicProperty());
+        topic.textProperty().bindBidirectional(essayQuestion.topicProperty());
+        subtopic.textProperty().bindBidirectional(testQuestion.subtopicProperty());
+        subtopic.textProperty().bindBidirectional(essayQuestion.subtopicProperty());
 
         UnaryOperator<TextFormatter.Change> integerFilter = change -> {
             String input = change.getText();
@@ -114,6 +111,7 @@ public class QuestionOverviewController extends DialogController{
 
         duration.setTextFormatter(new TextFormatter<String>(integerFilter));
         weight.setTextFormatter(new TextFormatter<String>(integerFilter));
+        difficulty.setTextFormatter(new TextFormatter<String>(integerFilter));
     }
 
     public void setDialogStage(Stage dialogStage) {
@@ -124,14 +122,23 @@ public class QuestionOverviewController extends DialogController{
         return this.dialogStage;
     }
 
-    public void setQuestions(TestQuestion testQuestion, EssayQuestion essayQuestion) {
-
-    }
-
     public void setNodes(Node testQuestionNode, Node essayQuestionNode) {
         this.testQuestionNode = testQuestionNode;
         this.essayQuestionNode = essayQuestionNode;
         this.essayQuestionNode.setVisible(false);
         this.essayQuestionNode.setManaged(false);
+    }
+
+    public void setSaveButton(Button saveButton) {
+        saveButton.setOnAction(event -> handleSaveQuestion());
+    }
+
+    private void handleSaveQuestion() {
+        DatabaseManager databaseManager = DatabaseManager.getInstance();
+        if(this.typeSelector.getSelectionModel().getSelectedItem().equals(Question.Type.TEST.name())) {
+            databaseManager.addQuestion(this.testQuestion.getIdQuestion(), new TestQuestionParser(this.testQuestion).toJson());
+        } else {
+            databaseManager.addQuestion(this.essayQuestion.getIdQuestion(), new EssayQuestionParser(this.essayQuestion).toJson());
+        }
     }
 }

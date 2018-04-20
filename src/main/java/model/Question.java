@@ -1,7 +1,5 @@
 package model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -173,6 +171,6 @@ public abstract class Question {
         this.topic = new SimpleStringProperty("");
         this.subtopic = new SimpleStringProperty("");
 
-        this.idQuestion = new Integer((int)System.currentTimeMillis());
+        this.idQuestion = Integer.valueOf((int)System.currentTimeMillis());
     }
 }

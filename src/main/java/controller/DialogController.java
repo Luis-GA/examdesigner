@@ -1,10 +1,7 @@
 package controller;
 
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.ContentObject;
-import model.EssayQuestion;
-import model.TestQuestion;
 
 import java.util.List;
 

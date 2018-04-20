@@ -43,13 +43,13 @@
                         </ImageView>
                     </graphic>
                 </Label>
-                <HBox alignment="BOTTOM_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <HBox alignment="BOTTOM_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <children>
                         <Button fx:id="importDatabase" mnemonicParsing="false" onAction="#handleImport" text="%btn.import" />
                         <Button fx:id="exportDatabase" mnemonicParsing="false" onAction="#handleExport" text="%btn.export" />
                     </children>
                 </HBox>
-            <HBox alignment="BOTTOM_RIGHT" layoutX="160.0" layoutY="40.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <HBox alignment="BOTTOM_LEFT" layoutX="160.0" layoutY="40.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
                   <Button fx:id="exportDatabase1" mnemonicParsing="false" onAction="#addQuestion" text="%btn.addQuestion" />
                </children>

@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -28,17 +27,15 @@ public class ContentObjectHBox extends GridPane {
     private Button deleteButton = new Button();
     private Button openImageButton = new Button();
     private ObservableList<ContentObjectHBox> list;
-    private BooleanProperty disableButton;
     private Boolean imageLoaded = false;
     private ComboBox typesComboBox = new ComboBox();
     private static final String IMAGE = ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.image");
     private static final String TEXT = ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.text");
 
-    public ContentObjectHBox(ObservableList<ContentObjectHBox> list, BooleanProperty disableButton, ContentObject contentObject) {
+    public ContentObjectHBox(ObservableList<ContentObjectHBox> list, ContentObject contentObject) {
         super();
 
         this.list = list;
-        this.disableButton = disableButton;
 
         openImageButton.setText(ResourceBundle.getBundle(MainApp.LABELS).getString("btn.openFile"));
         openImageButton.setVisible(false);
@@ -91,7 +88,6 @@ public class ContentObjectHBox extends GridPane {
 
         deleteButton.setGraphic(deleteImage);
         deleteButton.setOnAction(event -> deleteContentObject());
-        deleteButton.disableProperty().bindBidirectional(this.disableButton);
 
         ColumnConstraints contentColumn = new ColumnConstraints();
         contentColumn.setHgrow(Priority.ALWAYS);
@@ -113,8 +109,6 @@ public class ContentObjectHBox extends GridPane {
 
     private void deleteContentObject() {
         this.list.remove(this);
-        if(this.list.size() < 3)
-            this.disableButton.setValue(true);
     }
 
     private void openImageFile() {
@@ -134,7 +128,7 @@ public class ContentObjectHBox extends GridPane {
 
     public ContentObject getContentObject() {
         ContentObject aux = new ContentObject();
-        if(this.typesComboBox.getSelectionModel().equals(IMAGE)) {
+        if(this.typesComboBox.getSelectionModel().getSelectedItem().equals(IMAGE)) {
             aux.setContent(this.image);
         } else {
             aux.setContent(this.title.getText());
