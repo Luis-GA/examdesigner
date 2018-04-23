@@ -22,6 +22,11 @@ public class Choice {
     public List<ContentObject> getBodyObjects() {
         return bodyObjects;
     }
+
+    public StringProperty titleProperty() {
+        return title;
+    }
+
     /** ------------------- **/
 
     /**

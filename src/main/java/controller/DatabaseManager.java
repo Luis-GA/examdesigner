@@ -7,6 +7,7 @@ import model.Exam;
 import model.Question;
 import org.dizitart.no2.*;
 import org.dizitart.no2.exceptions.IndexingException;
+import org.dizitart.no2.exceptions.UniqueConstraintException;
 import org.dizitart.no2.mapper.JacksonMapper;
 import org.dizitart.no2.mapper.NitriteMapper;
 import util.*;
@@ -44,11 +45,14 @@ public class DatabaseManager {
             IndexOptions examIndexOptions = new IndexOptions();
             examIndexOptions.setIndexType(IndexType.Unique);
 
+            IndexOptions idQuestionIndexOptions = new IndexOptions();
+            idQuestionIndexOptions.setIndexType(IndexType.Unique);
+
             IndexOptions questionIndexOptions = new IndexOptions();
             questionIndexOptions.setIndexType(IndexType.NonUnique);
 
             NitriteCollection questions = db.getCollection(QUESTIONS);
-            questions.createIndex("idQuestion", questionIndexOptions);
+            questions.createIndex("idQuestion",  idQuestionIndexOptions);
             questions.createIndex("type", questionIndexOptions);
             questions.createIndex("topic", questionIndexOptions);
 
@@ -59,18 +63,25 @@ public class DatabaseManager {
         }
     }
 
-    public void addQuestion(String questionString) {
-        NitriteCollection questions = db.getCollection(QUESTIONS);
-        NitriteMapper nitriteMapper = new JacksonMapper();
-        Document questionDocument = nitriteMapper.parse(questionString);
-        questions.insert(questionDocument);
+    public void addQuestion(Integer idQuestion, String questionString) {
+        if(idQuestion == -1) {
+            idQuestion = Integer.valueOf((int)System.currentTimeMillis());
+        }
+        try {
+            NitriteCollection questions = db.getCollection(QUESTIONS);
+            NitriteMapper nitriteMapper = new JacksonMapper();
+            Document questionDocument = nitriteMapper.parse(questionString);
+            questions.insert(questionDocument);
+        } catch (UniqueConstraintException e) {
+            updateQuestion(idQuestion, questionString);
+        }
     }
 
-    public void updateQuestion(Integer questionId, String questionString) {
+    public void updateQuestion(Integer idQuestion, String questionString) {
         NitriteCollection collection = db.getCollection(QUESTIONS);
         NitriteMapper nitriteMapper = new JacksonMapper();
         Document questionDocument = nitriteMapper.parse(questionString);
-        collection.update(eq("_id", questionId), questionDocument);
+        collection.update(eq("idQuestion", idQuestion), questionDocument);
     }
 
     public void deleteQuestion(Integer questionId) {
@@ -177,13 +188,13 @@ public class DatabaseManager {
 
         List<QuestionParser> questions = new Questions(jsonString).getQuestions();
 
-        for (QuestionParser question : questions) {
-            if (question instanceof TestQuestionParser) {
+        for(QuestionParser question : questions){
+            if(question instanceof  TestQuestionParser) {
                 question.setType(Question.Type.TEST.name());
             } else {
                 question.setType(Question.Type.ESSAY.name());
             }
-            addQuestion(question.toJson());
+            addQuestion(-1, question.toJson());
         }
     }
 

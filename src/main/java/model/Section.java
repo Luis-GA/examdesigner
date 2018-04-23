@@ -27,6 +27,10 @@ public class Section {
     public List<ContentObject> getSolutionObjects() {
         return solutionObjects;
     }
+
+    public StringProperty titleProperty() {
+        return title;
+    }
     /** ------------------- **/
 
     /**
