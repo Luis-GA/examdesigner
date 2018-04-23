@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.dizitart.no2.filters.Filters.eq;
+import static org.dizitart.no2.filters.Filters.and;
 
 public class DatabaseManager {
 
@@ -27,7 +28,8 @@ public class DatabaseManager {
     private static final String EXAMS = "exams";
     private static final String TITLE = "title";
 
-    private DatabaseManager() {}
+    private DatabaseManager() {
+    }
 
     public static DatabaseManager getInstance() {
         if (instance == null) {
@@ -87,6 +89,32 @@ public class DatabaseManager {
         collection.remove(eq("_id", questionId));
     }
 
+    public ArrayList<Question> getQuestions(String questionTopic, String questionType) {
+        NitriteCollection questionsDB = db.getCollection(QUESTIONS);
+        Cursor cursor = questionsDB.find(and(eq("topic", questionTopic), eq("type", questionType)));
+        ArrayList<Question> questions = new ArrayList<>();
+
+        JacksonMapper jacksonMapper = new JacksonMapper();
+        QuestionParser questionParser;
+        String aux;
+        Question quest;
+        if (questionType.compareTo("TEST") == 0) {
+            for (Document question : cursor) {
+                questionParser = new TestQuestionParser(jacksonMapper.toJson(question));
+                questions.add(questionParser.parseQuestion());
+
+            }
+
+        } else {
+            for (Document question : cursor) {
+                questionParser = new EssayQuestionParser(jacksonMapper.toJson(question));
+                questions.add(questionParser.parseQuestion());
+
+            }
+        }
+        return questions;
+    }
+
     public void addExam(String examString) {
         NitriteCollection exams = db.getCollection(EXAMS);
         NitriteMapper nitriteMapper = new JacksonMapper();
@@ -113,7 +141,7 @@ public class DatabaseManager {
 
         ArrayList<String> examsTitles = new ArrayList<>();
         for (Document exam : cursor) {
-            examsTitles.add((String)exam.get(TITLE));
+            examsTitles.add((String) exam.get(TITLE));
         }
 
         return examsTitles;
@@ -136,12 +164,12 @@ public class DatabaseManager {
 
         ArrayList<QuestionParser> questionsList = new ArrayList<>();
 
-        for(Document question : cursor){
+        for (Document question : cursor) {
             QuestionParser aux;
             JacksonMapper jacksonMapper = new JacksonMapper();
-            String type = (String)question.get("type");
+            String type = (String) question.get("type");
 
-            if(type.equals(Question.Type.TEST.name())) {
+            if (type.equals(Question.Type.TEST.name())) {
                 aux = new TestQuestionParser(jacksonMapper.toJson(question));
             } else {
                 aux = new EssayQuestionParser(jacksonMapper.toJson(question));
@@ -158,16 +186,16 @@ public class DatabaseManager {
 
     public void importQuestions(String jsonString) {
 
-            List<QuestionParser> questions = new Questions(jsonString).getQuestions();
+        List<QuestionParser> questions = new Questions(jsonString).getQuestions();
 
-            for(QuestionParser question : questions){
-                if(question instanceof  TestQuestionParser) {
-                    question.setType(Question.Type.TEST.name());
-                } else {
-                    question.setType(Question.Type.ESSAY.name());
-                }
-                addQuestion(-1, question.toJson());
+        for(QuestionParser question : questions){
+            if(question instanceof  TestQuestionParser) {
+                question.setType(Question.Type.TEST.name());
+            } else {
+                question.setType(Question.Type.ESSAY.name());
             }
+            addQuestion(-1, question.toJson());
+        }
     }
 
     private class Questions {
