@@ -256,7 +256,7 @@ public class Exam {
         this.weight = new SimpleStringProperty("0");
         this.numQuestions = new SimpleStringProperty("0");
 
-        //this.logo = new ImageView(new Image("images/logo_default.png"));
+        this.logo = new ImageView(new Image("images/logo_default.png"));
 
         this.examDate = new SimpleObjectProperty<>(LocalDate.now());
         this.publicationDate = new SimpleObjectProperty<>(LocalDate.now());
