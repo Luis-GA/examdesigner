@@ -109,7 +109,6 @@ public class DialogUtil {
             buttonsHBox.getChildren().add(cancelButton);
             saveButton.setText(ResourceBundle.getBundle(MainApp.LABELS).getString("btn.save"));
             cancelButton.setText(ResourceBundle.getBundle(MainApp.LABELS).getString("btn.cancel"));
-            cancelButton.setOnAction(event -> stage.close());
             buttonsAnchorPane.getChildren().add(buttonsHBox);
             buttonsAnchorPane.setBottomAnchor(buttonsHBox, Double.valueOf(10));
             buttonsAnchorPane.setRightAnchor(buttonsHBox, Double.valueOf(10));
@@ -117,6 +116,7 @@ public class DialogUtil {
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
+            cancelButton.setOnAction(event -> dialogStage.close());
             dialogStage.setTitle(ResourceBundle.getBundle(MainApp.LABELS).getString("title.editQuestion"));
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.setResizable(false);

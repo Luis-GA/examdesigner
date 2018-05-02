@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import model.Exam;
 
 import java.io.IOException;
@@ -84,7 +85,7 @@ public class SceneManager {
         return scene;
     }
 
-    public Scene newExamOverviewScene(Exam exam) {
+    private Scene newExamOverviewScene(Exam exam) {
         Scene scene = null;
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -92,7 +93,7 @@ public class SceneManager {
             loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
             AnchorPane examOverview = loader.load();
 
-            // Set MainApp and give the controller access to the exam
+            // Give the controller access to the exam
             ExamOverviewController controller = loader.getController();
             controller.setExam(exam);
 
@@ -107,8 +108,36 @@ public class SceneManager {
         return scene;
     }
 
+    private Scene newAutomaticGenerationScene(Exam exam) {
+        Scene scene = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("../view/AutomaticGeneration.fxml"));
+            loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
+            AnchorPane automaticGeneration = loader.load();
+
+            // Give the controller access to the exam
+            AutomaticGenerationController controller = loader.getController();
+            controller.setExam(exam);
+
+            scene = setNewMenuScene(automaticGeneration, exam);
+        } catch (IOException e) {
+            logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Automatic Generation");
+        } finally {
+            if (scene == null) {
+                scene = MainApp.getPrimaryStage().getScene();
+            }
+        }
+        return scene;
+    }
+
     public void setExamOverviewScene(Exam exam) {
         Scene scene = newExamOverviewScene(exam);
+        MainApp.getPrimaryStage().setScene(scene);
+    }
+
+    public void setAutomaticGenerationScene(Exam exam) {
+        Scene scene = newAutomaticGenerationScene(exam);
         MainApp.getPrimaryStage().setScene(scene);
     }
 
@@ -136,5 +165,21 @@ public class SceneManager {
         mainApp.showWelcomeOverview(scenes.peek().scene);
     }
 
+    public void showWorkIndicator(Exam exam) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("../view/WorkIndicator.fxml"));
+            loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
+            HBox workIndicator = loader.load();
 
+            WorkIndicatorController controller = loader.getController();
+            controller.setExam(exam);
+
+            Scene scene = new Scene(workIndicator, MainApp.getPrimaryStage().getScene().getWidth(), MainApp.getPrimaryStage().getScene().getHeight());
+            scenes.push(new SceneWrapper(scene, controller));
+            MainApp.getPrimaryStage().setScene(scene);
+        } catch (IOException e) {
+            logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Root Layout");
+        }
+    }
 }
