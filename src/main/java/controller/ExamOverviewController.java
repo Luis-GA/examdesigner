@@ -94,4 +94,10 @@ public class ExamOverviewController {
             }
         }
     }
+
+    @FXML
+    public void handleNext() {
+        SceneManager sceneManager = SceneManager.getInstance();
+        sceneManager.setAutomaticGenerationScene(this.exam);
+    }
 }

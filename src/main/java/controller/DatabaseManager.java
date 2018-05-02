@@ -27,6 +27,9 @@ public class DatabaseManager {
     private static final String QUESTIONS = "questions";
     private static final String EXAMS = "exams";
     private static final String TITLE = "title";
+    private static final String VALUE = "value";
+    private static final String TOPICS = "topics";
+    private static final String TOPIC = "topic";
 
     private DatabaseManager() {
     }
@@ -42,6 +45,7 @@ public class DatabaseManager {
     private void initializeIndexes() {
 
         try {
+            //TODO check manually if index exists before creating it
             IndexOptions examIndexOptions = new IndexOptions();
             examIndexOptions.setIndexType(IndexType.Unique);
 
@@ -54,7 +58,7 @@ public class DatabaseManager {
             NitriteCollection questions = db.getCollection(QUESTIONS);
             questions.createIndex("idQuestion",  idQuestionIndexOptions);
             questions.createIndex("type", questionIndexOptions);
-            questions.createIndex("topic", questionIndexOptions);
+            questions.createIndex(TOPIC, questionIndexOptions);
 
             NitriteCollection exams = db.getCollection(EXAMS);
             exams.createIndex(TITLE, examIndexOptions);
@@ -64,13 +68,19 @@ public class DatabaseManager {
     }
 
     public void addQuestion(Integer idQuestion, String questionString) {
+        NitriteMapper nitriteMapper = new JacksonMapper();
+        Document questionDocument = nitriteMapper.parse(questionString);
+        String newTopic = (String) questionDocument.get(TOPIC);
+        // Check if topic exists, if not add topic to list
+        if(!topicExists(newTopic)) {
+            addTopic(newTopic);
+        }
+
         if(idQuestion == -1) {
             idQuestion = Integer.valueOf((int)System.currentTimeMillis());
         }
         try {
             NitriteCollection questions = db.getCollection(QUESTIONS);
-            NitriteMapper nitriteMapper = new JacksonMapper();
-            Document questionDocument = nitriteMapper.parse(questionString);
             questions.insert(questionDocument);
         } catch (UniqueConstraintException e) {
             updateQuestion(idQuestion, questionString);
@@ -78,20 +88,43 @@ public class DatabaseManager {
     }
 
     public void updateQuestion(Integer idQuestion, String questionString) {
+        String oldTopic = (String) getQuestion(idQuestion).get(TOPIC);
+
         NitriteCollection collection = db.getCollection(QUESTIONS);
         NitriteMapper nitriteMapper = new JacksonMapper();
         Document questionDocument = nitriteMapper.parse(questionString);
+        String newTopic = (String) questionDocument.get(TOPIC);
         collection.update(eq("idQuestion", idQuestion), questionDocument);
+
+        // Check if old topic exists, delete if not, check if new topic exists, if not add it
+        if(!topicExists(oldTopic)) {
+            deleteTopic(oldTopic);
+        }
+        if(!topicExists(newTopic)) {
+            addTopic(newTopic);
+        }
     }
 
     public void deleteQuestion(Integer questionId) {
+        String topic = (String) getQuestion(questionId).get(TOPIC);
         NitriteCollection collection = db.getCollection(QUESTIONS);
         collection.remove(eq("_id", questionId));
+
+        // Check if topic exists, if not delete it
+        if(!topicExists(topic)) {
+            deleteTopic(topic);
+        }
+    }
+
+    public Document getQuestion(Integer questionId) {
+        NitriteCollection collection = db.getCollection(QUESTIONS);
+        Cursor cursor = collection.find(eq("_id", questionId));
+        return cursor.firstOrDefault();
     }
 
     public ArrayList<Question> getQuestions(String questionTopic, String questionType) {
         NitriteCollection questionsDB = db.getCollection(QUESTIONS);
-        Cursor cursor = questionsDB.find(and(eq("topic", questionTopic), eq("type", questionType)));
+        Cursor cursor = questionsDB.find(and(eq(TOPIC, questionTopic), eq("type", questionType)));
         ArrayList<Question> questions = new ArrayList<>();
 
         JacksonMapper jacksonMapper = new JacksonMapper();
@@ -158,6 +191,27 @@ public class DatabaseManager {
         return aux.parseExam();
     }
 
+    private void addTopic(String topicValue) {
+        NitriteCollection topics = db.getCollection(TOPICS);
+        NitriteMapper nitriteMapper = new JacksonMapper();
+        Document doc = nitriteMapper.parse("{value: \"" + topicValue + "\"}");
+        topics.insert(doc);
+    }
+
+    private void deleteTopic(String topicValue) {
+        NitriteCollection collection = db.getCollection(TOPICS);
+        collection.remove(eq(VALUE, topicValue));
+    }
+
+    private boolean topicExists(String topicValue) {
+        NitriteCollection collection = db.getCollection(QUESTIONS);
+        Cursor cursor = collection.find(eq(TOPIC, topicValue));
+        for(Document doc : cursor) {
+            return true;
+        }
+        return false;
+    }
+
     public void exportQuestions(Stage stage) {
         NitriteCollection collection = db.getCollection(QUESTIONS);
         Cursor cursor = collection.find();
@@ -196,6 +250,19 @@ public class DatabaseManager {
             }
             addQuestion(-1, question.toJson());
         }
+    }
+
+    public List<String> getTopics() {
+        NitriteCollection topicsCollection = db.getCollection(TOPICS);
+
+        Cursor cursor = topicsCollection.find();
+
+        ArrayList<String> topicsText = new ArrayList<>();
+        for (Document topic : cursor) {
+            topicsText.add((String) topic.get(VALUE));
+        }
+
+        return topicsText;
     }
 
     private class Questions {
