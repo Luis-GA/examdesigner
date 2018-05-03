@@ -1,23 +1,23 @@
-package controller;
+package util;
 
+import controller.DatabaseManager;
 import model.Exam;
 import model.ExamPart;
 import model.Question;
-import model.TestQuestion;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public class ExamGenerator {
-    private DatabaseManager databaseManager = DatabaseManager.getInstance();
 
-    public ExamGenerator(){
-
+    private ExamGenerator() {
+        throw new IllegalStateException("Utility class");
     }
 
-    public Exam generateExam(Exam exam, int difficulty, int duration, int essaypercent, List<String> topics) {
+    public static Exam generateExam(Exam exam, int difficulty, int duration, int essaypercent, List<String> topics) {
+        DatabaseManager databaseManager = DatabaseManager.getInstance();
+
         List<ExamPart> parts = new ArrayList<>();
 
         //Essay part
@@ -54,15 +54,12 @@ public class ExamGenerator {
         return exam;
     }
 
-
-
-
-    private ExamPart generateEssayPart(ExamPart essayPart, int difficulty, int duration, int essaypercent, List<Question> questions) {
+    private static ExamPart generateEssayPart(ExamPart essayPart, int difficulty, int duration, int essaypercent, List<Question> questions) {
         //TODO
         return essayPart;
     }
 
-    private ExamPart generateTestPart(ExamPart testPart, int duration, List<Question>questions) {
+    private static ExamPart generateTestPart(ExamPart testPart, int duration, List<Question>questions) {
         //TODO
         questions=randomOrderList(questions);
         List<Question> selectedQuestions= new ArrayList<>();
@@ -93,18 +90,9 @@ public class ExamGenerator {
         return testPart;
     }
 
-
-
-    private List<Question> randomOrderList(List<Question>questions){
+    private static List<Question> randomOrderList(List<Question>questions){
         Random random = new Random();
         Collections.shuffle(questions, random);
         return questions;
     }
-
-
-
-
-
-
-
 }

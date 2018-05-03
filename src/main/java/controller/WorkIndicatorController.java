@@ -4,6 +4,9 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.*;
+import model.Exam;
+
+import java.util.function.Function;
 
 public class WorkIndicatorController extends RootLayoutController{
 
@@ -19,6 +22,11 @@ public class WorkIndicatorController extends RootLayoutController{
         vbox.setAlignment(Pos.CENTER);
         vbox.getChildren().add(progressIndicator);
         pane.getChildren().add(vbox);
+    }
+
+    public void runFunction(Exam exam, Function function) {
+        function.apply(exam);
+        SceneManager.getInstance().back();
     }
 }
 

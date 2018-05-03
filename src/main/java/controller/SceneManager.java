@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
+import java.util.function.Function;
 
 public class SceneManager {
 
@@ -165,7 +166,7 @@ public class SceneManager {
         mainApp.showWelcomeOverview(scenes.peek().scene);
     }
 
-    public void showWorkIndicator(Exam exam) {
+    public void showWorkIndicator(Exam exam, Function function) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("../view/WorkIndicator.fxml"));
@@ -178,6 +179,7 @@ public class SceneManager {
             Scene scene = new Scene(workIndicator, MainApp.getPrimaryStage().getScene().getWidth(), MainApp.getPrimaryStage().getScene().getHeight());
             scenes.push(new SceneWrapper(scene, controller));
             MainApp.getPrimaryStage().setScene(scene);
+            controller.runFunction(exam, function);
         } catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Root Layout");
         }

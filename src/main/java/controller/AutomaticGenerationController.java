@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import model.Exam;
+import util.ExamGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,8 +64,12 @@ public class AutomaticGenerationController {
             }
         }
 
+
         SceneManager sceneManager = SceneManager.getInstance();
-        sceneManager.showWorkIndicator(this.exam);
+        sceneManager.showWorkIndicator(this.exam, (exam) -> {
+            ExamGenerator.generateExam(this.exam, Integer.valueOf(difficulty.getText()), Integer.valueOf(duration.getText()), Integer.valueOf(weight.getText()), selectedTopics);
+            return true;
+        });
     }
 
     private class TopicChoice extends HBox {
