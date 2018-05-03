@@ -184,6 +184,9 @@ public class SceneManager {
             scenes.push(new SceneWrapper(scene, controller));
             MainApp.getPrimaryStage().setScene(scene);
 
+            //TODO implement flow prepared for long time consuming generation process
+            function.apply(exam);
+
             KeyFrame kf = new KeyFrame(Duration.seconds(1), e -> {
                 controller.close();
                 DialogUtil.showInfoDialog("txt.documentGenerated");
