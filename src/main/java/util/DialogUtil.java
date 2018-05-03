@@ -197,7 +197,7 @@ public class DialogUtil {
         Stage stage = (Stage) languageChangedDialog.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image("images/exam_designer_256.png"));
 
-        languageChangedDialog.showAndWait();
+        languageChangedDialog.show();
     }
 
     public static boolean showCloseConfirmationDialog() {

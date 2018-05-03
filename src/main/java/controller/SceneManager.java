@@ -1,13 +1,17 @@
 package controller;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 import model.Exam;
-
+import util.DialogUtil;
 import java.io.IOException;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -179,7 +183,13 @@ public class SceneManager {
             Scene scene = new Scene(workIndicator, MainApp.getPrimaryStage().getScene().getWidth(), MainApp.getPrimaryStage().getScene().getHeight());
             scenes.push(new SceneWrapper(scene, controller));
             MainApp.getPrimaryStage().setScene(scene);
-            controller.runFunction(exam, function);
+
+            KeyFrame kf = new KeyFrame(Duration.seconds(1), e -> {
+                controller.close();
+                DialogUtil.showInfoDialog("txt.documentGenerated");
+            });
+            Timeline timeline = new Timeline(kf);
+            Platform.runLater(timeline::play);
         } catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Root Layout");
         }

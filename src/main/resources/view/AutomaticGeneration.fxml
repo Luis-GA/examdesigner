@@ -2,9 +2,9 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -28,13 +28,9 @@
             </rowConstraints>
             <children>
                 <Label text="%lbl.difficulty" />
-                <TextField fx:id="difficulty" layoutX="10.0" layoutY="10.0" prefWidth="300.0" GridPane.columnIndex="1" />
-                <Label layoutX="10.0" layoutY="15.0" text="%lbl.duration" GridPane.rowIndex="1" />
-                <TextField fx:id="duration" layoutX="10.0" layoutY="10.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Label layoutX="10.0" layoutY="45.0" text="%lbl.weight" GridPane.rowIndex="2" />
-                <TextField fx:id="weight" layoutX="10.0" layoutY="10.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Label layoutX="10.0" layoutY="75.0" text="%lbl.topics" GridPane.rowIndex="3" />
-            <ListView fx:id="topics" prefHeight="42.0" prefWidth="325.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="2147483647" />
+            <ChoiceBox fx:id="difficulty" prefWidth="100.0" GridPane.columnIndex="1" />
+                <Label layoutX="10.0" layoutY="75.0" text="%lbl.topics" GridPane.rowIndex="1" />
+            <ListView fx:id="topics" prefHeight="42.0" prefWidth="325.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="2147483647" />
             </children>
             <padding>
                 <Insets bottom="50.0" />

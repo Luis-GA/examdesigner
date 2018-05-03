@@ -17,11 +17,7 @@ public class AutomaticGenerationController {
     @FXML
     AnchorPane pane;
     @FXML
-    TextField difficulty;
-    @FXML
-    TextField duration;
-    @FXML
-    TextField weight;
+    ChoiceBox<Integer> difficulty;
     @FXML
     ListView<TopicChoice> topics;
 
@@ -38,17 +34,10 @@ public class AutomaticGenerationController {
             topics.getItems().add(new TopicChoice(topic));
         }
 
-        UnaryOperator<TextFormatter.Change> integerFilter = change -> {
-            String input = change.getText();
-            if (input.matches("[0-9]*")) {
-                return change;
-            }
-            return null;
-        };
-
-        duration.setTextFormatter(new TextFormatter<String>(integerFilter));
-        weight.setTextFormatter(new TextFormatter<String>(integerFilter));
-        difficulty.setTextFormatter(new TextFormatter<String>(integerFilter));
+        for(int i=0; i<5; i++) {
+            difficulty.getItems().add(i);
+        }
+        difficulty.setValue(0);
     }
 
     public void setExam(Exam exam) {
@@ -64,10 +53,9 @@ public class AutomaticGenerationController {
             }
         }
 
-
         SceneManager sceneManager = SceneManager.getInstance();
         sceneManager.showWorkIndicator(this.exam, (exam) -> {
-            ExamGenerator.generateExam(this.exam, Integer.valueOf(difficulty.getText()), Integer.valueOf(duration.getText()), Integer.valueOf(weight.getText()), selectedTopics);
+            ExamGenerator.generateExam(this.exam, Integer.valueOf(difficulty.getValue()), Integer.valueOf(this.exam.durationProperty().getValue()), Integer.valueOf(this.exam.weightProperty().getValue()), selectedTopics);
             return true;
         });
     }

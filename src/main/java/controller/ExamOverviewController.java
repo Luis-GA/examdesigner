@@ -21,7 +21,7 @@ public class ExamOverviewController {
     @FXML
     TextField duration;
     @FXML
-    TextField weight;
+    ChoiceBox<String> weight;
     @FXML
     TextField numQuestions;
     @FXML
@@ -56,7 +56,7 @@ public class ExamOverviewController {
         subject.textProperty().bindBidirectional(exam.subjectProperty());
         modality.textProperty().bindBidirectional(exam.modalityProperty());
         duration.textProperty().bindBidirectional(exam.durationProperty());
-        weight.textProperty().bindBidirectional(exam.weightProperty());
+        weight.valueProperty().bindBidirectional(exam.weightProperty());
         numQuestions.textProperty().bindBidirectional(exam.numQuestionsProperty());
         logo.imageProperty().bindBidirectional(exam.getLogoView().imageProperty());
         examDate.valueProperty().bindBidirectional(exam.examDateProperty());
@@ -77,8 +77,12 @@ public class ExamOverviewController {
         };
 
         duration.setTextFormatter(new TextFormatter<String>(integerFilter));
-        weight.setTextFormatter(new TextFormatter<String>(integerFilter));
         numQuestions.setTextFormatter(new TextFormatter<String>(integerFilter));
+
+        for(int i=0; i<=100; i+=5) {
+            weight.getItems().add(Integer.valueOf(i).toString());
+        }
+        weight.setValue("0");
     }
 
     @FXML
