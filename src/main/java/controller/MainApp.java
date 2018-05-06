@@ -27,7 +27,7 @@ public class MainApp extends Application {
         MainApp.primaryStage.setMinWidth(900);
         MainApp.primaryStage.setMinHeight(600);
         MainApp.primaryStage.setTitle(ResourceBundle.getBundle(MainApp.LABELS).getString("title.applicationName"));
-        MainApp.primaryStage.getIcons().add(new Image("images/exam_designer_256.png"));
+        MainApp.primaryStage.getIcons().add(new Image(MainApp.class.getResource("/images/exam_designer_256.png").toString()));
         MainApp.primaryStage.setOnCloseRequest(confirmCloseEventHandler);
 
         setPreferences();
@@ -42,7 +42,7 @@ public class MainApp extends Application {
         try {
             // Load exam overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("../view/WelcomeOverview.fxml"));
+            loader.setLocation(MainApp.class.getResource("/view/WelcomeOverview.fxml"));
             loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
             AnchorPane welcomeOverview = loader.load();
 

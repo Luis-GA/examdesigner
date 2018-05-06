@@ -66,7 +66,7 @@ public class SceneManager {
 
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("../view/RootLayout.fxml"));
+            loader.setLocation(MainApp.class.getResource("/view/RootLayout.fxml"));
             loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
             BorderPane rootLayout = loader.load();
 
@@ -94,7 +94,7 @@ public class SceneManager {
         Scene scene = null;
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("../view/ExamOverview.fxml"));
+            loader.setLocation(MainApp.class.getResource("/view/ExamOverview.fxml"));
             loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
             AnchorPane examOverview = loader.load();
 
@@ -117,7 +117,7 @@ public class SceneManager {
         Scene scene = null;
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("../view/AutomaticGeneration.fxml"));
+            loader.setLocation(MainApp.class.getResource("/view/AutomaticGeneration.fxml"));
             loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
             AnchorPane automaticGeneration = loader.load();
 
@@ -173,7 +173,7 @@ public class SceneManager {
     public void showWorkIndicator(Exam exam, Function function) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("../view/WorkIndicator.fxml"));
+            loader.setLocation(MainApp.class.getResource("/view/WorkIndicator.fxml"));
             loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
             HBox workIndicator = loader.load();
 

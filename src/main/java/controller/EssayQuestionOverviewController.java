@@ -66,7 +66,7 @@ public class EssayQuestionOverviewController {
             solutionButton.setText(ResourceBundle.getBundle(MainApp.LABELS).getString("btn.solution"));
             solutionButton.setOnAction(event -> openSolutionObject());
 
-            ImageView deleteImage = new ImageView(new Image("images/ic_delete_forever_black.png"));
+            ImageView deleteImage = new ImageView(new Image(MainApp.class.getResource("/images/ic_delete_forever_black.png").toString()));
             deleteImage.setFitHeight(15);
             deleteImage.setFitWidth(15);
             deleteButton.setGraphic(deleteImage);

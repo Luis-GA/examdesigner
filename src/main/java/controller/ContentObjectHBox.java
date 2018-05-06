@@ -81,7 +81,7 @@ public class ContentObjectHBox extends GridPane {
             }
         }
 
-        ImageView deleteImage = new ImageView(new Image("images/ic_delete_forever_black.png"));
+        ImageView deleteImage = new ImageView(new Image(MainApp.class.getResource("/images/ic_delete_forever_black.png").toString()));
 
         deleteImage.setFitHeight(15);
         deleteImage.setFitWidth(15);

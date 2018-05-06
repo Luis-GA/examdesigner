@@ -1,5 +1,6 @@
 package model;
 
+import controller.MainApp;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -256,7 +257,7 @@ public class Exam {
         this.weight = new SimpleStringProperty("0");
         this.numQuestions = new SimpleStringProperty("0");
 
-        this.logo = new ImageView(new Image("images/logo_default.png"));
+        this.logo = new ImageView(new Image(MainApp.class.getResource("/images/logo_default.png").toString()));
 
         this.examDate = new SimpleObjectProperty<>(LocalDate.now());
         this.publicationDate = new SimpleObjectProperty<>(LocalDate.now());

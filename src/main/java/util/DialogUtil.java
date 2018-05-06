@@ -50,7 +50,7 @@ public class DialogUtil {
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.setResizable(false);
             dialogStage.initOwner(stage);
-            dialogStage.getIcons().add(new Image("images/exam_designer_256.png"));
+            dialogStage.getIcons().add(new Image(MainApp.class.getResource("/images/exam_designer_256.png").toString()));
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
@@ -67,18 +67,18 @@ public class DialogUtil {
     }
 
     public static List<ContentObject> showContentObjectDialog(List<ContentObject> contentObjects, Stage stage) {
-        ContentObjectDialogController controller = (ContentObjectDialogController) showDialog("../view/ContentObjectDialog.fxml", "title.contentObject", stage);
+        ContentObjectDialogController controller = (ContentObjectDialogController) showDialog("/view/ContentObjectDialog.fxml", "title.contentObject", stage);
         controller.setContentObjects(contentObjects);
         controller.getDialogStage().showAndWait();
         return controller.getContentObjectList();
     }
 
     public static void showSettingsDialog() {
-        showDialog("../view/SettingsDialog.fxml", "title.settings", null).getDialogStage().showAndWait();
+        showDialog("/view/SettingsDialog.fxml", "title.settings", null).getDialogStage().showAndWait();
     }
 
     public static void showAboutDialog() {
-        showDialog("../view/AboutDialog.fxml", "title.about", null).getDialogStage().showAndWait();
+        showDialog("/view/AboutDialog.fxml", "title.about", null).getDialogStage().showAndWait();
     }
 
     public static void showQuestionOverviewDialog(TestQuestion testQuestion, EssayQuestion essayQuestion, Stage stage) {
@@ -86,15 +86,15 @@ public class DialogUtil {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("../view/QuestionOverview.fxml"));
+            loader.setLocation(MainApp.class.getResource("/view/QuestionOverview.fxml"));
             loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
             VBox vBox = loader.load();
 
             TestQuestionOverviewController testController = new TestQuestionOverviewController();
-            Node testQuestionNode = getNode("../view/TestQuestionOverview.fxml", testController);
+            Node testQuestionNode = getNode("/view/TestQuestionOverview.fxml", testController);
             testController.setStage(stage);
             EssayQuestionOverviewController essayController = new EssayQuestionOverviewController();
-            Node essayQuestionNode = getNode("../view/EssayQuestionOverview.fxml", essayController);
+            Node essayQuestionNode = getNode("/view/EssayQuestionOverview.fxml", essayController);
             essayController.setStage(stage);
 
             vBox.getChildren().add(testQuestionNode);
@@ -121,7 +121,7 @@ public class DialogUtil {
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.setResizable(false);
             dialogStage.initOwner(stage);
-            dialogStage.getIcons().add(new Image("images/exam_designer_256.png"));
+            dialogStage.getIcons().add(new Image(MainApp.class.getResource("/images/exam_designer_256.png").toString()));
             Scene scene = new Scene(vBox);
             dialogStage.setScene(scene);
             QuestionOverviewController controller = loader.getController();
@@ -195,7 +195,7 @@ public class DialogUtil {
         languageChangedDialog.setContentText(ResourceBundle.getBundle(MainApp.LABELS).getString(labelKey));
 
         Stage stage = (Stage) languageChangedDialog.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image("images/exam_designer_256.png"));
+        stage.getIcons().add(new Image(MainApp.class.getResource("/images/exam_designer_256.png").toString()));
 
         languageChangedDialog.show();
     }

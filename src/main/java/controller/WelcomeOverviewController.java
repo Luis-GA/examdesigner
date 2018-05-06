@@ -34,8 +34,8 @@ public class WelcomeOverviewController {
             titleLabel.setText(titleText);
             titleLabel.setFont(Font.font(12));
 
-            ImageView deleteImage = new ImageView(new Image("images/ic_delete_forever_black.png"));
-            ImageView openImage = new ImageView(new Image("images/ic_open_in_new_black.png"));
+            ImageView deleteImage = new ImageView(new Image(MainApp.class.getResource("/images/ic_delete_forever_black.png").toString()));
+            ImageView openImage = new ImageView(new Image(MainApp.class.getResource("/images/ic_open_in_new_black.png").toString()));
 
             deleteImage.setFitHeight(15);
             deleteImage.setFitWidth(15);
