@@ -49,8 +49,6 @@
             <TextField fx:id="duration" layoutX="249.0" layoutY="70.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label layoutX="10.0" layoutY="108.0" text="%lbl.weight" GridPane.rowIndex="4" />
             <ChoiceBox fx:id="weight" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Label layoutX="10.0" layoutY="139.0" text="%lbl.numQuestions" GridPane.rowIndex="5" />
-            <TextField fx:id="numQuestions" layoutX="249.0" layoutY="134.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <Label layoutX="10.0" layoutY="137.0" text="%lbl.logo" GridPane.rowIndex="7" />
             <Button mnemonicParsing="false" onAction="#openLogoImageFile" text="%btn.openFile" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <ImageView fx:id="logo" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="TOP">

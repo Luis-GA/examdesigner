@@ -19,7 +19,11 @@ public class AutomaticGenerationController {
     @FXML
     ChoiceBox<Integer> difficulty;
     @FXML
-    ListView<TopicChoice> topics;
+    ListView<TopicChoice> testTopics;
+    @FXML
+    ListView<TopicChoice> essayTopics;
+    @FXML
+    Slider percentageSlider;
 
     Exam exam;
 
@@ -28,10 +32,15 @@ public class AutomaticGenerationController {
 
         DatabaseManager db = DatabaseManager.getInstance();
         List<String> topicList = db.getTopics();
-        topics.setItems(FXCollections.observableArrayList());
+        testTopics.setItems(FXCollections.observableArrayList());
+        essayTopics.setItems(FXCollections.observableArrayList());
 
         for(String topic : topicList) {
-            topics.getItems().add(new TopicChoice(topic));
+            testTopics.getItems().add(new TopicChoice(topic));
+        }
+
+        for(String topic : topicList) {
+            essayTopics.getItems().add(new TopicChoice(topic));
         }
 
         for(int i=0; i<5; i++) {
@@ -47,15 +56,17 @@ public class AutomaticGenerationController {
     @FXML
     public  void handleGenerate() {
         List<String> selectedTopics = new ArrayList<>();
-        for(TopicChoice topicChoice : topics.getItems()) {
+        for(TopicChoice topicChoice : testTopics.getItems()) {
             if(topicChoice.isChecked()) {
                 selectedTopics.add(topicChoice.getTopic());
             }
         }
 
+        //TODO send essay topics to the method
+
         SceneManager sceneManager = SceneManager.getInstance();
         sceneManager.showWorkIndicator(this.exam, (exam) -> {
-            ExamGenerator.generateExam(this.exam, Integer.valueOf(difficulty.getValue()), Integer.valueOf(this.exam.durationProperty().getValue()), Integer.valueOf(this.exam.weightProperty().getValue()), selectedTopics);
+            ExamGenerator.generateExam(this.exam, Integer.valueOf(difficulty.getValue()), Integer.valueOf(this.exam.durationProperty().getValue()), (int) percentageSlider.getValue(), selectedTopics);
             return true;
         });
     }
