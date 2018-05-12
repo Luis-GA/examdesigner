@@ -4,10 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
@@ -21,6 +18,7 @@ import model.TestQuestion;
 import util.DialogUtil;
 
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 public class TestQuestionOverviewController{
 
@@ -64,6 +62,7 @@ public class TestQuestionOverviewController{
         private Button deleteButton = new Button();
         private Button openButton = new Button();
         private ObservableList<ChoiceHBox> list;
+        private Label correctLabel = new Label();
         private CheckBox isCorrect = new CheckBox();
         private Choice choice;
 
@@ -89,21 +88,25 @@ public class TestQuestionOverviewController{
             title.setMaxHeight(100);
             title.textProperty().bindBidirectional(this.choice.titleProperty());
 
+            correctLabel.setText(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.correct"));
+
             RowConstraints singleRow = new RowConstraints();
             this.getRowConstraints().add(singleRow);
 
             ColumnConstraints titleColumn = new ColumnConstraints();
             titleColumn.setHgrow(Priority.ALWAYS);
+            this.getColumnConstraints().add(new ColumnConstraints(50));
             this.getColumnConstraints().add(new ColumnConstraints(20));
             this.getColumnConstraints().add(titleColumn);
             this.getColumnConstraints().add(new ColumnConstraints(10));
             this.getColumnConstraints().add(new ColumnConstraints(40));
             this.getColumnConstraints().add(new ColumnConstraints(40));
 
-            this.add(isCorrect, 0, 0);
-            this.add(title, 1, 0);
-            this.add(deleteButton, 3, 0);
-            this.add(openButton, 4, 0);
+            this.add(correctLabel, 0, 0);
+            this.add(isCorrect, 1, 0);
+            this.add(title, 2, 0);
+            this.add(deleteButton, 4, 0);
+            this.add(openButton, 5, 0);
         }
 
         private void deleteContentObject() {

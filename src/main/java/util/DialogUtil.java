@@ -73,6 +73,12 @@ public class DialogUtil {
         return controller.getContentObjectList();
     }
 
+    public static String showTopicsDialog(Stage stage) {
+        TopicsDialogController controller = (TopicsDialogController) showDialog("/view/TopicsDialog.fxml", "lbl.topics", stage);
+        controller.getDialogStage().showAndWait();
+        return controller.getTopic();
+    }
+
     public static void showSettingsDialog() {
         showDialog("/view/SettingsDialog.fxml", "title.settings", null).getDialogStage().showAndWait();
     }

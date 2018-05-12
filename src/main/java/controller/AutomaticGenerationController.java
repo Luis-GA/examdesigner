@@ -19,9 +19,9 @@ public class AutomaticGenerationController {
     @FXML
     ChoiceBox<Integer> difficulty;
     @FXML
-    ListView<TopicChoice> testTopics;
+    ListView<TopicChoiceHBox> testTopics;
     @FXML
-    ListView<TopicChoice> essayTopics;
+    ListView<TopicChoiceHBox> essayTopics;
     @FXML
     Slider percentageSlider;
 
@@ -36,11 +36,11 @@ public class AutomaticGenerationController {
         essayTopics.setItems(FXCollections.observableArrayList());
 
         for(String topic : topicList) {
-            testTopics.getItems().add(new TopicChoice(topic));
+            testTopics.getItems().add(new TopicChoiceHBox(topic));
         }
 
         for(String topic : topicList) {
-            essayTopics.getItems().add(new TopicChoice(topic));
+            essayTopics.getItems().add(new TopicChoiceHBox(topic));
         }
 
         for(int i=0; i<5; i++) {
@@ -56,7 +56,7 @@ public class AutomaticGenerationController {
     @FXML
     public  void handleGenerate() {
         List<String> selectedTopics = new ArrayList<>();
-        for(TopicChoice topicChoice : testTopics.getItems()) {
+        for(TopicChoiceHBox topicChoice : testTopics.getItems()) {
             if(topicChoice.isChecked()) {
                 selectedTopics.add(topicChoice.getTopic());
             }
@@ -69,26 +69,5 @@ public class AutomaticGenerationController {
             ExamGenerator.generateExam(this.exam, Integer.valueOf(difficulty.getValue()), Integer.valueOf(this.exam.durationProperty().getValue()), (int) percentageSlider.getValue(), selectedTopics);
             return true;
         });
-    }
-
-    private class TopicChoice extends HBox {
-        Label topicLabel = new Label();
-        CheckBox checkBox = new CheckBox();
-
-        public TopicChoice(String topic) {
-            super();
-            topicLabel.setText(topic);
-
-            this.getChildren().add(checkBox);
-            this.getChildren().add(topicLabel);
-        }
-
-        public boolean isChecked() {
-            return checkBox.isSelected();
-        }
-
-        public String getTopic() {
-            return topicLabel.getText();
-        }
     }
 }

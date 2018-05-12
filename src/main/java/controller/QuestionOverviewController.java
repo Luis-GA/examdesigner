@@ -7,6 +7,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import model.EssayQuestion;
 import model.Question;
@@ -26,7 +28,7 @@ public class QuestionOverviewController extends DialogController{
     @FXML
     private TextArea title;
     @FXML
-    private TextField difficulty;
+    private ChoiceBox<Integer> difficulty;
     @FXML
     private TextField duration;
     @FXML
@@ -41,6 +43,8 @@ public class QuestionOverviewController extends DialogController{
     private TextField subtopic;
     @FXML
     private ComboBox typeSelector;
+    @FXML
+    private Button searchTopicButton;
 
     @FXML
     public void initialize() {
@@ -64,17 +68,35 @@ public class QuestionOverviewController extends DialogController{
                 }
             }
         });
+
+        UnaryOperator<TextFormatter.Change> integerFilter = change -> {
+            String input = change.getText();
+            if (input.matches("[0-9]*")) {
+                return change;
+            }
+            return null;
+        };
+
+        duration.setTextFormatter(new TextFormatter<String>(integerFilter));
+        weight.setTextFormatter(new TextFormatter<String>(integerFilter));
+
+        for(int i=0; i<5; i++) {
+            difficulty.getItems().add(i);
+        }
+        difficulty.setValue(0);
+
+        ImageView searchImage = new ImageView(new Image(MainApp.class.getResource("/images/ic_search_black.png").toString()));
+
+        searchImage.setFitHeight(15);
+        searchImage.setFitWidth(15);
+
+        searchTopicButton.setGraphic(searchImage);
     }
 
     @FXML
     public void showSetContentDialog() {
         this.testQuestion.setBodyObjects(DialogUtil.showContentObjectDialog(this.testQuestion.getBodyObjects(), this.getDialogStage()));
         this.essayQuestion.setBodyObjects(this.testQuestion.getBodyObjects());
-    }
-
-    @FXML
-    private void saveQuestion() {
-
     }
 
     public void setQuestions(TestQuestion testQuestion, EssayQuestion essayQuestion) {
@@ -97,18 +119,6 @@ public class QuestionOverviewController extends DialogController{
         topic.textProperty().bindBidirectional(essayQuestion.topicProperty());
         subtopic.textProperty().bindBidirectional(testQuestion.subtopicProperty());
         subtopic.textProperty().bindBidirectional(essayQuestion.subtopicProperty());
-
-        UnaryOperator<TextFormatter.Change> integerFilter = change -> {
-            String input = change.getText();
-            if (input.matches("[0-9]*")) {
-                return change;
-            }
-            return null;
-        };
-
-        duration.setTextFormatter(new TextFormatter<String>(integerFilter));
-        weight.setTextFormatter(new TextFormatter<String>(integerFilter));
-        difficulty.setTextFormatter(new TextFormatter<String>(integerFilter));
     }
 
     public void setDialogStage(Stage dialogStage) {
@@ -131,11 +141,28 @@ public class QuestionOverviewController extends DialogController{
     }
 
     private void handleSaveQuestion() {
-        DatabaseManager databaseManager = DatabaseManager.getInstance();
-        if(this.typeSelector.getSelectionModel().getSelectedItem().equals(Question.Type.TEST.name())) {
-            databaseManager.addQuestion(this.testQuestion.getIdQuestion(), new TestQuestionParser(this.testQuestion).toJson());
+        if(this.testQuestion.getTitle().equals("")) {
+            DialogUtil.showInfoDialog("txt.titleMandatory");
+        } else if(this.testQuestion.getTopic().equals("")) {
+            DialogUtil.showInfoDialog("txt.topicMandatory");
         } else {
-            databaseManager.addQuestion(this.essayQuestion.getIdQuestion(), new EssayQuestionParser(this.essayQuestion).toJson());
+            DatabaseManager databaseManager = DatabaseManager.getInstance();
+            if(this.typeSelector.getSelectionModel().getSelectedItem().equals(Question.Type.TEST.name())) {
+                databaseManager.addQuestion(this.testQuestion.getIdQuestion(), new TestQuestionParser(this.testQuestion).toJson());
+            } else {
+                databaseManager.addQuestion(this.essayQuestion.getIdQuestion(), new EssayQuestionParser(this.essayQuestion).toJson());
+            }
+            DialogUtil.showInfoDialog("txt.questionAdded");
+            getDialogStage().close();
+        }
+    }
+
+    @FXML
+    private void searchTopics() {
+        String auxTopic = DialogUtil.showTopicsDialog(dialogStage);
+
+        if(auxTopic != null) {
+            topic.setText(auxTopic);
         }
     }
 }

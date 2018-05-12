@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TopicsDialogController">
+    <children>
+        <ListView fx:id="topicsList" layoutX="100.0" layoutY="46.0" prefHeight="309.0" prefWidth="600.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+        <HBox alignment="BOTTOM_RIGHT" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
+            <children>
+                <Button fx:id="okButton" mnemonicParsing="false" onAction="#handleOk" text="%btn.ok" />
+                <Button cancelButton="true" mnemonicParsing="false" onAction="#handleCancel" text="%btn.cancel" />
+            </children>
+        </HBox>
+    </children>
+</AnchorPane>
