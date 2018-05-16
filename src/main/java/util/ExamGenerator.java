@@ -15,7 +15,7 @@ public class ExamGenerator {
         throw new IllegalStateException("Utility class");
     }
 
-    public static Exam generateExam(Exam exam, int difficulty, int duration, int essaypercent, List<String> topics) {
+    public static Exam generateExam(Exam exam, int difficulty, int duration, int essaypercent, List<String> essayTopics, List<String> testTopics) {
         DatabaseManager databaseManager = DatabaseManager.getInstance();
 
         List<ExamPart> parts = new ArrayList<>();
@@ -24,8 +24,8 @@ public class ExamGenerator {
         if (essaypercent != 0) {
             ExamPart essayPart = new ExamPart();
             ArrayList<Question> questions = new ArrayList<>();
-            for (int i = 0; i < topics.size(); i++) {
-                questions.addAll(databaseManager.getQuestions(topics.get(i), "Essay"));
+            for (int i = 0; i < essayTopics.size(); i++) {
+                questions.addAll(databaseManager.getQuestions(essayTopics.get(i), "Essay"));
             }
 
 
@@ -38,8 +38,8 @@ public class ExamGenerator {
             ArrayList<Question> questions;
             do {
                 questions = new ArrayList<>();
-                for (int i = 0; i < topics.size(); i++) {
-                    questions.addAll(databaseManager.getQuestions(topics.get(i), "TEST"));
+                for (int i = 0; i < testTopics.size(); i++) {
+                    questions.addAll(databaseManager.getQuestions(testTopics.get(i), "TEST"));
                 }
 
                 testPart = generateTestPart(testPart, duration, questions);

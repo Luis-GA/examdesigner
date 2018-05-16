@@ -43,7 +43,7 @@ public class AutomaticGenerationController {
             essayTopics.getItems().add(new TopicChoiceHBox(topic));
         }
 
-        for(int i=0; i<5; i++) {
+        for(int i=0; i<4; i++) {
             difficulty.getItems().add(i);
         }
         difficulty.setValue(0);
@@ -55,18 +55,22 @@ public class AutomaticGenerationController {
 
     @FXML
     public  void handleGenerate() {
-        List<String> selectedTopics = new ArrayList<>();
-        for(TopicChoiceHBox topicChoice : testTopics.getItems()) {
-            if(topicChoice.isChecked()) {
-                selectedTopics.add(topicChoice.getTopic());
+        List<String> testselectedTopics = new ArrayList<>();
+        for(TopicChoiceHBox testtopicChoice : testTopics.getItems()) {
+            if(testtopicChoice.isChecked()) {
+                testselectedTopics.add(testtopicChoice.getTopic());
+            }
+        }
+        List<String> essayselectedTopics = new ArrayList<>();
+        for(TopicChoiceHBox essaytopicChoice : essayTopics.getItems()) {
+            if(essaytopicChoice.isChecked()) {
+                testselectedTopics.add(essaytopicChoice.getTopic());
             }
         }
 
-        //TODO send essay topics to the method
-
         SceneManager sceneManager = SceneManager.getInstance();
         sceneManager.showWorkIndicator(this.exam, (exam) -> {
-            ExamGenerator.generateExam(this.exam, Integer.valueOf(difficulty.getValue()), Integer.valueOf(this.exam.durationProperty().getValue()), (int) percentageSlider.getValue(), selectedTopics);
+            ExamGenerator.generateExam(this.exam, Integer.valueOf(difficulty.getValue()), Integer.valueOf(this.exam.durationProperty().getValue()), (int) (100-percentageSlider.getValue()),essayselectedTopics ,testselectedTopics);
             return true;
         });
     }
