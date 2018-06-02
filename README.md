@@ -1,15 +1,9 @@
-
+![exam-designer-logo](src/main/resources/images/exam_designer_256.png)
 ## Exam Designer
-
-![exam-designer-logo](src/main/resources/images/exam_designer_512.png)
+### version 0.3
 
 Exam Designer is an application for making exams developed as a final degree project by Sergio Benito Martín and Luis Gómez Alonso.
 
-> Enjoy
+> Available in english and spanish!
 
-### 1
-#### 2
-##### 3
-###### 4
-####### 5
 
