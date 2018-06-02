@@ -6,7 +6,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
+import model.Question;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class TopicsDialogController extends DialogController{
@@ -20,7 +23,19 @@ public class TopicsDialogController extends DialogController{
     @FXML
     private void initialize() {
         DatabaseManager db = DatabaseManager.getInstance();
-        List<String> topicList = db.getTopics();
+
+        HashSet<String> topicsSet = new HashSet<>();
+        List<String> testTopicList = db.getTopics(Question.Type.TEST);
+        List<String> essayTopicList = db.getTopics(Question.Type.ESSAY);
+
+        for(String topic : testTopicList) {
+            topicsSet.add(topic);
+        }
+        for(String topic : essayTopicList) {
+            topicsSet.add(topic);
+        }
+        List<String> topicList = new ArrayList<>(topicsSet);
+
         topicsList.setItems(FXCollections.observableArrayList());
         toggleGroup = new ToggleGroup();
 

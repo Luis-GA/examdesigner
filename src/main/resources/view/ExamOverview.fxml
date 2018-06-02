@@ -74,5 +74,6 @@
          </padding>
       </GridPane>
       <Button alignment="BOTTOM_RIGHT" mnemonicParsing="false" onAction="#handleNext" text="%btn.next" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+      <Button alignment="BOTTOM_RIGHT" layoutX="513.0" layoutY="417.0" mnemonicParsing="false" onAction="#handleClose" text="%btn.close" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
     </children>
 </AnchorPane>

@@ -2,15 +2,16 @@ package controller;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import model.Exam;
+import model.Question;
 import util.ExamGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.UnaryOperator;
 
 public class AutomaticGenerationController {
 
@@ -31,15 +32,16 @@ public class AutomaticGenerationController {
     public void initialize() {
 
         DatabaseManager db = DatabaseManager.getInstance();
-        List<String> topicList = db.getTopics();
+        List<String> testTopicList = db.getTopics(Question.Type.TEST);
+        List<String> essayTopicList = db.getTopics(Question.Type.ESSAY);
         testTopics.setItems(FXCollections.observableArrayList());
         essayTopics.setItems(FXCollections.observableArrayList());
 
-        for(String topic : topicList) {
+        for(String topic : testTopicList) {
             testTopics.getItems().add(new TopicChoiceHBox(topic));
         }
 
-        for(String topic : topicList) {
+        for(String topic : essayTopicList) {
             essayTopics.getItems().add(new TopicChoiceHBox(topic));
         }
 
@@ -54,24 +56,30 @@ public class AutomaticGenerationController {
     }
 
     @FXML
-    public  void handleGenerate() {
-        List<String> testselectedTopics = new ArrayList<>();
-        for(TopicChoiceHBox testtopicChoice : testTopics.getItems()) {
-            if(testtopicChoice.isChecked()) {
-                testselectedTopics.add(testtopicChoice.getTopic());
+    public void handleGenerate() {
+        List<String> testSelectedTopics = new ArrayList<>();
+        for(TopicChoiceHBox testTopicChoice : testTopics.getItems()) {
+            if(testTopicChoice.isChecked()) {
+                testSelectedTopics.add(testTopicChoice.getTopic());
             }
         }
-        List<String> essayselectedTopics = new ArrayList<>();
-        for(TopicChoiceHBox essaytopicChoice : essayTopics.getItems()) {
-            if(essaytopicChoice.isChecked()) {
-                testselectedTopics.add(essaytopicChoice.getTopic());
+        List<String> essaySelectedTopics = new ArrayList<>();
+        for(TopicChoiceHBox essayTopicChoice : essayTopics.getItems()) {
+            if(essayTopicChoice.isChecked()) {
+                essaySelectedTopics.add(essayTopicChoice.getTopic());
             }
         }
 
         SceneManager sceneManager = SceneManager.getInstance();
         sceneManager.showWorkIndicator(this.exam, (exam) -> {
-            ExamGenerator.generateExam(this.exam, Integer.valueOf(difficulty.getValue()), Integer.valueOf(this.exam.durationProperty().getValue()), (int) (100-percentageSlider.getValue()),essayselectedTopics ,testselectedTopics);
+            ExamGenerator.generateExam(this.exam, Integer.valueOf(difficulty.getValue()), Integer.valueOf(this.exam.durationProperty().getValue()), (int) (100-percentageSlider.getValue()),essaySelectedTopics ,testSelectedTopics);
             return true;
         });
+    }
+
+    @FXML
+    public void handleBack() {
+        SceneManager sceneManager = SceneManager.getInstance();
+        sceneManager.back();
     }
 }

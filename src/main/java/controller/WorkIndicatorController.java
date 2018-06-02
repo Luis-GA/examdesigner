@@ -3,9 +3,8 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.layout.*;
-import model.Exam;
-import java.util.function.Function;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class WorkIndicatorController extends RootLayoutController{
 

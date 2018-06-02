@@ -8,6 +8,7 @@ import model.Question;
 import org.dizitart.no2.*;
 import org.dizitart.no2.exceptions.IndexingException;
 import org.dizitart.no2.exceptions.UniqueConstraintException;
+import org.dizitart.no2.filters.Filters;
 import org.dizitart.no2.mapper.JacksonMapper;
 import org.dizitart.no2.mapper.NitriteMapper;
 import util.*;
@@ -15,8 +16,8 @@ import util.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.dizitart.no2.filters.Filters.eq;
 import static org.dizitart.no2.filters.Filters.and;
+import static org.dizitart.no2.filters.Filters.eq;
 
 public class DatabaseManager {
 
@@ -28,7 +29,8 @@ public class DatabaseManager {
     private static final String EXAMS = "exams";
     private static final String TITLE = "title";
     private static final String VALUE = "value";
-    private static final String TOPICS = "topics";
+    public static final String TEST_TOPICS = "test_topics";
+    public static final String ESSAY_TOPICS = "essay_topics";
     private static final String TOPIC = "topic";
 
     private DatabaseManager() {
@@ -71,9 +73,21 @@ public class DatabaseManager {
         NitriteMapper nitriteMapper = new JacksonMapper();
         Document questionDocument = nitriteMapper.parse(questionString);
         String newTopic = (String) questionDocument.get(TOPIC);
+
+        String typeString = (String) questionDocument.get("type");
+        String typeCollection;
+        Question.Type questionType;
+        if(typeString.compareTo(Question.Type.TEST.name()) == 0) {
+            typeCollection = TEST_TOPICS;
+            questionType = Question.Type.TEST;
+        } else {
+            typeCollection = ESSAY_TOPICS;
+            questionType = Question.Type.ESSAY;
+        }
+
         // Check if topic exists, if not add topic to list
-        if(!topicExists(newTopic)) {
-            addTopic(newTopic);
+        if(!topicExists(questionType, newTopic)) {
+            addTopic(typeCollection, newTopic);
         }
 
         if(idQuestion == -1) {
@@ -96,23 +110,46 @@ public class DatabaseManager {
         String newTopic = (String) questionDocument.get(TOPIC);
         collection.update(eq("idQuestion", idQuestion), questionDocument);
 
-        // Check if old topic exists, delete if not, check if new topic exists, if not add it
-        if(!topicExists(oldTopic)) {
-            deleteTopic(oldTopic);
+        String typeString = (String) questionDocument.get("type");
+        String typeCollection;
+        Question.Type questionType;
+        if(typeString.compareTo(Question.Type.TEST.name()) == 0) {
+            typeCollection = TEST_TOPICS;
+            questionType = Question.Type.TEST;
+        } else {
+            typeCollection = ESSAY_TOPICS;
+            questionType = Question.Type.ESSAY;
         }
-        if(!topicExists(newTopic)) {
-            addTopic(newTopic);
+
+        // Check if old topic exists, delete if not, check if new topic exists, if not add it
+        if(!topicExists(questionType, oldTopic)) {
+            deleteTopic(typeCollection, oldTopic);
+        }
+        if(!topicExists(questionType, newTopic)) {
+            addTopic(typeCollection, newTopic);
         }
     }
 
     public void deleteQuestion(Integer questionId) {
-        String topic = (String) getQuestion(questionId).get(TOPIC);
+        Document questionDocument = getQuestion(questionId);
+        String topic = (String) questionDocument.get(TOPIC);
         NitriteCollection collection = db.getCollection(QUESTIONS);
         collection.remove(eq("_id", questionId));
 
+        String typeString = (String) questionDocument.get("type");
+        String typeCollection;
+        Question.Type questionType;
+        if(typeString.compareTo(Question.Type.TEST.name()) == 0) {
+            typeCollection = TEST_TOPICS;
+            questionType = Question.Type.TEST;
+        } else {
+            typeCollection = ESSAY_TOPICS;
+            questionType = Question.Type.ESSAY;
+        }
+
         // Check if topic exists, if not delete it
-        if(!topicExists(topic)) {
-            deleteTopic(topic);
+        if(!topicExists(questionType, topic)) {
+            deleteTopic(typeCollection, topic);
         }
     }
 
@@ -131,7 +168,7 @@ public class DatabaseManager {
         QuestionParser questionParser;
         String aux;
         Question quest;
-        if (questionType.compareTo("TEST") == 0) {
+        if (questionType.compareTo(Question.Type.TEST.name()) == 0) {
             for (Document question : cursor) {
                 questionParser = new TestQuestionParser(jacksonMapper.toJson(question));
                 questions.add(questionParser.parseQuestion());
@@ -191,21 +228,21 @@ public class DatabaseManager {
         return aux.parseExam();
     }
 
-    private void addTopic(String topicValue) {
-        NitriteCollection topics = db.getCollection(TOPICS);
+    private void addTopic(String collectionName, String topicValue) {
+        NitriteCollection topics = db.getCollection(collectionName);
         NitriteMapper nitriteMapper = new JacksonMapper();
         Document doc = nitriteMapper.parse("{value: \"" + topicValue + "\"}");
         topics.insert(doc);
     }
 
-    private void deleteTopic(String topicValue) {
-        NitriteCollection collection = db.getCollection(TOPICS);
+    private void deleteTopic(String collectionName, String topicValue) {
+        NitriteCollection collection = db.getCollection(collectionName);
         collection.remove(eq(VALUE, topicValue));
     }
 
-    private boolean topicExists(String topicValue) {
+    private boolean topicExists(Question.Type type, String topicValue) {
         NitriteCollection collection = db.getCollection(QUESTIONS);
-        Cursor cursor = collection.find(eq(TOPIC, topicValue));
+        Cursor cursor = collection.find(and(eq(TOPIC, topicValue), eq("type", type)));
         for(Document doc : cursor) {
             return true;
         }
@@ -252,9 +289,15 @@ public class DatabaseManager {
         }
     }
 
-    public List<String> getTopics() {
-        NitriteCollection topicsCollection = db.getCollection(TOPICS);
+    public List<String> getTopics(Question.Type questionType) {
+        String typeCollection;
+        if(questionType.equals(Question.Type.TEST)) {
+            typeCollection = TEST_TOPICS;
+        } else {
+            typeCollection = ESSAY_TOPICS;
+        }
 
+        NitriteCollection topicsCollection = db.getCollection(typeCollection);
         Cursor cursor = topicsCollection.find();
 
         ArrayList<String> topicsText = new ArrayList<>();
@@ -263,6 +306,13 @@ public class DatabaseManager {
         }
 
         return topicsText;
+    }
+
+    public void cleanDatabase() {
+        db.getCollection(QUESTIONS).remove(Filters.ALL);
+        db.getCollection(EXAMS).remove(Filters.ALL);
+        db.getCollection(TEST_TOPICS).remove(Filters.ALL);
+        db.getCollection(ESSAY_TOPICS).remove(Filters.ALL);
     }
 
     private class Questions {

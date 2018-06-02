@@ -22,6 +22,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
                 <Label text="%lbl.language">
@@ -54,6 +55,7 @@
                   <Button fx:id="exportDatabase1" mnemonicParsing="false" onAction="#addQuestion" text="%btn.addQuestion" />
                </children>
             </HBox>
+            <Button mnemonicParsing="false" onAction="#handleCleanDatabase" text="%btn.cleanDatabase" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             </children>
         </GridPane>
         <HBox alignment="BOTTOM_RIGHT" layoutX="356.0" layoutY="255.0" prefHeight="31.0" prefWidth="171.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">

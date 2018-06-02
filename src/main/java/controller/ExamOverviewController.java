@@ -100,4 +100,13 @@ public class ExamOverviewController {
         SceneManager sceneManager = SceneManager.getInstance();
         sceneManager.setAutomaticGenerationScene(this.exam);
     }
+
+    @FXML
+    public void handleClose() {
+        if (DialogUtil.showCloseConfirmationDialog()) {
+            SceneManager sceneManager = SceneManager.getInstance();
+            sceneManager.back();
+            sceneManager.reloadWelcomeOverview();
+        }
+    }
 }

@@ -120,6 +120,14 @@ public class SettingsDialogController extends DialogController {
         DialogUtil.showQuestionOverviewDialog(new TestQuestion(), new EssayQuestion(), this.dialogStage);
     }
 
+    @FXML
+    private void handleCleanDatabase() {
+        if(DialogUtil.showConfirmationDialog("btn.delete","txt.databaseDeleteConfirmation")) {
+            databaseManager.cleanDatabase();
+            DialogUtil.showInfoDialog("txt.databaseDeleted");
+        }
+    }
+
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
     }

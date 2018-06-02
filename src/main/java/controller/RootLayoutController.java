@@ -137,10 +137,7 @@ public class RootLayoutController {
     public void handleClose() {
         if (DialogUtil.showCloseConfirmationDialog()) {
             sceneManager.back();
-        } else {
-            if (!changes()) {
-                sceneManager.back();
-            }
+            sceneManager.reloadWelcomeOverview();
         }
     }
 

@@ -53,5 +53,6 @@
          </padding>
         </GridPane>
         <Button alignment="BOTTOM_RIGHT" mnemonicParsing="false" onAction="#handleGenerate" text="%btn.generate" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+      <Button alignment="BOTTOM_RIGHT" layoutX="523.0" layoutY="427.0" mnemonicParsing="false" onAction="#handleBack" text="%btn.back" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
     </children>
 </AnchorPane>

@@ -10,9 +10,13 @@
       <ListView fx:id="contentList" layoutX="100.0" layoutY="46.0" prefHeight="309.0" prefWidth="600.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
       <HBox alignment="BOTTOM_RIGHT" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#addContentObjectHBox" text="%btn.add" />
             <Button fx:id="okButton" mnemonicParsing="false" onAction="#handleOk" text="%btn.ok" />
             <Button cancelButton="true" mnemonicParsing="false" onAction="#handleCancel" text="%btn.cancel" />
+         </children>
+      </HBox>
+      <HBox alignment="BOTTOM_RIGHT" layoutX="10.0" layoutY="359.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#addContentObjectHBox" text="%btn.add" />
          </children>
       </HBox>
    </children>
