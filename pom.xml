@@ -6,7 +6,7 @@
 
     <groupId>org.examdesigner</groupId>
     <artifactId>exam-designer</artifactId>
-    <version>0.3</version>
+    <version>0.4</version>
 
     <properties>
         <maven.compiler.source>1.9</maven.compiler.source>

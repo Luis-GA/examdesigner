@@ -242,7 +242,7 @@ public class DatabaseManager {
 
     private boolean topicExists(Question.Type type, String topicValue) {
         NitriteCollection collection = db.getCollection(QUESTIONS);
-        Cursor cursor = collection.find(and(eq(TOPIC, topicValue), eq("type", type)));
+        Cursor cursor = collection.find(and(eq(TOPIC, topicValue), eq("type", type.name())));
         for(Document doc : cursor) {
             return true;
         }
