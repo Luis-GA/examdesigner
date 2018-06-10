@@ -41,7 +41,7 @@ public class TestQuestionOverviewController{
     public TestQuestion getChoices() {
         TestQuestion aux = new TestQuestion();
         ObservableMap<String, Choice> choices = FXCollections.observableHashMap();
-        ObservableList<String> correctChoices  = FXCollections.observableList(new ArrayList<>());
+        ObservableList<String> correctChoices  = FXCollections.observableArrayList();
         char key = 'a';
         for(ChoiceHBox choiceHBox : choicesList.getItems()) {
             choices.put(String.valueOf(key), choiceHBox.choice);

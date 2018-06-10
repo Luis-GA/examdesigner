@@ -39,8 +39,10 @@ public class ContentObject {
     }
 
     public String getContent() {
-        if (this.type == Type.IMAGE)
-            return ImageUtil.getBase64((Image) this.content);
+        if (this.type == Type.IMAGE) {
+            ImageView aux = getImageProperty();
+            return ImageUtil.getBase64(aux.getImage());
+        }
         else if (this.type == Type.TEXT)
             return (String) this.content;
         else

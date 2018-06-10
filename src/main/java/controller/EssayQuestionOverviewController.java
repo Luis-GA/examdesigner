@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,18 +14,18 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import model.ContentObject;
 import model.EssayQuestion;
 import model.Section;
 import util.DialogUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class EssayQuestionOverviewController {
 
     @FXML
     private ListView<SectionHBox> sectionsList;
-    private ObservableList<ContentObject> solutionObjects;
     private EssayQuestion essayQuestion;
 
     private Stage stage;
@@ -38,8 +39,15 @@ public class EssayQuestionOverviewController {
     }
 
     public void updateQuestion() {
-        essayQuestion.setSections(sectionsList.getItems());
-        essayQuestion.setSolutionObjects(solutionObjects);
+        essayQuestion.setSections(getSections());
+    }
+
+    public List<Section> getSections() {
+        List<Section> sections = FXCollections.observableArrayList();
+        for(SectionHBox sectionHBox : sectionsList.getItems()) {
+            sections.add(sectionHBox.getSection());
+        }
+        return sections;
     }
 
     @FXML
@@ -54,7 +62,7 @@ public class EssayQuestionOverviewController {
 
     @FXML
     private void setContent() {
-        this.solutionObjects = (ObservableList<ContentObject>) DialogUtil.showContentObjectDialog(this.solutionObjects, this.stage);
+        essayQuestion.setSolutionObjects(DialogUtil.showContentObjectDialog(essayQuestion.getSolutionObjects(), stage));
     }
 
     public class SectionHBox extends GridPane {
@@ -116,6 +124,10 @@ public class EssayQuestionOverviewController {
 
         private void openSolutionObject() {
             section.setSolutionObjects(DialogUtil.showContentObjectDialog(this.section.getSolutionObjects(), stage));
+        }
+
+        private Section getSection() {
+            return this.section;
         }
     }
 }

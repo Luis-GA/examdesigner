@@ -17,6 +17,7 @@ import util.DialogUtil;
 import util.EssayQuestionParser;
 import util.TestQuestionParser;
 
+import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 
 public class QuestionOverviewController extends DialogController{
@@ -26,6 +27,8 @@ public class QuestionOverviewController extends DialogController{
     private EssayQuestion essayQuestion;
     private TestQuestionOverviewController testController;
     private EssayQuestionOverviewController essayController;
+    private String essayLabel;
+    private String testLabel;
 
     @FXML
     private TextArea title;
@@ -50,9 +53,11 @@ public class QuestionOverviewController extends DialogController{
 
     @FXML
     public void initialize() {
+        testLabel = ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.test");
+        essayLabel = ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.essay");
         ObservableList<String> typeList = FXCollections.observableArrayList();
-        typeList.add(Question.Type.TEST.name());
-        typeList.add(Question.Type.ESSAY.name());
+        typeList.add(testLabel);
+        typeList.add(essayLabel);
         typeSelector.setItems(typeList);
         typeSelector.getSelectionModel().select(Question.Type.TEST.name());
         typeSelector.valueProperty().addListener(new ChangeListener<String>() {
@@ -148,17 +153,17 @@ public class QuestionOverviewController extends DialogController{
     }
 
     private void handleSaveQuestion() {
-        testController.updateQuestion();
-        essayController.updateQuestion();
         if(this.testQuestion.getTitle().equals("")) {
             DialogUtil.showInfoDialog("txt.titleMandatory");
         } else if(this.testQuestion.getTopic().equals("")) {
             DialogUtil.showInfoDialog("txt.topicMandatory");
         } else {
             DatabaseManager databaseManager = DatabaseManager.getInstance();
-            if(this.typeSelector.getSelectionModel().getSelectedItem().equals(Question.Type.TEST.name())) {
+            if(this.typeSelector.getSelectionModel().getSelectedItem().equals(testLabel)) {
+                testController.updateQuestion();
                 databaseManager.addQuestion(this.testQuestion.getIdQuestion(), new TestQuestionParser(this.testQuestion).toJson());
             } else {
+                essayController.updateQuestion();
                 databaseManager.addQuestion(this.essayQuestion.getIdQuestion(), new EssayQuestionParser(this.essayQuestion).toJson());
             }
             DialogUtil.showInfoDialog("txt.questionAdded");
