@@ -24,6 +24,8 @@ public class QuestionOverviewController extends DialogController{
     private Node testQuestionNode, essayQuestionNode;
     private TestQuestion testQuestion;
     private EssayQuestion essayQuestion;
+    private TestQuestionOverviewController testController;
+    private EssayQuestionOverviewController essayController;
 
     @FXML
     private TextArea title;
@@ -121,6 +123,11 @@ public class QuestionOverviewController extends DialogController{
         subtopic.textProperty().bindBidirectional(essayQuestion.subtopicProperty());
     }
 
+    public void setQuestionControllers(TestQuestionOverviewController testController, EssayQuestionOverviewController essayController) {
+        this.testController = testController;
+        this.essayController = essayController;
+    }
+
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
     }
@@ -141,6 +148,8 @@ public class QuestionOverviewController extends DialogController{
     }
 
     private void handleSaveQuestion() {
+        testController.updateQuestion();
+        essayController.updateQuestion();
         if(this.testQuestion.getTitle().equals("")) {
             DialogUtil.showInfoDialog("txt.titleMandatory");
         } else if(this.testQuestion.getTopic().equals("")) {

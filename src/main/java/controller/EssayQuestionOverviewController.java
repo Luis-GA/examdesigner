@@ -14,6 +14,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.ContentObject;
+import model.EssayQuestion;
 import model.Section;
 import util.DialogUtil;
 
@@ -24,11 +25,21 @@ public class EssayQuestionOverviewController {
     @FXML
     private ListView<SectionHBox> sectionsList;
     private ObservableList<ContentObject> solutionObjects;
+    private EssayQuestion essayQuestion;
 
     private Stage stage;
 
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    public void setQuestion(EssayQuestion essayQuestion) {
+        this.essayQuestion = essayQuestion;
+    }
+
+    public void updateQuestion() {
+        essayQuestion.setSections(sectionsList.getItems());
+        essayQuestion.setSolutionObjects(solutionObjects);
     }
 
     @FXML

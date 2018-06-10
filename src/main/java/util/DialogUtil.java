@@ -29,7 +29,7 @@ import java.util.ResourceBundle;
 
 public class DialogUtil {
 
-    private static System.Logger logger = System.getLogger(DialogController.class.getName());
+    private static System.Logger logger = System.getLogger(DialogUtil.class.getName());
 
     private static DialogController showDialog(String view, String title, Stage stage) {
 
@@ -96,12 +96,17 @@ public class DialogUtil {
             loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
             VBox vBox = loader.load();
 
-            TestQuestionOverviewController testController = new TestQuestionOverviewController();
-            Node testQuestionNode = getNode("/view/TestQuestionOverview.fxml", testController);
+            ChildQuestionWrapper testQuestionWrapper = new ChildQuestionWrapper("/view/TestQuestionOverview.fxml");
+            TestQuestionOverviewController testController = (TestQuestionOverviewController) testQuestionWrapper.getController();
+            Node testQuestionNode = testQuestionWrapper.getNode();
             testController.setStage(stage);
-            EssayQuestionOverviewController essayController = new EssayQuestionOverviewController();
-            Node essayQuestionNode = getNode("/view/EssayQuestionOverview.fxml", essayController);
+            testController.setQuestion(testQuestion);
+
+            ChildQuestionWrapper essayQuestionWrapper = new ChildQuestionWrapper("/view/EssayQuestionOverview.fxml");
+            EssayQuestionOverviewController essayController = (EssayQuestionOverviewController) essayQuestionWrapper.getController();
+            Node essayQuestionNode = essayQuestionWrapper.getNode();
             essayController.setStage(stage);
+            essayController.setQuestion(essayQuestion);
 
             vBox.getChildren().add(testQuestionNode);
             vBox.getChildren().add(essayQuestionNode);
@@ -130,16 +135,16 @@ public class DialogUtil {
             dialogStage.getIcons().add(new Image(MainApp.class.getResource("/images/exam_designer_256.png").toString()));
             Scene scene = new Scene(vBox);
             dialogStage.setScene(scene);
+
             QuestionOverviewController controller = loader.getController();
+            controller.setQuestionControllers(testController, essayController);
             controller.setDialogStage(dialogStage);
             controller.setNodes(testQuestionNode, essayQuestionNode);
-            controller.setQuestions(testQuestion, essayQuestion);
             controller.setQuestions(testQuestion, essayQuestion);
             controller.setSaveButton(saveButton);
 
             // Show the dialog and wait until the user closes it
             controller.getDialogStage().showAndWait();
-
         } catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while showing dialog");
         }
@@ -238,20 +243,5 @@ public class DialogUtil {
         } else {
             return false;
         }
-    }
-
-    private static Node getNode(String view, Object controller) {
-        Node auxNode;
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource(view));
-            loader.setResources(ResourceBundle.getBundle(MainApp.LABELS));
-            auxNode = loader.load();
-            controller = loader.getController();
-        }  catch (IOException e) {
-            logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing specific questionOverview");
-            auxNode = new Pane();
-        }
-        return auxNode;
     }
 }
