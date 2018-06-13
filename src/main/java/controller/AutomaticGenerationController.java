@@ -12,13 +12,14 @@ import util.ExamGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class AutomaticGenerationController {
 
     @FXML
     AnchorPane pane;
     @FXML
-    ChoiceBox<Integer> difficulty;
+    ChoiceBox<String> difficulty;
     @FXML
     ListView<TopicChoiceHBox> testTopics;
     @FXML
@@ -45,10 +46,13 @@ public class AutomaticGenerationController {
             essayTopics.getItems().add(new TopicChoiceHBox(topic));
         }
 
-        for(int i=0; i<4; i++) {
-            difficulty.getItems().add(i);
-        }
-        difficulty.setValue(0);
+        difficulty.getItems().add(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.notApplicable"));
+        difficulty.getItems().add(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.low"));
+        difficulty.getItems().add(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.medium"));
+        difficulty.getItems().add(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.high"));
+        difficulty.getItems().add(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.veryHigh"));
+
+        difficulty.setValue(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.notApplicable"));
     }
 
     public void setExam(Exam exam) {
@@ -71,12 +75,28 @@ public class AutomaticGenerationController {
         }
 
         SceneManager sceneManager = SceneManager.getInstance();
+        int aux = -1;
+
+        if(difficulty.getValue().equals(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.low"))) {
+            aux = 0;
+        } else if(difficulty.getValue().equals(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.medium"))) {
+            aux = 1;
+        } else if(difficulty.getValue().equals(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.high"))) {
+            aux = 2;
+        } else if(difficulty.getValue().equals(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.veryHigh"))) {
+            aux = 3;
+        }
+
+        final int difficultyValue = aux;
+
         sceneManager.showWorkIndicator(this.exam, (exam) -> {
+
             try{
             ExamGenerator.generateExam(this.exam, Integer.valueOf(difficulty.getValue()), Integer.valueOf(this.exam.durationProperty().getValue()), (int) (100-percentageSlider.getValue()),essaySelectedTopics ,testSelectedTopics);}
             catch (Exception e){
                 //TODO: Implement the ui
             }
+
             return true;
         });
     }

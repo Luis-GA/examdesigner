@@ -24,6 +24,7 @@ public class TestQuestionOverviewController{
 
     @FXML
     private ListView<ChoiceHBox> choicesList;
+    private TestQuestion testQuestion;
 
     private Stage stage;
 
@@ -40,13 +41,14 @@ public class TestQuestionOverviewController{
     public TestQuestion getChoices() {
         TestQuestion aux = new TestQuestion();
         ObservableMap<String, Choice> choices = FXCollections.observableHashMap();
-        ObservableList<String> correctChoices  = FXCollections.observableList(new ArrayList<>());
+        ObservableList<String> correctChoices  = FXCollections.observableArrayList();
         char key = 'a';
         for(ChoiceHBox choiceHBox : choicesList.getItems()) {
             choices.put(String.valueOf(key), choiceHBox.choice);
             if(choiceHBox.isCorrect()) {
                 correctChoices.add(key + ". " + choiceHBox.title);
             }
+            key++;
         }
         aux.setChoices(choices);
         aux.setCorrectChoices(correctChoices);
@@ -55,6 +57,15 @@ public class TestQuestionOverviewController{
 
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    public void setQuestion(TestQuestion testQuestion) {
+        this.testQuestion = testQuestion;
+    }
+
+    public void updateQuestion() {
+        testQuestion.setChoices(getChoices().getChoices());
+        testQuestion.setCorrectChoices(getChoices().getCorrectChoices());
     }
 
     public class ChoiceHBox extends GridPane {
