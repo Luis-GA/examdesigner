@@ -17,7 +17,17 @@ public class ExamGenerator {
         throw new IllegalStateException("Utility class");
     }
 
-    public static Exam generateExam(Exam exam, int difficulty, int duration, int essaypercent, List<String> essayTopics, List<String> testTopics) {
+    public static Exam generateExam(Exam exam, int difficulty, int duration, int essaypercent, List<String> essayTopics, List<String> testTopics) throws Exception {
+         if (duration ==Null || duration<=0)
+             throw new Exception("Invalid Duration");
+        if (testTopics ==Null || testTopics.size()<=0)
+            throw new Exception("Invalid testTopics");
+        if (essaypercent!=0){
+        if (essayTopics ==Null || essayTopics.size()<=0)
+            throw new Exception("Invalid Duration");}
+
+
+
         DatabaseManager databaseManager = DatabaseManager.getInstance();
 
         List<ExamPart> parts = new ArrayList<>();
@@ -64,7 +74,7 @@ public class ExamGenerator {
         return exam;
     }
 
-    private static ExamPart generateEssayPart(ExamPart essayPart, int difficulty, int duration, int essaypercent, List<Question> questions) {
+    private static ExamPart generateEssayPart(ExamPart essayPart, int difficulty, int duration, int essaypercent, List<Question> questions) throws Exception {
 
         questions=randomOrderList(questions);
 
@@ -87,10 +97,10 @@ public class ExamGenerator {
         essayPart.setWeigh(getTotalWeight(selectedQuestions));
         return essayPart;}
         else
-            throw new RuntimeException("Not valid exam");
+            throw new Exception("Not valid parameters to build an exam");
     }
 
-    private static ExamPart generateTestPart(ExamPart testPart, int duration, List<Question>questions) {
+    private static ExamPart generateTestPart(ExamPart testPart, int duration, List<Question>questions) throws Exception {
 
         questions=randomOrderList(questions);
         List<Question> selectedQuestions= new ArrayList<>();
@@ -105,10 +115,10 @@ public class ExamGenerator {
             question= questions.get(counter);
             counter++;
             if(counter>=questions.size())
-                throw new RuntimeException("Insufficient number of questions");
+                throw new Exception("Insufficient number of questions");
             pregDuration=question.getDuration();
             if(pregDuration==-1)
-                pregDuration=2;//TODO:hacer un fichero de constantes
+                pregDuration=2;//TODO: create a constants file
 
             duration= duration - pregDuration;
             if (duration>=0)
