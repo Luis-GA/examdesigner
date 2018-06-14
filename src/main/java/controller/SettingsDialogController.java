@@ -117,7 +117,7 @@ public class SettingsDialogController extends DialogController {
 
     @FXML
     private void addQuestion() {
-        DialogUtil.showQuestionOverviewDialog(new TestQuestion(), new EssayQuestion(), this.dialogStage);
+        DialogUtil.showQuestionOverviewDialog(new TestQuestion(), new EssayQuestion(), this.dialogStage, true);
     }
 
     @FXML
@@ -126,6 +126,11 @@ public class SettingsDialogController extends DialogController {
             databaseManager.cleanDatabase();
             DialogUtil.showInfoDialog("txt.databaseDeleted");
         }
+    }
+
+    @FXML
+    private void searchQuestions() {
+        DialogUtil.showSearchQuestions(this.dialogStage);
     }
 
     public void setDialogStage(Stage dialogStage) {

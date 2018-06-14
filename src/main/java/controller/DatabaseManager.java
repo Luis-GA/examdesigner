@@ -14,10 +14,11 @@ import org.dizitart.no2.mapper.NitriteMapper;
 import util.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import static org.dizitart.no2.filters.Filters.and;
-import static org.dizitart.no2.filters.Filters.eq;
+import static org.dizitart.no2.filters.Filters.*;
 
 public class DatabaseManager {
 
@@ -59,6 +60,7 @@ public class DatabaseManager {
 
             NitriteCollection questions = db.getCollection(QUESTIONS);
             questions.createIndex("idQuestion",  idQuestionIndexOptions);
+            questions.createIndex("title", questionIndexOptions);
             questions.createIndex("type", questionIndexOptions);
             questions.createIndex(TOPIC, questionIndexOptions);
 
@@ -102,7 +104,7 @@ public class DatabaseManager {
     }
 
     public void updateQuestion(Integer idQuestion, String questionString) {
-        String oldTopic = (String) getQuestion(idQuestion).get(TOPIC);
+        String oldTopic = (String) getQuestionDocument(idQuestion).get(TOPIC);
 
         NitriteCollection collection = db.getCollection(QUESTIONS);
         NitriteMapper nitriteMapper = new JacksonMapper();
@@ -131,10 +133,10 @@ public class DatabaseManager {
     }
 
     public void deleteQuestion(Integer questionId) {
-        Document questionDocument = getQuestion(questionId);
+        Document questionDocument = getQuestionDocument(questionId);
         String topic = (String) questionDocument.get(TOPIC);
         NitriteCollection collection = db.getCollection(QUESTIONS);
-        collection.remove(eq("_id", questionId));
+        collection.remove(eq("idQuestion", questionId));
 
         String typeString = (String) questionDocument.get("type");
         String typeCollection;
@@ -153,10 +155,25 @@ public class DatabaseManager {
         }
     }
 
-    public Document getQuestion(Integer questionId) {
+    private Document getQuestionDocument(Integer questionId) {
         NitriteCollection collection = db.getCollection(QUESTIONS);
-        Cursor cursor = collection.find(eq("_id", questionId));
+        Cursor cursor = collection.find(eq("idQuestion", questionId));
         return cursor.firstOrDefault();
+    }
+
+    public Question getQuestion(Integer questionId) {
+        Document questionDocument = getQuestionDocument(questionId);
+        QuestionParser aux;
+        JacksonMapper jacksonMapper = new JacksonMapper();
+        String type = (String) questionDocument.get("type");
+
+        if (type.equals(Question.Type.TEST.name())) {
+            aux = new TestQuestionParser(jacksonMapper.toJson(questionDocument));
+        } else {
+            aux = new EssayQuestionParser(jacksonMapper.toJson(questionDocument));
+        }
+
+        return aux.parseQuestion();
     }
 
     public ArrayList<Question> getQuestions(String questionTopic, String questionType) {
@@ -306,6 +323,24 @@ public class DatabaseManager {
         }
 
         return topicsText;
+    }
+
+    public Map<Integer, String> searchQuestions(String title) {
+        String aux = title.replaceAll("\\*", "");
+        aux = aux.trim().replaceAll(" +", " ");
+        aux = aux.replaceAll(" ", "*)(?=.*");
+        aux = "(?i)(?=.*" + aux + "*)";
+
+        NitriteCollection collection = db.getCollection(QUESTIONS);
+        Cursor cursor = collection.find(regex("title", aux));
+
+        Map<Integer, String> questions = new HashMap<>();
+
+        for (Document question : cursor) {
+            questions.put((Integer)question.get("idQuestion"), (String)question.get("title"));
+        }
+
+        return questions;
     }
 
     public void cleanDatabase() {

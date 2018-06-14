@@ -17,7 +17,6 @@ import model.Choice;
 import model.TestQuestion;
 import util.DialogUtil;
 
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class TestQuestionOverviewController{
@@ -29,9 +28,7 @@ public class TestQuestionOverviewController{
     private Stage stage;
 
     @FXML
-    public void initialize() {
-        choicesList.getItems().add(new ChoiceHBox(choicesList.getItems(), new Choice()));
-    }
+    public void initialize() {}
 
     @FXML
     private void addChoice() {
@@ -61,6 +58,11 @@ public class TestQuestionOverviewController{
 
     public void setQuestion(TestQuestion testQuestion) {
         this.testQuestion = testQuestion;
+        if(testQuestion.getChoices().size() > 0) {
+            testQuestion.getChoices().forEach((k, v) -> choicesList.getItems().add(new ChoiceHBox(choicesList.getItems(), v)));
+        } else {
+            choicesList.getItems().add(new ChoiceHBox(choicesList.getItems(), new Choice()));
+        }
     }
 
     public void updateQuestion() {

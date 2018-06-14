@@ -87,7 +87,7 @@ public class DialogUtil {
         showDialog("/view/AboutDialog.fxml", "title.about", null).getDialogStage().showAndWait();
     }
 
-    public static void showQuestionOverviewDialog(TestQuestion testQuestion, EssayQuestion essayQuestion, Stage stage) {
+    public static void showQuestionOverviewDialog(TestQuestion testQuestion, EssayQuestion essayQuestion, Stage stage, Boolean isTest) {
 
         try {
             // Load the fxml file and create a new stage for the popup dialog.
@@ -139,7 +139,7 @@ public class DialogUtil {
             QuestionOverviewController controller = loader.getController();
             controller.setQuestionControllers(testController, essayController);
             controller.setDialogStage(dialogStage);
-            controller.setNodes(testQuestionNode, essayQuestionNode);
+            controller.setNodes(testQuestionNode, essayQuestionNode, isTest);
             controller.setQuestions(testQuestion, essayQuestion);
             controller.setSaveButton(saveButton);
 
@@ -148,6 +148,10 @@ public class DialogUtil {
         } catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while showing dialog");
         }
+    }
+
+    public static void showSearchQuestions(Stage stage) {
+        showDialog("/view/QuestionSearch.fxml", "title.questionSearch", stage).getDialogStage().showAndWait();
     }
 
     public static Path showOpenExamDialog(Stage stage) {
@@ -220,8 +224,8 @@ public class DialogUtil {
         }
     }
 
-    public static boolean showDeleteConfirmationDialog() {
-        return showConfirmationDialog("btn.delete", "txt.deleteConfirmation");
+    public static boolean showDeleteConfirmationDialog(String textLabel) {
+        return showConfirmationDialog("btn.delete", textLabel);
     }
 
     public static boolean showConfirmationDialog(String title, String text) {

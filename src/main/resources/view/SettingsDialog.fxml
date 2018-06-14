@@ -13,7 +13,7 @@
 
 <AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SettingsDialogController">
     <children>
-        <GridPane alignment="CENTER" layoutX="72.0" layoutY="105.0" prefWidth="357.0">
+        <GridPane alignment="CENTER" layoutX="72.0" layoutY="105.0" prefWidth="357.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="172.0" minWidth="150.0" prefWidth="139.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="242.0" minWidth="10.0" prefWidth="218.0" />
@@ -53,9 +53,14 @@
             <HBox alignment="BOTTOM_LEFT" layoutX="160.0" layoutY="40.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
                   <Button fx:id="exportDatabase1" mnemonicParsing="false" onAction="#addQuestion" text="%btn.addQuestion" />
+                  <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#searchQuestions" text="%btn.searchQuestions" />
                </children>
             </HBox>
-            <Button mnemonicParsing="false" onAction="#handleCleanDatabase" text="%btn.cleanDatabase" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <HBox alignment="BOTTOM_LEFT" layoutX="160.0" layoutY="70.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#handleCleanDatabase" text="%btn.cleanDatabase" />
+               </children>
+            </HBox>
             </children>
         </GridPane>
         <HBox alignment="BOTTOM_RIGHT" layoutX="356.0" layoutY="255.0" prefHeight="31.0" prefWidth="171.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">

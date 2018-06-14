@@ -143,7 +143,7 @@ public class RootLayoutController {
 
     @FXML
     public void handleDelete() {
-        if (DialogUtil.showDeleteConfirmationDialog()) {
+        if (DialogUtil.showDeleteConfirmationDialog("txt.deleteExamConfirmation")) {
             DatabaseManager databaseManager = DatabaseManager.getInstance();
             databaseManager.deleteExam(exam.getTitle());
             sceneManager.back();

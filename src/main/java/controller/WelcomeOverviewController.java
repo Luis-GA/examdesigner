@@ -71,7 +71,7 @@ public class WelcomeOverviewController {
         }
 
         private static void deleteExam(Object button) {
-            if (DialogUtil.showDeleteConfirmationDialog()) {
+            if (DialogUtil.showDeleteConfirmationDialog("txt.deleteExamConfirmation")) {
                 DatabaseManager databaseManager = DatabaseManager.getInstance();
                 int index = deleteButtonList.indexOf(button);
                 databaseManager.deleteExam(exams.get(index));

@@ -173,4 +173,25 @@ public abstract class Question {
 
         this.idQuestion = Integer.valueOf((int)System.currentTimeMillis());
     }
+
+    public boolean isTest() {
+        return this.type.equals(Type.TEST);
+    }
+
+    public boolean isEssay() {
+        return this.type.equals(Type.ESSAY);
+    }
+
+    public void copyBaseData(Question question) {
+        question.title = title;
+        question.bodyObjects = bodyObjects;
+        question.weight = weight;
+        question.duration = duration;
+        question.difficulty = difficulty;
+        question.idQuestion = idQuestion;
+        question.category = category;
+        question.subject = subject;
+        question.topic = topic;
+        question.subtopic = subtopic;
+    }
 }

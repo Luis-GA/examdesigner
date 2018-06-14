@@ -11,7 +11,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import model.EssayQuestion;
-import model.Question;
 import model.TestQuestion;
 import util.DialogUtil;
 import util.EssayQuestionParser;
@@ -33,7 +32,7 @@ public class QuestionOverviewController extends DialogController{
     @FXML
     private TextArea title;
     @FXML
-    private ChoiceBox<Integer> difficulty;
+    private ChoiceBox<String> difficulty;
     @FXML
     private TextField duration;
     @FXML
@@ -59,10 +58,10 @@ public class QuestionOverviewController extends DialogController{
         typeList.add(testLabel);
         typeList.add(essayLabel);
         typeSelector.setItems(typeList);
-        typeSelector.getSelectionModel().select(Question.Type.TEST.name());
+        typeSelector.getSelectionModel().select(testLabel);
         typeSelector.valueProperty().addListener(new ChangeListener<String>() {
             @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
-                if(newValue.equals(Question.Type.TEST.name())) {
+                if(newValue.equals(testLabel)) {
                     essayQuestionNode.setManaged(false);
                     essayQuestionNode.setVisible(false);
                     testQuestionNode.setManaged(true);
@@ -88,9 +87,9 @@ public class QuestionOverviewController extends DialogController{
         weight.setTextFormatter(new TextFormatter<String>(integerFilter));
 
         for(int i=0; i<5; i++) {
-            difficulty.getItems().add(i);
+            difficulty.getItems().add(Integer.valueOf(i).toString());
         }
-        difficulty.setValue(0);
+        difficulty.setValue("0");
 
         ImageView searchImage = new ImageView(new Image(MainApp.class.getResource("/images/ic_search_black.png").toString()));
 
@@ -126,6 +125,8 @@ public class QuestionOverviewController extends DialogController{
         topic.textProperty().bindBidirectional(essayQuestion.topicProperty());
         subtopic.textProperty().bindBidirectional(testQuestion.subtopicProperty());
         subtopic.textProperty().bindBidirectional(essayQuestion.subtopicProperty());
+        difficulty.valueProperty().bindBidirectional(testQuestion.difficultyProperty());
+        difficulty.valueProperty().bindBidirectional(essayQuestion.difficultyProperty());
     }
 
     public void setQuestionControllers(TestQuestionOverviewController testController, EssayQuestionOverviewController essayController) {
@@ -141,11 +142,15 @@ public class QuestionOverviewController extends DialogController{
         return this.dialogStage;
     }
 
-    public void setNodes(Node testQuestionNode, Node essayQuestionNode) {
+    public void setNodes(Node testQuestionNode, Node essayQuestionNode, Boolean isTest) {
         this.testQuestionNode = testQuestionNode;
         this.essayQuestionNode = essayQuestionNode;
         this.essayQuestionNode.setVisible(false);
         this.essayQuestionNode.setManaged(false);
+
+        if(!isTest) {
+            typeSelector.getSelectionModel().select(essayLabel);
+        }
     }
 
     public void setSaveButton(Button saveButton) {
@@ -159,7 +164,7 @@ public class QuestionOverviewController extends DialogController{
             DialogUtil.showInfoDialog("txt.topicMandatory");
         } else {
             DatabaseManager databaseManager = DatabaseManager.getInstance();
-            if(this.typeSelector.getSelectionModel().getSelectedItem().equals(testLabel)) {
+            if(this.typeSelector.getSelectionModel().getSelectedItem().toString().equals(testLabel)) {
                 testController.updateQuestion();
                 databaseManager.addQuestion(this.testQuestion.getIdQuestion(), new TestQuestionParser(this.testQuestion).toJson());
             } else {

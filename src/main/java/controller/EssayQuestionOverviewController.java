@@ -18,7 +18,6 @@ import model.EssayQuestion;
 import model.Section;
 import util.DialogUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -36,6 +35,13 @@ public class EssayQuestionOverviewController {
 
     public void setQuestion(EssayQuestion essayQuestion) {
         this.essayQuestion = essayQuestion;
+        if(essayQuestion.getSections().size() > 0) {
+            for(Section section : essayQuestion.getSections()) {
+                sectionsList.getItems().add(new SectionHBox(sectionsList.getItems(), section));
+            }
+        } else {
+            sectionsList.getItems().add(new SectionHBox(sectionsList.getItems(), new Section()));
+        }
     }
 
     public void updateQuestion() {
@@ -51,9 +57,7 @@ public class EssayQuestionOverviewController {
     }
 
     @FXML
-    public void initialize() {
-        sectionsList.getItems().add(new SectionHBox(sectionsList.getItems(), new Section()));
-    }
+    public void initialize() {}
 
     @FXML
     private void addSection() {
