@@ -90,7 +90,13 @@ public class AutomaticGenerationController {
         final int difficultyValue = aux;
 
         sceneManager.showWorkIndicator(this.exam, (exam) -> {
-            ExamGenerator.generateExam(this.exam, difficultyValue, Integer.valueOf(this.exam.durationProperty().getValue()), (int) (100-percentageSlider.getValue()),essaySelectedTopics ,testSelectedTopics);
+
+            try{
+            ExamGenerator.generateExam(this.exam, Integer.valueOf(difficulty.getValue()), Integer.valueOf(this.exam.durationProperty().getValue()), (int) (100-percentageSlider.getValue()),essaySelectedTopics ,testSelectedTopics);}
+            catch (Exception e){
+                //TODO: Implement the ui
+            }
+
             return true;
         });
     }
