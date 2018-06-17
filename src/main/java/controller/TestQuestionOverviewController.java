@@ -32,7 +32,7 @@ public class TestQuestionOverviewController{
 
     @FXML
     private void addChoice() {
-        choicesList.getItems().add(new ChoiceHBox(choicesList.getItems(), new Choice()));
+        choicesList.getItems().add(new ChoiceHBox(choicesList.getItems(), new Choice(), false));
     }
 
     public TestQuestion getChoices() {
@@ -43,7 +43,7 @@ public class TestQuestionOverviewController{
         for(ChoiceHBox choiceHBox : choicesList.getItems()) {
             choices.put(String.valueOf(key), choiceHBox.choice);
             if(choiceHBox.isCorrect()) {
-                correctChoices.add(key + ". " + choiceHBox.title);
+                correctChoices.add(choiceHBox.title.getText());
             }
             key++;
         }
@@ -59,9 +59,10 @@ public class TestQuestionOverviewController{
     public void setQuestion(TestQuestion testQuestion) {
         this.testQuestion = testQuestion;
         if(testQuestion.getChoices().size() > 0) {
-            testQuestion.getChoices().forEach((k, v) -> choicesList.getItems().add(new ChoiceHBox(choicesList.getItems(), v)));
+            testQuestion.getChoices().forEach((k, v) -> choicesList.getItems().add(new ChoiceHBox(choicesList.getItems(), v, testQuestion.getCorrectChoices().indexOf(v.getTitle()) > -1)));
+
         } else {
-            choicesList.getItems().add(new ChoiceHBox(choicesList.getItems(), new Choice()));
+            choicesList.getItems().add(new ChoiceHBox(choicesList.getItems(), new Choice(), false));
         }
     }
 
@@ -79,11 +80,12 @@ public class TestQuestionOverviewController{
         private CheckBox isCorrect = new CheckBox();
         private Choice choice;
 
-        public ChoiceHBox(ObservableList<ChoiceHBox> list, Choice choice) {
+        public ChoiceHBox(ObservableList<ChoiceHBox> list, Choice choice, Boolean isCorrect) {
             super();
 
             this.list = list;
             this.choice = choice;
+            this.isCorrect.setSelected(isCorrect);
 
             ImageView openImage = new ImageView(new Image(MainApp.class.getResource("/images/ic_open_in_new_black.png").toString()));
             openImage.setFitHeight(15);
@@ -115,11 +117,11 @@ public class TestQuestionOverviewController{
             this.getColumnConstraints().add(new ColumnConstraints(40));
             this.getColumnConstraints().add(new ColumnConstraints(40));
 
-            this.add(correctLabel, 0, 0);
-            this.add(isCorrect, 1, 0);
-            this.add(title, 2, 0);
-            this.add(deleteButton, 4, 0);
-            this.add(openButton, 5, 0);
+            this.add(this.correctLabel, 0, 0);
+            this.add(this.isCorrect, 1, 0);
+            this.add(this.title, 2, 0);
+            this.add(this.deleteButton, 4, 0);
+            this.add(this.openButton, 5, 0);
         }
 
         private void deleteContentObject() {

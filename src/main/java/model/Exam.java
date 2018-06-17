@@ -36,6 +36,9 @@ public class Exam {
 
     private ObservableList<ExamPart> parts;
 
+    private boolean logoChanged;
+    private boolean partsChanged;
+
     /** ----- GETTERS ----- **/
     public String getTitle() {
         return title.getValue();
@@ -271,6 +274,9 @@ public class Exam {
         this.instructionDetails = new SimpleStringProperty("");
 
         this.parts = FXCollections.observableArrayList();
+
+        this.logoChanged = false;
+        this.partsChanged = false;
     }
 
     @Override
@@ -294,11 +300,6 @@ public class Exam {
             return false;
         if (!this.numQuestions.getValue().equals(exam.numQuestions.getValue()))
             return false;
-        //TODO fix logo
-        /*
-        if(ImageUtil.getBase64(this.logo) != ImageUtil.getBase64(exam.logo))
-            return false;
-        */
         if (!this.examDate.getValue().equals(exam.examDate.getValue()))
             return false;
         if (!this.publicationDate.getValue().equals(exam.publicationDate.getValue()))
@@ -315,8 +316,10 @@ public class Exam {
             return false;
         if (!this.instructionDetails.getValue().equals(exam.instructionDetails.getValue()))
             return false;
-
-        //TODO implement ExamPart.equals() and iterate the parts list
+        if (this.logoChanged != exam.logoChanged)
+            return false;
+        if (this.partsChanged != exam.partsChanged)
+            return false;
         return true;
     }
 
@@ -357,5 +360,13 @@ public class Exam {
         aux.setParts(auxList);
 
         return aux;
+    }
+
+    public void setPartsChanged(Boolean partsChanged) {
+        this.partsChanged = partsChanged;
+    }
+
+    public void setLogoChanged(Boolean logoChanged) {
+        this.logoChanged = logoChanged;
     }
 }

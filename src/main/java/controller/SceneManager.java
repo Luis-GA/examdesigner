@@ -62,7 +62,7 @@ public class SceneManager {
         this.mainApp = mainApp;
     }
 
-    private Scene setNewMenuScene(AnchorPane pane, Exam exam) {
+    private Scene setNewMenuScene(AnchorPane pane, Exam exam, Exam examOLD) {
         Scene scene = null;
 
         try {
@@ -73,7 +73,7 @@ public class SceneManager {
 
             //Set MainApp
             RootLayoutController controller = loader.getController();
-            controller.setExam(exam);
+            controller.setExam(exam, examOLD);
 
             rootLayout.setCenter(pane);
             rootLayout.setAlignment(pane, Pos.BOTTOM_RIGHT);
@@ -101,9 +101,9 @@ public class SceneManager {
 
             // Give the controller access to the exam
             ExamOverviewController controller = loader.getController();
-            controller.setExam(exam);
+            controller.setExam(exam, exam.copy());
 
-            scene = setNewMenuScene(examOverview, exam);
+            scene = setNewMenuScene(examOverview, exam, exam.copy());
         } catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Exam Overview");
         } finally {
@@ -114,7 +114,7 @@ public class SceneManager {
         return scene;
     }
 
-    private Scene newAutomaticGenerationScene(Exam exam) {
+    private Scene newAutomaticGenerationScene(Exam exam, Exam examOLD) {
         Scene scene = null;
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -126,7 +126,7 @@ public class SceneManager {
             AutomaticGenerationController controller = loader.getController();
             controller.setExam(exam);
 
-            scene = setNewMenuScene(automaticGeneration, exam);
+            scene = setNewMenuScene(automaticGeneration, exam, examOLD);
         } catch (IOException e) {
             logger.log(System.Logger.Level.ERROR, "Error trying to load resources while initializing Automatic Generation");
         } finally {
@@ -142,8 +142,8 @@ public class SceneManager {
         MainApp.getPrimaryStage().setScene(scene);
     }
 
-    public void setAutomaticGenerationScene(Exam exam) {
-        Scene scene = newAutomaticGenerationScene(exam);
+    public void setAutomaticGenerationScene(Exam exam, Exam examOLD) {
+        Scene scene = newAutomaticGenerationScene(exam, examOLD);
         MainApp.getPrimaryStage().setScene(scene);
     }
 
@@ -171,7 +171,7 @@ public class SceneManager {
         mainApp.showWelcomeOverview(scenes.peek().scene);
     }
 
-    public void showWorkIndicator(Exam exam, Function function) {
+    public void showWorkIndicator(Exam exam, Function function, Exam examOLD) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("/view/WorkIndicator.fxml"));
@@ -179,18 +179,20 @@ public class SceneManager {
             HBox workIndicator = loader.load();
 
             WorkIndicatorController controller = loader.getController();
-            controller.setExam(exam);
+            controller.setExam(exam, examOLD);
 
             Scene scene = new Scene(workIndicator, MainApp.getPrimaryStage().getScene().getWidth(), MainApp.getPrimaryStage().getScene().getHeight());
             scenes.push(new SceneWrapper(scene, controller));
             MainApp.getPrimaryStage().setScene(scene);
 
             //TODO implement flow prepared for long time consuming generation process
-            function.apply(exam);
+            Boolean result = (Boolean) function.apply(exam);
 
             KeyFrame kf = new KeyFrame(Duration.seconds(1), e -> {
                 controller.close();
-                DialogUtil.showInfoDialog("txt.documentGenerated");
+                if(result) {
+                    DialogUtil.showInfoDialog("txt.documentGenerated");
+                }
             });
             Timeline timeline = new Timeline(kf);
             Platform.runLater(timeline::play);

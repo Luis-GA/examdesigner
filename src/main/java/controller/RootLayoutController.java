@@ -94,6 +94,8 @@ public class RootLayoutController {
                     try {
                         db.addExam(new ExamParser(exam).toJson());
                         DialogUtil.showInfoDialog("txt.examSaved");
+                        exam.setPartsChanged(false);
+                        exam.setLogoChanged(false);
                         examOLD = exam.copy();
                     } catch (UniqueConstraintException e) {
                         DialogUtil.showInfoDialog("txt.titleInUse");
@@ -101,6 +103,8 @@ public class RootLayoutController {
 
                 } else {
                     db.updateExam(examOLD.getTitle(), new ExamParser(exam).toJson());
+                    exam.setPartsChanged(false);
+                    exam.setLogoChanged(false);
                     examOLD = exam.copy();
                     DialogUtil.showInfoDialog("txt.examSaved");
                 }
@@ -111,9 +115,13 @@ public class RootLayoutController {
 
     }
 
-    public void setExam(Exam exam) {
+    public void setExam(Exam exam, Exam examOLD) {
         this.exam = exam;
-        this.examOLD = exam.copy();
+        if(examOLD == null) {
+            this.examOLD = exam.copy();
+        } else {
+            this.examOLD = examOLD;
+        }
     }
 
     public boolean changes() {

@@ -42,13 +42,14 @@ public class ExamOverviewController {
     TextArea instructionDetails;
 
     Exam exam;
+    Exam examOLD;
 
     @FXML
     private void initialize() {
         title.setText("");
     }
 
-    public void setExam(Exam exam) {
+    public void setExam(Exam exam, Exam examOLD) {
         this.exam = exam;
         title.textProperty().bindBidirectional(exam.titleProperty());
         subject.textProperty().bindBidirectional(exam.subjectProperty());
@@ -79,6 +80,8 @@ public class ExamOverviewController {
             weight.getItems().add(Integer.valueOf(i).toString());
         }
         weight.setValue("0");
+
+        this.examOLD = examOLD;
     }
 
     @FXML
@@ -89,6 +92,7 @@ public class ExamOverviewController {
             try {
                 Image image = new Image("file:///" + path.toString());
                 logo.setImage(image);
+                exam.setLogoChanged(true);
             } catch (Exception e) {
                 DialogUtil.showInfoDialog("txt.imageError");
             }
@@ -98,7 +102,7 @@ public class ExamOverviewController {
     @FXML
     public void handleNext() {
         SceneManager sceneManager = SceneManager.getInstance();
-        sceneManager.setAutomaticGenerationScene(this.exam);
+        sceneManager.setAutomaticGenerationScene(this.exam, this.examOLD);
     }
 
     @FXML

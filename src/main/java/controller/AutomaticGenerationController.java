@@ -8,6 +8,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
 import model.Exam;
 import model.Question;
+import util.DialogUtil;
 import util.ExamGenerator;
 
 import java.util.ArrayList;
@@ -91,14 +92,17 @@ public class AutomaticGenerationController {
 
         sceneManager.showWorkIndicator(this.exam, (exam) -> {
 
-            try{
-            ExamGenerator.generateExam(this.exam, Integer.valueOf(difficulty.getValue()), Integer.valueOf(this.exam.durationProperty().getValue()), (int) (100-percentageSlider.getValue()),essaySelectedTopics ,testSelectedTopics);}
-            catch (Exception e){
-                //TODO: Implement the ui
+            try {
+                ExamGenerator.generateExam(this.exam, difficultyValue, Integer.valueOf(this.exam.durationProperty().getValue()), (int) (100-percentageSlider.getValue()), essaySelectedTopics, testSelectedTopics);
+                return true;
+            } catch (ExamGenerator.ExamGeneratorException e){
+                DialogUtil.showInfoDialog(e.getMessage());
+            } catch (Exception e) {
+                DialogUtil.showInfoDialog("txt.unknownError");
             }
 
-            return true;
-        });
+            return false;
+        }, null);
     }
 
     @FXML

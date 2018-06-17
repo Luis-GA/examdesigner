@@ -17,16 +17,13 @@ public class ExamGenerator {
         throw new IllegalStateException("Utility class");
     }
 
-    public static Exam generateExam(Exam exam, int difficulty, int duration, int essaypercent, List<String> essayTopics, List<String> testTopics) throws Exception {
-         if (duration<=0)
-             throw new Exception("Invalid Duration");
+    public static Exam generateExam(Exam exam, int difficulty, int duration, int essaypercent, List<String> essayTopics, List<String> testTopics) throws ExamGeneratorException {
+        if (duration<=0)
+             throw new ExamGeneratorException("txt.invalidDuration");
         if (testTopics.size()<=0)
-            throw new Exception("Invalid testTopics");
-        if (essaypercent!=0){
-        if (essayTopics.size()<=0)
-            throw new Exception("Invalid Duration");}
-
-
+            throw new ExamGeneratorException("txt.invalidTestTopics");
+        if (essaypercent!=0 && essayTopics.size()<=0)
+                throw new ExamGeneratorException("txt.invalidEssayTopics");
 
         DatabaseManager databaseManager = DatabaseManager.getInstance();
 
@@ -70,11 +67,11 @@ public class ExamGenerator {
 
 
         exam.setParts(parts);
-
+        exam.setPartsChanged(true);
         return exam;
     }
 
-    private static ExamPart generateEssayPart(ExamPart essayPart, int difficulty, int duration, int essaypercent, List<Question> questions) throws Exception {
+    private static ExamPart generateEssayPart(ExamPart essayPart, int difficulty, int duration, int essaypercent, List<Question> questions) throws ExamGeneratorException {
 
         questions=randomOrderList(questions);
 
@@ -97,10 +94,10 @@ public class ExamGenerator {
         essayPart.setWeigh(getTotalWeight(selectedQuestions));
         return essayPart;}
         else
-            throw new Exception("Not valid parameters to build an exam");
+            throw new ExamGeneratorException("txt.notEnoughEssayQuestions");
     }
 
-    private static ExamPart generateTestPart(ExamPart testPart, int duration, List<Question>questions) throws Exception {
+    private static ExamPart generateTestPart(ExamPart testPart, int duration, List<Question>questions) throws ExamGeneratorException {
 
         questions=randomOrderList(questions);
         List<Question> selectedQuestions= new ArrayList<>();
@@ -115,7 +112,7 @@ public class ExamGenerator {
             question= questions.get(counter);
             counter++;
             if(counter>=questions.size())
-                throw new Exception("Insufficient number of questions");
+                throw new ExamGeneratorException("txt.notEnoughTestQuestions");
             pregDuration=question.getDuration();
             if(pregDuration==-1)
                 pregDuration=2;//TODO: create a constants file
@@ -218,7 +215,12 @@ public class ExamGenerator {
         return selectedQuestions;
     }
 
-
-
+    public static class ExamGeneratorException extends Exception
+    {
+        public ExamGeneratorException(String message)
+        {
+            super(message);
+        }
+    }
 }
 
