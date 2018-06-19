@@ -93,7 +93,7 @@ public class AutomaticGenerationController {
         sceneManager.showWorkIndicator(this.exam, (exam) -> {
 
             try {
-                ExamGenerator.generateExam(this.exam, difficultyValue, Integer.valueOf(this.exam.durationProperty().getValue()), (int) (100-percentageSlider.getValue()), essaySelectedTopics, testSelectedTopics);
+                ExamGenerator.generateExam(this.exam, difficultyValue, Integer.valueOf(this.exam.durationProperty().getValue()), (int) (percentageSlider.getValue()), essaySelectedTopics, testSelectedTopics);
                 return true;
             } catch (ExamGenerator.ExamGeneratorException e){
                 DialogUtil.showInfoDialog(e.getMessage());

@@ -19,7 +19,10 @@ public class ExamGenerator {
 
     public static Exam generateExam(Exam exam, int difficulty, int duration, int essaypercent, List<String> essayTopics, List<String> testTopics) throws ExamGeneratorException {
         if (duration<=0)
-             throw new ExamGeneratorException("txt.invalidDuration");
+        {   //throw new ExamGeneratorException("txt.invalidDuration");
+            duration=60;
+            exam.setDuration(60);
+        }
         if (testTopics.size()<=0)
             throw new ExamGeneratorException("txt.invalidTestTopics");
         if (essaypercent!=0 && essayTopics.size()<=0)
