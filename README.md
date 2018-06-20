@@ -11,9 +11,9 @@
   </tbody>
 </table>
 
-###### Exam Designer is an application for generating automatic exams, developed as a final degree project by Sergio Benito Martín and Luis Gómez Alonso.
+#### Exam Designer is an application for generating automatic exams, developed as a final degree project by Sergio Benito Martín and Luis Gómez Alonso.
 
-###### Exam Designer es una aplicación para la creación de exámenes automáticos, desarrollada como proyecto fin de grado por Sergio Benito Martín y Luis Gómez Alonso.
+#### Exam Designer es una aplicación para la creación de exámenes automáticos, desarrollada como proyecto fin de grado por Sergio Benito Martín y Luis Gómez Alonso.
 
 
 
