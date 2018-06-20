@@ -2,7 +2,7 @@
   <tbody>
     <tr>
       <td>
-        <img src="src/main/resources/images/exam_designer_256.png?raw=true" alt="Exam Desginer Logo" height="150" width="150"/>
+        <img src="src/main/resources/images/exam_designer_256.png?raw=true" alt="Exam Desginer Logo" width="150"/>
       </td>
       <td>
         <h1>Exam Designer v0.4</h1>
