@@ -9,13 +9,13 @@ Available in english and spanish.
 
 #### Exam Designer is an application for generating automatic exams, developed as a final degree project by Sergio Benito Martín and Luis Gómez Alonso.
 
-<p>Download link: <a href="" target="_blank">examdesigner-0.4.exe</a></p>
+<p>Download link: <a href="https://github.com/sbenitomartin/examdesigner/" target="_blank">examdesigner-0.4.exe</a></p>
 
 <hr>
 
-#### Exam Designer es una aplicación para la creación de exámenes automáticos, desarrollada como proywcto fin de grado por Sergio Benito Martín y Luis Gómez Alonso.
+#### Exam Designer es una aplicación para la creación de exámenes automáticos, desarrollada como proyecto fin de grado por Sergio Benito Martín y Luis Gómez Alonso.
 
-<p>Enlace de descarga: <a href="" target="_blank">examdesigner-0.4.exe</a></p>
+<p>Enlace de descarga: <a href="https://github.com/sbenitomartin/examdesigner/" target="_blank">examdesigner-0.4.exe</a></p>
 
 
 
