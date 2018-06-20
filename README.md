@@ -1,10 +1,16 @@
-<div style="float:left>
-  <img src="src/main/resources/images/exam_designer_256.png?raw=true" alt="Exam Desginer Logo" height="150" width="150"/>
-</div>
-<div style="float:right>
-  <b>Exam Designer v0.4</b>
-  <br>Available in english and spanish.
-</div>
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <img src="src/main/resources/images/exam_designer_256.png?raw=true" alt="Exam Desginer Logo" height="150" width="150"/>
+      </td>
+      <td>
+        <p size="24"><b>Exam Designer v0.4</b></p>
+        <br>Available in english and spanish.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 <hr>
 
