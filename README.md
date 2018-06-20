@@ -5,8 +5,8 @@
         <img src="src/main/resources/images/exam_designer_256.png?raw=true" alt="Exam Desginer Logo" height="150" width="150"/>
       </td>
       <td>
-        <p size="24"><b>Exam Designer v0.4</b></p>
-        <br>Available in english and spanish.
+        <h1>Exam Designer v0.4</h1>
+        <h3>Available in english and spanish.</h3>
       </td>
     </tr>
   </tbody>
