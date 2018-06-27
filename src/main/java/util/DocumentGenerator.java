@@ -293,9 +293,23 @@ public class DocumentGenerator {
             run.setText(++i + ". ");
             run.setText(section.title);
             setContentObjects(section.bodyObjects, null);
+
+            if(solutions && !section.solutionObjects.isEmpty()) {
+                XWPFTable table;
+                table = document.createTable(1, 1);
+                setTableAlignment(table, STJc.CENTER);
+                widthCellsAcrossRow(table, 0, 0, 9000);
+                paragraph = table.getRow(0).getCell(0).getParagraphArray(0);
+                paragraph.setStyle(paragraphStyle);
+                paragraph.setSpacingAfter(0);
+                run = paragraph.createRun();
+                run.setText("Solución: ");
+                run.addBreak();
+                setContentObjects(section.solutionObjects, table.getRow(0).getCell(0));
+            }
         }
 
-        if(solutions) {
+        if(solutions && !essayQuestion.solutionObjects.isEmpty()) {
             XWPFTable table;
             table = document.createTable(1, 1);
             setTableAlignment(table, STJc.CENTER);
