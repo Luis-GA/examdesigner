@@ -19,7 +19,10 @@ public class ExamGenerator {
 
     public static Exam generateExam(Exam exam, int difficulty, int duration, int essaypercent, List<String> essayTopics, List<String> testTopics) throws ExamGeneratorException {
         if (duration<=0)
-             throw new ExamGeneratorException("txt.invalidDuration");
+        {   //throw new ExamGeneratorException("txt.invalidDuration");
+            duration=60;
+            exam.setDuration(60);
+        }
         if (testTopics.size()<=0)
             throw new ExamGeneratorException("txt.invalidTestTopics");
         if (essaypercent!=0 && essayTopics.size()<=0)
@@ -33,9 +36,11 @@ public class ExamGenerator {
         if (essaypercent != 0) {
             ExamPart essayPart = new ExamPart();
             ArrayList<Question> questions = new ArrayList<>();
-            for (int i = 0; i < essayTopics.size(); i++) {
-                questions.addAll(databaseManager.getQuestions(essayTopics.get(i), "ESSAY"));
-            }
+
+                for (int i = 0; i < essayTopics.size(); i++) {
+                    questions.addAll(databaseManager.getQuestions(essayTopics.get(i), "ESSAY"));
+                }
+
 
 
             parts.add(generateEssayPart(essayPart, difficulty, duration, essaypercent, questions));
@@ -80,13 +85,13 @@ public class ExamGenerator {
         questions=ponderation(questions,(60/duration));
         List<Question>  selectedQuestions= new ArrayList<>();
 
-        if(difficulty==0)//set to -1
+        if(difficulty==-1)
             selectedQuestions = EssayWithoutDiff(selectedQuestions,EssayDuration,essaypercent,questions);
         else
             selectedQuestions = EssayWithDiff(selectedQuestions,EssayDuration,essaypercent,questions, difficulty);
 
 
-        if (getTotalTime(selectedQuestions)>=duration*essaypercent/100*0.9 && getTotalWeight(selectedQuestions)>=essaypercent*0.9){
+        if (getTotalTime(selectedQuestions)>=duration*essaypercent/100*0.9 && getTotalWeight(selectedQuestions)>=essaypercent*0.9 ){
         essayPart.setQuestions(selectedQuestions);
         essayPart.setTitle("ESSAY");
 
