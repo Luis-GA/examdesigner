@@ -290,7 +290,7 @@ public class DocumentGenerator {
             paragraph.setStyle(paragraphStyle);
             run = paragraph.createRun();
             run.addTab();
-            run.setText(++i + ". ");
+            //run.setText(++i + ". ");
             run.setText(section.title);
             setContentObjects(section.bodyObjects, null);
 

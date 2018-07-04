@@ -51,7 +51,7 @@ public class AutomaticGenerationController {
         difficulty.getItems().add(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.low"));
         difficulty.getItems().add(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.medium"));
         difficulty.getItems().add(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.high"));
-        difficulty.getItems().add(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.veryHigh"));
+        //difficulty.getItems().add(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.veryHigh"));
 
         difficulty.setValue(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.notApplicable"));
     }
@@ -79,11 +79,11 @@ public class AutomaticGenerationController {
         int aux = -1;
 
         if(difficulty.getValue().equals(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.low"))) {
-            aux = 0;
-        } else if(difficulty.getValue().equals(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.medium"))) {
             aux = 1;
-        } else if(difficulty.getValue().equals(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.high"))) {
+        } else if(difficulty.getValue().equals(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.medium"))) {
             aux = 2;
+        } else if(difficulty.getValue().equals(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.high"))) {
+            aux = 3;
         } else if(difficulty.getValue().equals(ResourceBundle.getBundle(MainApp.LABELS).getString("lbl.veryHigh"))) {
             aux = 3;
         }

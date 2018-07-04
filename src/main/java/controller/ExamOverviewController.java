@@ -55,6 +55,7 @@ public class ExamOverviewController {
         subject.textProperty().bindBidirectional(exam.subjectProperty());
         modality.textProperty().bindBidirectional(exam.modalityProperty());
         duration.textProperty().bindBidirectional(exam.durationProperty());
+        duration.setText("60");
         weight.valueProperty().bindBidirectional(exam.weightProperty());
         logo.imageProperty().bindBidirectional(exam.getLogoView().imageProperty());
         examDate.valueProperty().bindBidirectional(exam.examDateProperty());

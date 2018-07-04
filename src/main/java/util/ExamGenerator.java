@@ -97,6 +97,7 @@ public class ExamGenerator {
 
         essayPart.setDuration(getTotalTime(selectedQuestions));
         essayPart.setWeigh(getTotalWeight(selectedQuestions));
+
         return essayPart;}
         else
             throw new ExamGeneratorException("txt.notEnoughEssayQuestions");
@@ -183,11 +184,19 @@ public class ExamGenerator {
                     selectedQuestions.remove(q);
                 questions.remove(q);
                 EssayWithoutDiff(selectedQuestions,duration,weigth,questions);
-                if (getTotalTime(selectedQuestions)>=duration*0.9 && getTotalWeight(selectedQuestions)>=weigth*0.9)
-                    return selectedQuestions;
-                questions.add(q);
+                if(weigth!=100)
+                    if (getTotalTime(selectedQuestions)>=duration*0.9 && getTotalWeight(selectedQuestions)>=weigth*0.9){
 
+                    return selectedQuestions;}
+                else
+                    if (getTotalTime(selectedQuestions)>=duration*0.9 && getTotalWeight(selectedQuestions)==weigth){
+
+                        return selectedQuestions;}
+                questions.add(q);
+                if (quest.get(quest.size()-1).equals(q))
+                    selectedQuestions.remove(q);
             }
+
 
         }
 
@@ -220,6 +229,7 @@ public class ExamGenerator {
         return selectedQuestions;
     }
 
+
     public static class ExamGeneratorException extends Exception
     {
         public ExamGeneratorException(String message)
@@ -227,5 +237,7 @@ public class ExamGenerator {
             super(message);
         }
     }
+
+
 }
 
